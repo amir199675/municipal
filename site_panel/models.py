@@ -1,0 +1,576 @@
+from django.db import models
+
+from main.models import *
+
+
+from django.db.models.signals import post_save ,pre_save ,m2m_changed
+from django.dispatch import receiver
+
+from django.shortcuts import render , HttpResponse
+
+# Create your models here.
+class Presenter(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	name = models.CharField(max_length=64, verbose_name='نام و نام خانوادگی ')
+	national_number = models.CharField(max_length=11, unique=True, verbose_name='شماره ملی ')
+	identification_number = models.CharField(max_length=11, null=True, blank=True, verbose_name='شماره شناسنامه ')
+	phone_number = models.CharField(max_length=11, unique=True, verbose_name='شماره تماس ')
+	user_id = models.ForeignKey(MyUser, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name='کاربر ')
+
+	class Meta:
+		verbose_name = 'معرف'
+		verbose_name_plural = 'معرف'
+
+	def get_full_name(self):
+		return self.name
+
+	def __str__(self):
+		return self.get_full_name()
+
+
+
+
+class Place(models.Model):
+	STATUS_CHOICES = (
+		('Pre_sell','پیش فروش شده'),
+		('Municipal','شهرداری'),
+		('Sold','فروخته شده')
+	)
+
+	TYPE_CHOICES = (
+		('Normal','عادی'),
+		('Celebrities','مشاهیر')
+	)
+
+	FLOOR_CHOICES = (
+		('Normal','عادی'),
+		('OneFloor','طبقه یک'),
+		('TwoFloor','طبقه دو')
+	)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	code = models.CharField(max_length=11,null=True,blank=True,unique=True,verbose_name='کد قبر ')
+	longitude = models.CharField(max_length=255,verbose_name='طول جغرافیایی ')
+	latitude = models.CharField(max_length=255,verbose_name='عرض جغرافیایی ')
+	price = models.CharField(max_length=8,null=True,blank=True,verbose_name='قیمت ')
+	ghete = models.CharField(max_length=4,verbose_name='قطعه ')
+	radif = models.CharField(max_length=4,verbose_name='ردیف ')
+	block = models.CharField(max_length=4,verbose_name='بلوک ')
+	number = models.CharField(max_length=4,verbose_name='شماره ')
+	floor = models.CharField(max_length=12 ,choices=FLOOR_CHOICES,default='Normal',verbose_name='طبقه ')
+	status = models.CharField(max_length=32,choices=STATUS_CHOICES ,default='Municipal',verbose_name='وضعیت قبر ')
+	type = models.CharField(max_length=32,choices=TYPE_CHOICES,default='normal',verbose_name='نوع قبر ')
+
+	class Meta:
+		verbose_name = 'قبرها'
+		verbose_name_plural = 'قبرها'
+		unique_together = [['code', 'ghete','radif','block','number','floor'],['ghete','radif','block','number','floor']]
+	def __str__(self):
+		return str(self.code) + ' ' + self.status
+
+
+
+class Deceased(models.Model):
+	STATUS_CHOICES = (
+		('_','_'),
+	)
+
+	TYPE_CHOICES = (
+		('_','_'),
+	)
+
+	SEX_CHOICES = (
+		('MALE','مرد'),
+		('FEMALE','زن')
+	)
+
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	deceased_type = models.CharField(max_length=32,choices=TYPE_CHOICES,default='_',verbose_name='نوع جنازه ')
+	deceased_status = models.CharField(max_length=32,choices=STATUS_CHOICES , default='_',verbose_name='وضعیت جنازه ')
+	name = models.CharField(max_length=64,verbose_name='نام و نام خانوادگی ')
+	national_number = models.CharField(max_length=11,verbose_name='شماره ملی ')
+	date_of_birth = models.DateField(verbose_name='تاریخ تولد ')
+	sex = models.CharField(max_length=32 , choices=SEX_CHOICES,default=None,verbose_name='جنسیت ')
+	fa_name = models.CharField(max_length=64,verbose_name='نام پدر ')
+	bio = models.TextField(blank=True,null=True,verbose_name='زندگی نامه ')
+	mo_name = models.CharField(max_length=64,blank=True,null=True,verbose_name='نام مادر ')
+	identification_number = models.CharField(max_length=11,null=True,blank=True,verbose_name='شماره شناسنامه ')
+	issue_date = models.DateField(null=True,blank=True,verbose_name='تاریخ صدور ')
+	place_of_birth = models.CharField(max_length=32,null=True,blank=True,verbose_name='محل تولد ')
+	address = models.TextField(null=True,blank=True,verbose_name='آدرس ')
+	presenter_id = models.ForeignKey(Presenter,null=True , blank=True ,editable=False,  on_delete=models.CASCADE,verbose_name='معرف ')
+	slug = models.CharField(max_length=11,null=True,blank=True)
+
+	class Meta:
+		verbose_name = 'افراد فوت شده'
+		verbose_name_plural = 'افراد فوت شده'
+
+
+	def get_full_name(self):
+		return self.name
+
+	def save(self,*args,**kwargs):
+		self.slug = self.national_number
+		super(Deceased,self).save(*args,**kwargs)
+
+	def __str__(self):
+		return self.get_full_name()
+
+class Death_Certificate(models.Model):
+	STATUS_CHOICE = (
+		('Accepted','تایید شده'),
+		('UnAccepted','در انتظار تایید'),
+	)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	doctor_name = models.CharField(max_length=64,verbose_name='نام پزشک ')
+	medical_system_number = models.CharField(max_length=32,verbose_name='شماره نظام پزشکی ')
+	death_certificate_number = models.CharField(max_length=32,verbose_name='شماره گواهی فوت ')
+	cause_death = models.CharField(max_length=64,verbose_name='علت فوت ')
+	date_of_death = models.DateField(verbose_name='تاریخ فوت ')
+	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE,related_name='certificate',unique=True,verbose_name='متوفی ')
+	status = models.CharField(max_length=32,choices=STATUS_CHOICE,default='UnAccepted',verbose_name='تاییدیه ')
+
+	class Meta:
+		verbose_name = 'گواهی فوت'
+		verbose_name_plural = 'گواهی فوت'
+	def __str__(self):
+		return self.deceased_id.get_full_name() + ' ' + self.death_certificate_number
+
+
+
+
+class Buyer(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	name = models.CharField(max_length=64,verbose_name='نام ')
+	last_name = models.CharField(max_length=64,verbose_name='نام خانوادگی ')
+	national_number = models.CharField(max_length=11,unique=True,verbose_name='شماره ملی ')
+	identification_number = models.CharField(max_length=11, null=True, blank=True, verbose_name='شماره شناسنامه ')
+	phone_number = models.CharField(max_length=11,unique=True,verbose_name='شماره تماس ')
+	user_id = models.ForeignKey(MyUser , on_delete=models.DO_NOTHING,blank=True,null=True,verbose_name='کاربر ')
+	class Meta:
+		verbose_name = 'خریدار'
+		verbose_name_plural = 'خریدار'
+
+
+	def get_full_name(self):
+		return self.name +' '+self.last_name
+
+	def __str__(self):
+		return self.get_full_name()
+
+
+class Madah(models.Model):
+	GRADE_CHOOSE = (
+		('Number One','درجه یک'),
+		('Number Two','درجه دو'),
+		('Number Three','درجه سه'),
+
+	)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	name = models.CharField(max_length=64,verbose_name='نام و نام خانوادگی مداح ')
+	phone_number = models.CharField(max_length=11,verbose_name='شماره تماس ')
+	grade = models.CharField(max_length=64,choices=GRADE_CHOOSE,default=None,verbose_name='سطح ')
+	price = models.IntegerField(verbose_name='هزینه ')
+	class Meta:
+		verbose_name = 'مداحان'
+		verbose_name_plural = 'مداحان'
+	def __str__(self):
+		return self.name + self.grade
+
+
+
+class Reader_Service(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	start_time = models.DateTimeField(verbose_name='زمان شروع ')
+	madah_id = models.ForeignKey(Madah, related_name='reader', on_delete=models.CASCADE, blank=True, null=True,verbose_name='مداح ')
+	deceased_id = models.ForeignKey(Deceased, on_delete=models.CASCADE,verbose_name='متوفی ')
+	user_id = models.ForeignKey(Buyer, on_delete=models.CASCADE,verbose_name='سفارش دهنده ')
+	total_price = models.IntegerField(default=0,verbose_name='هزینه ')
+	class Meta:
+		verbose_name = 'خدمات مداحان'
+		verbose_name_plural = 'خدمات مداحان'
+
+	def __str__(self):
+		return self.user_id.user_id.get_full_name() + ' ' + self.deceased_id.first_name + ' ' + self.deceased_id.last_name
+
+	def save(self, *args ,**kwargs):
+		self.total_price = self.madah_id.price
+		super(Reader_Service,self).save(*args,**kwargs)
+
+
+class Marasem(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	name = models.CharField(max_length=64,verbose_name='نام ')
+	big_table = models.IntegerField(verbose_name='میز بزرگ ')
+	echo = models.IntegerField(verbose_name='اکو ')
+	panel = models.IntegerField(verbose_name='تابلو ')
+	tent = models.IntegerField(verbose_name='چادر با پرده دو طرفه ')
+	chair = models.IntegerField(verbose_name='صندلی ')
+	carpet = models.IntegerField(verbose_name='فرش ')
+	eating_table = models.IntegerField(verbose_name='میز غذا خوری ')
+	price = models.IntegerField(verbose_name='هزینه ')
+	class Meta:
+		verbose_name = 'مجالس'
+		verbose_name_plural = 'مجالس'
+	def __str__(self):
+		return self.name
+
+
+class Memorial_Service(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	start_time = models.DateTimeField(verbose_name='زمان شروع ')
+	marasem_id = models.ForeignKey(Marasem,related_name='memorial',on_delete=models.CASCADE,blank=True,null=True,verbose_name='مجلس ')
+	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE,verbose_name='متوفی ')
+	user_id = models.ForeignKey(Buyer,on_delete=models.CASCADE,verbose_name='سفارش دهنده ')
+	total_price = models.IntegerField(default=0,verbose_name='کل هزینه ')
+	class Meta:
+		verbose_name = 'خدمات مجالس'
+		verbose_name_plural = 'خدمات مجالس'
+	def __str__(self):
+		return self.user_id.user_id.get_full_name() + ' ' + self.deceased_id.first_name + ' ' + self.deceased_id.last_name
+
+	def save(self, *args ,**kwargs):
+		self.total_price = self.marasem_id.price
+		super(Memorial_Service,self).save(*args,**kwargs)
+
+
+class Place_Service (models.Model):
+	PAYMENT_STATUS = (
+		('NOT_PAID','تسویه نشده'),
+		('PAID','تسویه شد')
+	)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	buyer_id =models.ForeignKey(Buyer,on_delete=models.CASCADE,verbose_name='خریدار ')
+	place_id = models.OneToOneField(Place,on_delete=models.CASCADE,verbose_name='قبر ')
+	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE,null=True,blank=True,verbose_name='متوفی مربوطه ')
+	document = models.CharField(max_length=32,unique=True,blank=True,null=True,verbose_name='شماره سند ')
+	payment_status = models.CharField(max_length=32,choices=PAYMENT_STATUS,default='NOT_PAID',verbose_name='وضعیت پرداخت ')
+	class Meta:
+		verbose_name = 'سفارش قبر'
+		verbose_name_plural= 'سفارش قبر'
+	def __str__(self):
+		return self.payment_status + ' ' + self.buyer_id.get_full_name()
+
+
+
+class Option(models.Model):
+	name = models.CharField(max_length=64,verbose_name='نام ')
+	price = models.IntegerField(verbose_name='هزینه ')
+	class Meta:
+		verbose_name = 'امکانات'
+		verbose_name_plural = 'امکانات'
+	def __str__(self):
+		return self.name
+
+class After_Death_Service(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	start_time = models.DateTimeField(verbose_name='زمان شروع ')
+	option_id = models.ManyToManyField(Option,related_name='option',blank=True,null=True,verbose_name='امکانات ')
+	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE,verbose_name='متوفی ')
+	user_id = models.ForeignKey(Buyer,on_delete=models.CASCADE,verbose_name='سفارش دهنده ')
+	total_price = models.IntegerField(default=0,verbose_name='کل هزینه ')
+	class Meta:
+		verbose_name = 'خدمات پس از مرگ'
+		verbose_name_plural = 'خدمات پس از مرگ'
+	def __str__(self):
+		return self.user_id.user_id.get_full_name() + ' ' + self.deceased_id.first_name+ ' ' + self.deceased_id.last_name
+
+
+
+class Bill(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	name = models.CharField(max_length=64,verbose_name='عنوان ')
+	price = models.CharField(max_length=8,verbose_name='هزینه ')
+	order_id = models.ForeignKey(Place_Service,on_delete=models.CASCADE,null=True,blank=True,verbose_name='قبر مربوطه ')
+	after_death_service_id = models.ForeignKey(After_Death_Service,on_delete=models.CASCADE,null=True,blank=True,verbose_name='خدمات پس از مرگ مربوطه ' )
+	memorial_service_id = models.ForeignKey(Memorial_Service,on_delete=models.CASCADE,null=True,blank=True,verbose_name='جلسه مربوطه ')
+	reader_service_id = models.ForeignKey(Reader_Service,on_delete=models.CASCADE,null=True,blank=True,verbose_name='مداح مربوطه ')
+	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE,null=True,blank=True,verbose_name='متوفی ' )
+	user_id = models.ForeignKey(Buyer,on_delete=models.CASCADE,null=True,blank=True,verbose_name='خرید توسط ')
+
+
+	class Meta:
+		verbose_name = 'کلیه خریدها'
+		verbose_name_plural = 'کلیه خریدها'
+	def __str__(self):
+		return self.name + ' ' + self.user_id.get_full_name()
+
+
+
+class License(models.Model):
+	STATUS = (
+		('WAITING','درحال بررسی'),
+		('CONFIRMED','تایید شده')
+	)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	document = models.CharField(max_length=32,unique=True,verbose_name='شماره مجوز ')
+	place_id = models.ForeignKey(Place,null=True,blank=True,on_delete=models.CASCADE,verbose_name='قبر مربوطه ')
+	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE,verbose_name='متوفی ')
+	status = models.CharField(max_length=32,choices=STATUS,default='WAITING',verbose_name='وضعیت انتقال ')
+	class Meta:
+		verbose_name = 'مجوز دفن'
+		verbose_name_plural = 'مجوز دفن'
+	def __str__(self):
+		return self.deceased_id.get_full_name() + ' ' + self.status
+
+
+@receiver(post_save,sender=Deceased)
+def Add_Death_certificate(sender, instance,created, *args,**kwargs):
+	deceased = instance
+	if created  :
+		user = None
+		try:
+			user = MyUser.objects.get(username=instance.national_number)
+			user.deceased_id = instance.id
+			user.save()
+		except user.DoesNotExist:
+			MyUser.objects.create(first_name=instance.first_name, last_name=instance.last_name, deceased_id=instance.id,
+								  email=instance.national_number + '@gmail.com', username=instance.national_number)
+			user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.first_name,
+									  deceased_id=instance.id,
+									  email=instance.national_number + '@gmail.com', username=instance.national_number)
+			user.set_password(instance.national_number)
+			user.save()
+		death_certificate = Death_Certificate.objects.create(deceased_id = deceased)
+
+		license = License.objects.create(deceased_id=deceased, status='WAITING')
+	else:
+
+		user = MyUser.objects.get(deceased_id=instance.id)
+		user.first_name = instance.first_name
+		user.last_name = instance.last_name
+		user.email = instance.national_number
+		user.username = instance.national_number
+		user.set_password(instance.national_number)
+		user.save()
+
+@receiver(post_delete,sender=Deceased)
+def DeleteDeceasedFromUser(sender,instance,*args,**kwargs):
+	try:
+		user = MyUser.objects.get(username=instance.national_number)
+		user.deceased_id = None
+		user.save()
+	except:
+		pass
+
+
+@receiver(post_save,sender=Presenter)
+def AddPresenterToUser(sender,instance,created,*args,**kwargs):
+	if created:
+		try:
+			user = MyUser.objects.get(username=instance.national_number)
+			user.presenter_id = instance.id
+			user.save()
+		except:
+			MyUser.objects.create(first_name=instance.first_name, last_name=instance.last_name,presenter_id=instance.id,
+								  email=instance.national_number + '@gmail.com', username=instance.national_number)
+			user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.first_name,
+									  presenter_id=instance.id,
+									  email=instance.national_number + '@gmail.com', username=instance.national_number)
+			user.set_password(instance.national_number)
+			user.save()
+	else:
+		user = MyUser.objects.get(presenter_id=instance.id)
+		user.first_name = instance.first_name
+		user.last_name = instance.last_name
+		user.email = instance.national_number
+		user.username = instance.national_number
+		user.set_password(instance.national_number)
+		user.save()
+
+@receiver(post_delete,sender=Presenter)
+def DeletePresenterFromUser(sender,instance,*args,**kwargs):
+	try:
+		user = MyUser.objects.get(username=instance.national_number)
+		user.deceased_id = None
+		user.save()
+	except:
+		pass
+
+
+@receiver(post_delete,sender=Buyer)
+def DeleteBuyerFromUser(sender,instance,*args,**kwargs):
+	try:
+		user = MyUser.objects.get(username=instance.national_number)
+		user.buyer_id = None
+		user.save()
+	except:
+		pass
+
+@receiver(post_save,sender=Place_Service)
+def AddPlacePriceToBill(sender, instance, created, *args, **kwargs):
+	if created and instance.payment_status == 'PAID':
+		if instance.deceased_id :
+			Bill.objects.create(name = 'خرید قبر',deceased_id=instance.deceased_id,user_id=instance.buyer_id,price=instance.place_id.price)
+			place = instance.place_id
+			place.status = 'Sold'
+			place.save()
+		else:
+			Bill.objects.create(name='خرید قبر', user_id=instance.buyer_id,
+								price=instance.place_id.price)
+			place = instance.place_id
+			place.status = 'Pre_sell'
+			place.save()
+
+
+@receiver(m2m_changed,sender=After_Death_Service.option_id.through)
+def total_price_computer(sender,instance,action,reverse,pk_set,**kwargs):
+	if action == "post_add":
+		options = pk_set
+		x = instance.total_price
+		after = instance
+		for option in options:
+			o = Option.objects.get(pk=option)
+			x = x + o.price
+		after.total_price = x
+		after.save()
+
+	if action == "post_remove":
+		options = pk_set
+		x = instance.total_price
+		after = instance
+		for option in options:
+			o= Option.objects.get(pk=option)
+			x = x - o.price
+		after.total_price = x
+		after.save()
+
+
+@receiver(post_save,sender=Place_Service)
+def AddOrderToBill(sender,instance,created,*args,**kwargs):
+	if created and instance.payment_status == 'PAID':
+		if instance.deceased_id :
+			Bill.objects.create(name='خرید قبر',price=instance.place_id.price,deceased_id=instance.deceased_id,user=instance.buyer_id)
+			place = instance.place_id
+			place.status = 'Sold'
+			place.save()
+		else:
+			Bill.objects.create(name='خرید قبر',price=instance.place_id.price, user=instance.buyer_id)
+			place = instance.place_id
+			place.status = 'Pre_sell'
+			place.save()
+
+
+@receiver(post_save, sender=Buyer)
+def AddBuyerToUser(sender, instance, created, *args, **kwargs):
+	if created:
+		try:
+			user = MyUser.objects.get(username=instance.national_number)
+			user.buyer_id = instance.id
+			user.save()
+		except:
+			MyUser.objects.create(first_name=instance.name, last_name=instance.name,
+								  buyer_id=instance.id,
+								  email=instance.national_number + '@gmail.com', username=instance.national_number)
+			user = MyUser.objects.get(first_name=instance.name, last_name=instance.name,
+									  buyer_id=instance.id,
+									  email=instance.national_number + '@gmail.com', username=instance.national_number)
+			user.set_password(instance.national_number)
+			user.save()
+	else:
+		user = MyUser.objects.get(buyer_id=instance.id)
+		user.first_name = instance.name
+		user.last_name = instance.name
+		user.email = instance.national_number
+		user.username = instance.national_number
+		user.set_password(instance.national_number)
+		user.save()
+
+@receiver(post_save,sender=License)
+def EditBuyrDeceased(sender, instance, created, *args, **kwargs):
+	license = instance
+	national_numer = license.deceased_id.national_number
+	self = None
+	place_service = None
+	try:
+		place_service = Place_Service.objects.get(buyer_id__national_number=national_numer)
+		self = True
+	except:
+		self = False
+	if self :
+		place_service.deceased_id = instance.deceased_id
+		place_service.save()
+
+# @receiver(post_save,sender=Order)
+# def Add_Order(sender,instance,created,*args,**kwargs):
+# 	if created and instance.payment_status == 'PAID' :
+# 		conition = None
+# 		license =None
+# 		try:
+# 			license = instance.place_id.license.select_related().get()
+# 			conition = True
+# 		except:
+# 			conition = False
+# 		if conition:
+# 			# print(instance.place_id.license.deceased_id)
+# 			Bill.objects.create(name='خرید قبر',deceased_id=license.deceased_id,price=instance.place_id.price)
+# 		else:
+# 			Bill.objects.create(name='خرید قبر',price=instance.place_id.price,user = instance.buyer_id)
+# 	else:
+# 		if instance.payment_status == 'PAID':
+# 			conition = None
+# 			license = None
+#
+#
+# 			try:
+# 				license = instance.place_id.license.select_related().get()
+# 				conition = True
+# 			except:
+# 				conition = False
+#
+#
+#
+# 			if conition:
+# 				try:
+# 					Bill.objects.get(name='خرید قبر',deceased_id=license.deceased_id,price=instance.place_id.price)
+# 					deceased = True
+# 				except:
+# 					deceased =False
+#
+# 				if deceased:
+# 					pass
+# 				else:
+# 					Bill.objects.create(name='خرید قبر', deceased_id=license.deceased_id, price=instance.place_id.price)
+#
+#
+# 			else:
+# 				try:
+# 					Bill.objects.get(name='خرید قبر',price=instance.place_id.price,user = instance.buyer_id)
+# 					buyer = True
+# 				except:
+# 					buyer = False
+#
+# 				if buyer:
+# 					pass
+# 				else:
+# 					Bill.objects.create(name='خرید قبر', price=instance.place_id.price, user=instance.buyer_id)
+	# else:
+	# 	if instance.status == 'PAID':
+	# 		bill = Bill.objects.get()
+	#
+
+
+
+
+
+# class Payment_Information(models.Model):
+# 	created = models.DateTimeField(auto_now_add=True)
+# 	updated = models.DateTimeField(auto_now=True)
+# 	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE,verbose_name='متوفی ')
+# 	bill_id = models.ManyToManyField(Bill,related_name='payment',verbose_name='خرید های مربوطه ')
+# 	total_price = models.CharField(max_length=10,verbose_name='کل هزینه ها ')
+# 	class Meta:
+# 		verbose_name_plural = ''
+# 		verbose_name = 'امور مالی'
