@@ -46,130 +46,100 @@
                                 </div>
                                 <div class="card-content collapse show">
                                     <div class="card-body">
-                                        <form action="#" class="icons-tab-steps">
+                                        <form action="" method="post" class="icons-tab-steps">
 
                                             <!-- Step 1 -->
                                             <h6><i class="step-icon ft-home"></i>مشخصات متوفی</h6>
                                             <fieldset>
                                                 <div class="row">
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="firstName2">نام و نام خانوادگی:</label>
+                                                            <label for="firstName2">نام :</label>
                                                             <input type="text" class="form-control" id="firstName2"
-                                                                   name="name">
+                                                                   name="first_name">
                                                         </div>
                                                     </div>
-
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="lastName3">نوع جنازه :</label>
+                                                            <label for="firstName2">نام خانوادگی :</label>
+                                                            <input type="text" class="form-control" id="firstName2"
+                                                                   name="last_name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="lastName3">نام پدر :</label>
                                                             <input type="text" class="form-control" id="lastName3"
-                                                                   name="deceased_type">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label for="lastName4">وضعیت جنازه :</label>
-                                                            <input type="text" class="form-control" id="lastName4"
-                                                                   name="deceased_status">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label for="lastName2">نام پدر :</label>
-                                                            <input type="text" class="form-control" id="lastName2"
                                                                    name="fa_name">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label for="firstName2">نام مادر :</label>
-                                                            <input type="text" class="form-control" id="firstName2"
-                                                                   name="mo_name">
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label for="lastName3">کد ملی :</label>
-                                                            <input type="text" class="form-control" id="lastName3"
-                                                                   name="national_number">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="lastName4">شماره شناسنامه :</label>
                                                             <input type="text" class="form-control" id="lastName4"
                                                                    name="identification_number">
                                                         </div>
                                                     </div>
-
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="lastName3">کد ملی :</label>
+                                                            <input type="text" class="form-control" id="lastName3"
+                                                                   name="national_number">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="row">
-
-
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="location2">جنسیت</label>
-                                                            <select class="custom-select form-control" id="location2"
-                                                                    name="location">
-                                                                <option selected disabled value="" name="sex">جنسیت فرد
-                                                                    متوفی را وارد کنید
-                                                                </option>
-                                                                <option value="Amsterdam">مرد</option>
-                                                                <option value="Berlin">زن</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="date2">تاریخ تولد :</label>
-                                                            <input type="date" class="form-control" id="date2"
-                                                                   name="date_of_birth">
-                                                        </div>
-                                                    </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label for="lastName2">آدرس</label>
+                                                            <label for="lastName2">زندگینامه</label>
                                                             <textarea cols="30" rows="10" class="form-control"
-                                                                      placeholder="لطفا آدرس دقیق را وارد کنید"
-                                                                      name="address"></textarea>
+                                                                      placeholder="لطفا زندگینامه دقیق را وارد کنید"
+                                                                      name="bio"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                             </fieldset>
                                             <h6><i class="step-icon ft-file-text"></i>مشخصات معرف</h6>
                                             <fieldset>
                                                 <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="firstName2">نام و نام خانوادگی معرف :</label>
-                                                            <input type="text" class="form-control" id="firstName2" name="presenter_name">
+                                                            <label for="firstName2">نام معرف :</label>
+                                                            <input type="text" class="form-control" id="firstName2"
+                                                                   name="presenter_first_name">
                                                         </div>
                                                     </div>
-
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="firstName2">نام خانوادگی معرف :</label>
+                                                            <input type="text" class="form-control" id="firstName2"
+                                                                   name="presenter_last_name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="location2">شماره تماس معرف :</label>
-                                                            <input type="tel" class="form-control" name="presenter_phone_number"
+                                                            <input type="tel" class="form-control"
+                                                                   name="presenter_phone_number"
                                                                    placeholder="شماره تماس را وارد کنید">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="firstName2">کد ملی معرف :</label>
-                                                            <input type="text" placeholder="کد ملی" class="form-control" name="presenter_national_number"
+                                                            <input type="text" placeholder="کد ملی" class="form-control"
+                                                                   name="presenter_national_number"
                                                                    id="firstName2">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="firstName2">شماره شناسنامه معرف :</label>
-                                                            <input placeholder="شماره شناسنامه" type="text" name="presenter_identification_number"
+                                                            <input placeholder="شماره شناسنامه" type="text"
+                                                                   name="presenter_identification_number"
                                                                    class="form-control" id="firstName2">
                                                         </div>
                                                     </div>
@@ -191,13 +161,15 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="firstName2">بلوک :</label>
-                                                            <input type="number" class="form-control" id="firstName2" name="block">
+                                                            <input type="number" class="form-control" id="firstName2"
+                                                                   name="block">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="date2">ردیف :</label>
-                                                            <input type="number" class="form-control" id="date2" name="radif">
+                                                            <input type="number" class="form-control" id="date2"
+                                                                   name="radif">
                                                         </div>
                                                     </div>
 
@@ -206,13 +178,15 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="firstName2">شماره</label>
-                                                            <input type="number" class="form-control" id="firstName2" name="number">
+                                                            <input type="number" class="form-control" id="firstName2"
+                                                                   name="number">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="date2">طبقه :</label>
-                                                            <input type="number" class="form-control" id="date2" name="floor">
+                                                            <input type="number" class="form-control" id="date2"
+                                                                   name="floor">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
@@ -240,29 +214,40 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="firstName2">نام پزشک :</label>
-                                                            <input type="text" class="form-control" id="firstName2" name="doctor_name">
+                                                            <input type="text" class="form-control" id="firstName2"
+                                                                   name="doctor_first_name">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="firstName2">نام خانوادگی پزشک :</label>
+                                                            <input type="text" class="form-control" id="firstName2"
+                                                                   name="doctor_last_name">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <li class="row">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="date2">شماره نظام پزشکی :</label>
-                                                            <input type="number" class="form-control" id="date2" name="medical_system_number">
+                                                            <input type="number" class="form-control" id="date2"
+                                                                   name="medical_system_number">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="location2">شماره گواهی فوت :</label>
-                                                            <input type="number" class="form-control" id="location2" name="death_certificate_number">
+                                                            <input type="number" class="form-control" id="location2"
+                                                                   name="death_certificate_number">
 
 
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="location2">تاریخ فوت :</label>
-                                                            <input type="date" class="form-control" id="location2" name="date_of_death">
-
-
+                                                            <input type="date" class="form-control" id="location2"
+                                                                   name="date_of_death">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -276,8 +261,6 @@
                                                         </div>
                                                     </div>
 
-
-                                                </div>
                                             </fieldset>
 
                                             <!-- Step 4 -->

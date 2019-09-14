@@ -1,4 +1,5 @@
 {% load static %}
+{% load main_tags %}
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -298,7 +299,7 @@
                                     <a href="blog.html" class="blog-img"
                                        style="background-image: url({{ new.picture.url }});"></a>
                                     <div class="desc">
-                                        <span>{{ new.created|date }}</span>
+                                        <span>{{ new.created|day }} {{ new.created|month }}</span>
                                         <h2><a href="blog.html">{{ new.content|truncatewords:50 }}</a></h2>
                                     </div>
                                 </div>

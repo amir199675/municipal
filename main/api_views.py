@@ -37,10 +37,10 @@ class APIListDeceased(APIView):
 
 
 class DeceasedAdvanceSearchAPIView(generics.ListAPIView):
-	serializer_class = DeceasedSerializer
+	serializer_class = LicenseSerializer
 
 	def get_queryset(self):
-		queryset = Deceased.objects.all()
+		queryset = License.objects.filter(move_status='FERDOS-REZA')
 		first_name = self.request.query_params.get('name','')
 		last_name = self.request.query_params.get('last_name','')
 		ghete = self.request.query_params.get('ghete','')
@@ -64,16 +64,20 @@ class DeceasedAdvanceSearchAPIView(generics.ListAPIView):
 			date_end = datetime.strptime(date_end,'%Y-%m-%d')
 		else:
 			date_end = datetime.now().date()
-		return queryset.filter(date_of_death__lte=date_end,date_of_death__gte=date_start,first_name__contains=first_name,fa_name__contains=fa_name ,last_name__contains=last_name,place_id__ghete__contains=ghete,place_id__block__contains=block)
+
+
+
+
+		return queryset.filter(deceased_id__certificate__date_of_death__lte=date_end,deceased_id__certificate__date_of_death__gte=date_start,deceased_id__fa_name__contains=fa_name,deceased_id__first_name__contains=first_name,deceased_id__last_name__contains=last_name,place_id__ghete__contains=ghete,place_id__block__contains=block)
 
 
 
 
 class DeceasedSimpleSearchAPIView(generics.ListAPIView):
-	serializer_class = DeceasedSerializer
-	queryset = Deceased.objects.all()
+	serializer_class = LicenseSerializer
+	queryset = License.objects.filter(move_status='FERDOS-REZA')
 	filter_backends = (DjangoFilterBackend,SearchFilter)
-	search_fields = ('first_name','last_name'	)
+	search_fields = ('deceased_id__first_name','deceased_id__last_name')
 
 
 

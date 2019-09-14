@@ -9,13 +9,15 @@ from django.dispatch import receiver
 from django.shortcuts import render , HttpResponse
 
 # Create your models here.
-class Presenter(models.Model):
+class 	Presenter(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
-	name = models.CharField(max_length=64, verbose_name='نام و نام خانوادگی ')
+	first_name = models.CharField(max_length=64, verbose_name='نام ')
+	last_name = models.CharField(max_length=64, verbose_name='نام خانوادگی ')
 	national_number = models.CharField(max_length=11, unique=True, verbose_name='شماره ملی ')
 	identification_number = models.CharField(max_length=11, null=True, blank=True, verbose_name='شماره شناسنامه ')
 	phone_number = models.CharField(max_length=11, unique=True, verbose_name='شماره تماس ')
+	document = models.ImageField(upload_to='presenters-pic/')
 	user_id = models.ForeignKey(MyUser, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name='کاربر ')
 
 	class Meta:
@@ -23,7 +25,7 @@ class Presenter(models.Model):
 		verbose_name_plural = 'معرف'
 
 	def get_full_name(self):
-		return self.name
+		return self.first_name+ ' ' + self.last_name
 
 	def __str__(self):
 		return self.get_full_name()
@@ -82,17 +84,19 @@ class Deceased(models.Model):
 
 	SEX_CHOICES = (
 		('MALE','مرد'),
-		('FEMALE','زن')
+		('FEMALE','زن'),
+		('UNKNOWN','ناشناخته')
 	)
 
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	deceased_type = models.CharField(max_length=32,choices=TYPE_CHOICES,default='_',verbose_name='نوع جنازه ')
 	deceased_status = models.CharField(max_length=32,choices=STATUS_CHOICES , default='_',verbose_name='وضعیت جنازه ')
-	name = models.CharField(max_length=64,verbose_name='نام و نام خانوادگی ')
+	first_name = models.CharField(max_length=64,verbose_name='نام ')
+	last_name = models.CharField(max_length=64,verbose_name='نام خانوادگی ')
 	national_number = models.CharField(max_length=11,verbose_name='شماره ملی ')
 	date_of_birth = models.DateField(verbose_name='تاریخ تولد ')
-	sex = models.CharField(max_length=32 , choices=SEX_CHOICES,default=None,verbose_name='جنسیت ')
+	sex = models.CharField(max_length=32 , choices=SEX_CHOICES,default='UNKNOWN',verbose_name='جنسیت ')
 	fa_name = models.CharField(max_length=64,verbose_name='نام پدر ')
 	bio = models.TextField(blank=True,null=True,verbose_name='زندگی نامه ')
 	mo_name = models.CharField(max_length=64,blank=True,null=True,verbose_name='نام مادر ')
@@ -109,7 +113,7 @@ class Deceased(models.Model):
 
 
 	def get_full_name(self):
-		return self.name
+		return self.first_name + ' ' + self.last_name
 
 	def save(self,*args,**kwargs):
 		self.slug = self.national_number
@@ -125,11 +129,12 @@ class Death_Certificate(models.Model):
 	)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
-	doctor_name = models.CharField(max_length=64,verbose_name='نام پزشک ')
+	doctor_first_name = models.CharField(max_length=64,verbose_name='نام پزشک ')
+	doctor_last_name = models.CharField(max_length=64,verbose_name='نام خانوادگی پزشک ')
 	medical_system_number = models.CharField(max_length=32,verbose_name='شماره نظام پزشکی ')
 	death_certificate_number = models.CharField(max_length=32,verbose_name='شماره گواهی فوت ')
 	cause_death = models.CharField(max_length=64,verbose_name='علت فوت ')
-	date_of_death = models.DateField(verbose_name='تاریخ فوت ')
+	date_of_death = models.DateField(null=True,blank=True,verbose_name='تاریخ فوت ')
 	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE,related_name='certificate',unique=True,verbose_name='متوفی ')
 	status = models.CharField(max_length=32,choices=STATUS_CHOICE,default='UnAccepted',verbose_name='تاییدیه ')
 
@@ -309,21 +314,28 @@ class Bill(models.Model):
 
 
 class License(models.Model):
-	STATUS = (
+	LICENSE_STATUS = (
 		('WAITING','درحال بررسی'),
 		('CONFIRMED','تایید شده')
 	)
+
+	MOVE_STATUS = (
+		('SEND-OUT','اعزامی'),
+		('FERDOS-REZA','باغ فردوس'),
+	)
+
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	document = models.CharField(max_length=32,unique=True,verbose_name='شماره مجوز ')
 	place_id = models.ForeignKey(Place,null=True,blank=True,on_delete=models.CASCADE,verbose_name='قبر مربوطه ')
 	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE,verbose_name='متوفی ')
-	status = models.CharField(max_length=32,choices=STATUS,default='WAITING',verbose_name='وضعیت انتقال ')
+	license_status = models.CharField(max_length=32,choices=LICENSE_STATUS,default='WAITING',verbose_name='وضعیت مجوز ')
+	move_status = models.CharField(max_length=32,choices=MOVE_STATUS,default='FERDOS-REZA',verbose_name='وضعیت انتقال ')
 	class Meta:
 		verbose_name = 'مجوز دفن'
 		verbose_name_plural = 'مجوز دفن'
 	def __str__(self):
-		return self.deceased_id.get_full_name() + ' ' + self.status
+		return self.deceased_id.get_full_name() + ' ' + self.license_status
 
 
 @receiver(post_save,sender=Deceased)
@@ -335,17 +347,18 @@ def Add_Death_certificate(sender, instance,created, *args,**kwargs):
 			user = MyUser.objects.get(username=instance.national_number)
 			user.deceased_id = instance.id
 			user.save()
-		except user.DoesNotExist:
+		except :
 			MyUser.objects.create(first_name=instance.first_name, last_name=instance.last_name, deceased_id=instance.id,
 								  email=instance.national_number + '@gmail.com', username=instance.national_number)
-			user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.first_name,
+			user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.last_name,
 									  deceased_id=instance.id,
 									  email=instance.national_number + '@gmail.com', username=instance.national_number)
 			user.set_password(instance.national_number)
 			user.save()
+
 		death_certificate = Death_Certificate.objects.create(deceased_id = deceased)
 
-		license = License.objects.create(deceased_id=deceased, status='WAITING')
+		license = License.objects.create(deceased_id=deceased, license_status='WAITING')
 	else:
 
 		user = MyUser.objects.get(deceased_id=instance.id)
@@ -376,7 +389,7 @@ def AddPresenterToUser(sender,instance,created,*args,**kwargs):
 		except:
 			MyUser.objects.create(first_name=instance.first_name, last_name=instance.last_name,presenter_id=instance.id,
 								  email=instance.national_number + '@gmail.com', username=instance.national_number)
-			user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.first_name,
+			user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.last_name,
 									  presenter_id=instance.id,
 									  email=instance.national_number + '@gmail.com', username=instance.national_number)
 			user.set_password(instance.national_number)

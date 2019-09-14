@@ -69,3 +69,23 @@ class After_DeathSerializer(ModelSerializer):
 	class Meta :
 		model = After_Death_Service
 		fields = '__all__'
+
+
+
+class LicenseSerializer(ModelSerializer):
+	class DeceasedSerializer(ModelSerializer):
+		class Meta:
+			model = Deceased
+			fields = '__all__'
+
+	class PlaceSerializer(ModelSerializer):
+		class Meta:
+			model = Place
+			fields = '__all__'
+
+	deceased_id = DeceasedSerializer(read_only=True)
+	place_id = PlaceSerializers(read_only=True)
+
+	class Meta:
+		model = License
+		fields = '__all__'

@@ -11,7 +11,7 @@ urlpatterns = [
 	path('',views.Index,name = 'index'),
 	path('memorials/', views.Memorial, name = 'memorials'),
 	path('amir/', views.amir, name = 'amir'),
-	path('Admin/new-deceased/',views.New_Deceased,name = 'new_deceased')
+	path('Admin/quick-new-deceased/',views.Quick_Deceased,name = 'quick_new_deceased')
 
 ]
 
