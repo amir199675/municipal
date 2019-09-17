@@ -6,6 +6,12 @@ import jalali_date
 register = template.Library()
 
 
+
+@register.filter(name='shamsi')
+def shamsi(value):
+	date = jalali_date.date2jalali(value)
+	return date
+
 @register.filter(name='month')
 def month(value):
 	date = jalali_date.date2jalali(value)

@@ -31,30 +31,31 @@
 
 <div id="page">
     {% include 'main-site/partial/header.html' %}
-    <aside id="colorlib-hero">
-        <div class="flexslider">
-            <ul class="slides">
-                {% for slide in sliders %}
+    {% if sliders.count %}
+        <aside id="colorlib-hero">
+            <div class="flexslider">
+                <ul class="slides">
+                    {% for slide in sliders %}
 
-                    <li style="background-image: url({{ slide.picture.url }});">
-                        <div class="overlay"></div>
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-8 col-sm-12 col-md-offset-2 slider-text">
-                                    <div class="slider-text-inner text-center">
-                                        <h2>{{ slide.small_text }}</h2>
-                                        <h1>{{ slide.bold_text }}</h1>
+                        <li style="background-image: url({{ slide.picture.url }});">
+                            <div class="overlay"></div>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-8 col-sm-12 col-md-offset-2 slider-text">
+                                        <div class="slider-text-inner text-center">
+                                            <h2>{{ slide.small_text }}</h2>
+                                            <h1>{{ slide.bold_text }}</h1>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                {% endfor %}
+                        </li>
+                    {% endfor %}
 
-            </ul>
-        </div>
-    </aside>
-
+                </ul>
+            </div>
+        </aside>
+    {% endif %}
     <div style="direction: rtl" id="colorlib-intro">
         <div class="container">
             <div class="row">

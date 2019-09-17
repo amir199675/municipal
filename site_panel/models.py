@@ -9,7 +9,7 @@ from django.dispatch import receiver
 from django.shortcuts import render , HttpResponse
 
 # Create your models here.
-class 	Presenter(models.Model):
+class Presenter(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	first_name = models.CharField(max_length=64, verbose_name='نام ')
@@ -17,7 +17,6 @@ class 	Presenter(models.Model):
 	national_number = models.CharField(max_length=11, unique=True, verbose_name='شماره ملی ')
 	identification_number = models.CharField(max_length=11, null=True, blank=True, verbose_name='شماره شناسنامه ')
 	phone_number = models.CharField(max_length=11, unique=True, verbose_name='شماره تماس ')
-	document = models.ImageField(upload_to='presenters-pic/')
 	user_id = models.ForeignKey(MyUser, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name='کاربر ')
 
 	class Meta:
@@ -46,7 +45,6 @@ class Place(models.Model):
 	)
 
 	FLOOR_CHOICES = (
-		('Normal','عادی'),
 		('OneFloor','طبقه یک'),
 		('TwoFloor','طبقه دو')
 	)
@@ -60,7 +58,7 @@ class Place(models.Model):
 	radif = models.CharField(max_length=4,verbose_name='ردیف ')
 	block = models.CharField(max_length=4,verbose_name='بلوک ')
 	number = models.CharField(max_length=4,verbose_name='شماره ')
-	floor = models.CharField(max_length=12 ,choices=FLOOR_CHOICES,default='Normal',verbose_name='طبقه ')
+	floor = models.CharField(max_length=12 ,choices=FLOOR_CHOICES,default='OneFloor',verbose_name='طبقه ')
 	status = models.CharField(max_length=32,choices=STATUS_CHOICES ,default='Municipal',verbose_name='وضعیت قبر ')
 	type = models.CharField(max_length=32,choices=TYPE_CHOICES,default='normal',verbose_name='نوع قبر ')
 
@@ -328,8 +326,9 @@ class License(models.Model):
 	updated = models.DateTimeField(auto_now=True)
 	document = models.CharField(max_length=32,unique=True,verbose_name='شماره مجوز ')
 	place_id = models.ForeignKey(Place,null=True,blank=True,on_delete=models.CASCADE,verbose_name='قبر مربوطه ')
-	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE,verbose_name='متوفی ')
+	deceased_id = models.ForeignKey(Deceased,related_name='license', on_delete=models.CASCADE,verbose_name='متوفی ')
 	license_status = models.CharField(max_length=32,choices=LICENSE_STATUS,default='WAITING',verbose_name='وضعیت مجوز ')
+	picture = models.ImageField(upload_to='license-pic/',null=True,blank=True)
 	move_status = models.CharField(max_length=32,choices=MOVE_STATUS,default='FERDOS-REZA',verbose_name='وضعیت انتقال ')
 	class Meta:
 		verbose_name = 'مجوز دفن'
@@ -358,7 +357,7 @@ def Add_Death_certificate(sender, instance,created, *args,**kwargs):
 
 		death_certificate = Death_Certificate.objects.create(deceased_id = deceased)
 
-		license = License.objects.create(deceased_id=deceased, license_status='WAITING')
+		license = License.objects.create(deceased_id=deceased, license_status='WAITING',document=instance.national_number)
 	else:
 
 		user = MyUser.objects.get(deceased_id=instance.id)
@@ -516,6 +515,10 @@ def EditBuyrDeceased(sender, instance, created, *args, **kwargs):
 		place_service.deceased_id = instance.deceased_id
 		place_service.save()
 
+	if instance.place_id:
+		place = instance.place_id
+		place.status = 'Sold'
+		place.save()
 # @receiver(post_save,sender=Order)
 # def Add_Order(sender,instance,created,*args,**kwargs):
 # 	if created and instance.payment_status == 'PAID' :
