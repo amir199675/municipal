@@ -135,22 +135,21 @@ def Quick_Deceased(request):
 		return render(request, 'admin-panel/quick-deceased.html', context)
 
 	else:
-		context = {
-			'error':True,
-			'message':'فقط کارمندان اجازه دسترسی به پنل ادمین دارند.'
-		}
-		return render(request,'admin-panel/login/login.html',context)
+		return redirect('/Account/login/?next=/Admin/quick-new-deceased/')
 
 def Deceased_List(request):
-	deceaseds = Deceased.objects.all()
+	if request.user.is_authenticated and request.user.is_staff:
+
+		deceaseds = Deceased.objects.all()
 
 
-	context = {
-		'deceaseds':deceaseds,
-	}
+		context = {
+			'deceaseds':deceaseds,
+		}
 
-	return render(request,'admin-panel/all-deceaseds.html',context)
-
+		return render(request,'admin-panel/all-deceaseds.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/quick-new-deceased/')
 
 def Index(request):
 	place_count = Place.objects.all().count()
