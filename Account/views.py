@@ -22,3 +22,7 @@ def Login (request):
 			return render(request, 'admin-panel/login/login.html', context)
 	context = {}
 	return render(request,'admin-panel/login/login.html',context)
+
+def Logout(request):
+	Logout(request)
+	return redirect('Site_Panel:index')

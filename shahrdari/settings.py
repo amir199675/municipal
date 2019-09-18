@@ -26,7 +26,7 @@ SECRET_KEY = 'w%()v8jn(5xf)h)x1!(w2@-2(2*@*9xm6y19%fs(8u)+mehdhg'
 # DEBUG = True
 DEBUG = False
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['37.187.222.167','http://37.187.222.167/']
+ALLOWED_HOSTS = ['www.ferdosreza.ir','ferdosreza.ir','http://ferdosreza.ir/','http://ferdosreza.ir/']
 
 
 AUTH_USER_MODEL = 'main.MyUser'

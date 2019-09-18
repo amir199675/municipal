@@ -17,6 +17,7 @@ class MyUser(AbstractUser):
 
 
 
+
 class New(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)

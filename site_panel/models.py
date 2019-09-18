@@ -3,7 +3,7 @@ from django.db import models
 from main.models import *
 
 
-from django.db.models.signals import post_save ,pre_save ,m2m_changed
+from django.db.models.signals import post_save ,pre_save ,m2m_changed ,pre_delete
 from django.dispatch import receiver
 
 from django.shortcuts import render , HttpResponse
@@ -53,7 +53,7 @@ class Place(models.Model):
 	code = models.CharField(max_length=11,null=True,blank=True,unique=True,verbose_name='کد قبر ')
 	longitude = models.CharField(max_length=255,verbose_name='طول جغرافیایی ')
 	latitude = models.CharField(max_length=255,verbose_name='عرض جغرافیایی ')
-	price = models.CharField(max_length=8,null=True,blank=True,verbose_name='قیمت ')
+	price = models.CharField(max_length=8,default=0,null=True,blank=True,verbose_name='قیمت ')
 	ghete = models.CharField(max_length=4,verbose_name='قطعه ')
 	radif = models.CharField(max_length=4,verbose_name='ردیف ')
 	block = models.CharField(max_length=4,verbose_name='بلوک ')
@@ -148,7 +148,7 @@ class Death_Certificate(models.Model):
 class Buyer(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
-	name = models.CharField(max_length=64,verbose_name='نام ')
+	first_name = models.CharField(max_length=64,verbose_name='نام ')
 	last_name = models.CharField(max_length=64,verbose_name='نام خانوادگی ')
 	national_number = models.CharField(max_length=11,unique=True,verbose_name='شماره ملی ')
 	identification_number = models.CharField(max_length=11, null=True, blank=True, verbose_name='شماره شناسنامه ')
@@ -160,7 +160,7 @@ class Buyer(models.Model):
 
 
 	def get_full_name(self):
-		return self.name +' '+self.last_name
+		return self.first_name +' '+self.last_name
 
 	def __str__(self):
 		return self.get_full_name()
@@ -260,6 +260,9 @@ class Place_Service (models.Model):
 	class Meta:
 		verbose_name = 'سفارش قبر'
 		verbose_name_plural= 'سفارش قبر'
+	def save(self, *args , **kwargs):
+		self.document = self.deceased_id.national_number
+		super(Place_Service,self).save(*args,**kwargs)
 	def __str__(self):
 		return self.payment_status + ' ' + self.buyer_id.get_full_name()
 
@@ -309,7 +312,11 @@ class Bill(models.Model):
 	def __str__(self):
 		return self.name + ' ' + self.user_id.get_full_name()
 
+class City(models.Model):
+	name = models.CharField(max_length=32)
 
+	def __str__(self):
+		return self.name
 
 class License(models.Model):
 	LICENSE_STATUS = (
@@ -319,17 +326,18 @@ class License(models.Model):
 
 	MOVE_STATUS = (
 		('SEND-OUT','اعزامی'),
-		('FERDOS-REZA','باغ فردوس'),
+		('FERDOS-REZA','فردوس رضا'),
 	)
 
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	document = models.CharField(max_length=32,unique=True,verbose_name='شماره مجوز ')
-	place_id = models.ForeignKey(Place,null=True,blank=True,on_delete=models.CASCADE,verbose_name='قبر مربوطه ')
+	place_id = models.ForeignKey(Place,related_name='license',null=True,blank=True,on_delete=models.CASCADE,verbose_name='قبر مربوطه ')
 	deceased_id = models.ForeignKey(Deceased,related_name='license', on_delete=models.CASCADE,verbose_name='متوفی ')
 	license_status = models.CharField(max_length=32,choices=LICENSE_STATUS,default='WAITING',verbose_name='وضعیت مجوز ')
 	picture = models.ImageField(upload_to='license-pic/',null=True,blank=True)
 	move_status = models.CharField(max_length=32,choices=MOVE_STATUS,default='FERDOS-REZA',verbose_name='وضعیت انتقال ')
+	city_id = models.ForeignKey(City ,null=True,blank=True,on_delete=models.CASCADE, verbose_name='شهر اعزامی ')
 	class Meta:
 		verbose_name = 'مجوز دفن'
 		verbose_name_plural = 'مجوز دفن'
@@ -368,12 +376,22 @@ def Add_Death_certificate(sender, instance,created, *args,**kwargs):
 		user.set_password(instance.national_number)
 		user.save()
 
+@receiver(pre_delete,sender=Deceased)
+def Edit_Place(sender,instance,*args,**kwargs):
+	try:
+		licence = License.objects.get(deceased_id=instance)
+		place = licence.place_id
+		place.status = 'Municipal'
+		place.save()
+	except:
+		pass
 @receiver(post_delete,sender=Deceased)
 def DeleteDeceasedFromUser(sender,instance,*args,**kwargs):
 	try:
 		user = MyUser.objects.get(username=instance.national_number)
 		user.deceased_id = None
 		user.save()
+
 	except:
 		pass
 
@@ -385,6 +403,9 @@ def AddPresenterToUser(sender,instance,created,*args,**kwargs):
 			user = MyUser.objects.get(username=instance.national_number)
 			user.presenter_id = instance.id
 			user.save()
+			presenter = instance
+			presenter.user_id = user
+			presenter.save()
 		except:
 			MyUser.objects.create(first_name=instance.first_name, last_name=instance.last_name,presenter_id=instance.id,
 								  email=instance.national_number + '@gmail.com', username=instance.national_number)
@@ -393,6 +414,9 @@ def AddPresenterToUser(sender,instance,created,*args,**kwargs):
 									  email=instance.national_number + '@gmail.com', username=instance.national_number)
 			user.set_password(instance.national_number)
 			user.save()
+			presenter = instance
+			presenter.user_id = user
+			presenter.save()
 	else:
 		user = MyUser.objects.get(presenter_id=instance.id)
 		user.first_name = instance.first_name
@@ -420,21 +444,6 @@ def DeleteBuyerFromUser(sender,instance,*args,**kwargs):
 		user.save()
 	except:
 		pass
-
-@receiver(post_save,sender=Place_Service)
-def AddPlacePriceToBill(sender, instance, created, *args, **kwargs):
-	if created and instance.payment_status == 'PAID':
-		if instance.deceased_id :
-			Bill.objects.create(name = 'خرید قبر',deceased_id=instance.deceased_id,user_id=instance.buyer_id,price=instance.place_id.price)
-			place = instance.place_id
-			place.status = 'Sold'
-			place.save()
-		else:
-			Bill.objects.create(name='خرید قبر', user_id=instance.buyer_id,
-								price=instance.place_id.price)
-			place = instance.place_id
-			place.status = 'Pre_sell'
-			place.save()
 
 
 @receiver(m2m_changed,sender=After_Death_Service.option_id.through)
@@ -464,12 +473,12 @@ def total_price_computer(sender,instance,action,reverse,pk_set,**kwargs):
 def AddOrderToBill(sender,instance,created,*args,**kwargs):
 	if created and instance.payment_status == 'PAID':
 		if instance.deceased_id :
-			Bill.objects.create(name='خرید قبر',price=instance.place_id.price,deceased_id=instance.deceased_id,user=instance.buyer_id)
+			Bill.objects.create(name='خرید قبر',price=instance.place_id.price,order_id=instance,deceased_id=instance.deceased_id,user_id=instance.buyer_id)
 			place = instance.place_id
 			place.status = 'Sold'
 			place.save()
 		else:
-			Bill.objects.create(name='خرید قبر',price=instance.place_id.price, user=instance.buyer_id)
+			Bill.objects.create(name='خرید قبر',price=instance.place_id.price,order_id=instance, user_id=instance.buyer_id)
 			place = instance.place_id
 			place.status = 'Pre_sell'
 			place.save()
@@ -482,6 +491,9 @@ def AddBuyerToUser(sender, instance, created, *args, **kwargs):
 			user = MyUser.objects.get(username=instance.national_number)
 			user.buyer_id = instance.id
 			user.save()
+			buyer = instance
+			buyer.user_id = user
+			buyer.save()
 		except:
 			MyUser.objects.create(first_name=instance.name, last_name=instance.name,
 								  buyer_id=instance.id,
@@ -489,12 +501,16 @@ def AddBuyerToUser(sender, instance, created, *args, **kwargs):
 			user = MyUser.objects.get(first_name=instance.name, last_name=instance.name,
 									  buyer_id=instance.id,
 									  email=instance.national_number + '@gmail.com', username=instance.national_number)
+
 			user.set_password(instance.national_number)
 			user.save()
+			buyer = instance
+			buyer.user_id = user
+			buyer.save()
 	else:
 		user = MyUser.objects.get(buyer_id=instance.id)
-		user.first_name = instance.name
-		user.last_name = instance.name
+		user.first_name = instance.first_name
+		user.last_name = instance.last_name
 		user.email = instance.national_number
 		user.username = instance.national_number
 		user.set_password(instance.national_number)

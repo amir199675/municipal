@@ -1,0 +1,724 @@
+{% extends 'admin-panel/partial/main-panel.html' %}
+{% load static %}
+<!-- BEGIN: Main Menu-->
+{% block title %}
+    ثبت متوفی قدیمی
+{% endblock %}
+{% block body %}
+<!-- BEGIN: Content-->
+<div class="app-content content">
+    <div class="content-wrapper">
+        <div class="content-wrapper-before"></div>
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
+                <h3 class="content-header-title mb-0 d-inline-block">صفحه اضافه کردن میت جدید</h3>
+                <div class="breadcrumbs-top d-inline-block">
+                    <div class="breadcrumb-wrapper mr-1">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">خانه</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#">عناصر فرم</a>
+                            </li>
+                            <li class="breadcrumb-item active">صفحه اضافه کردن میت جدید
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-body"><!-- Form wizard with icon tabs section start -->
+            <section id="icon-tabs">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">لطفا مشخصات را درست وارد کنید</h4>
+                                <a class="heading-elements-toggle"><i class="la la-ellipsis-h font-medium-3"></i></a>
+                                <div class="heading-elements">
+                                    <ul class="list-inline mb-0">
+                                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                        <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                        <li><a data-action="close"><i class="ft-x"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    {% for warning in warnings %}
+                                            <div class="alert round alert-secondary alert-icon-left alert-dismissible mb-2"
+                                                 role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-mic black"></i>
+                                                    </span>
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                {{ warning }}
+                                            </div>
+                                        {% endfor %}
+                                        {% if error %}
+                                            <div class="alert round bg-danger alert-icon-left alert-dismissible mb-2"
+                                                 role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-thumbs-down"></i>
+                                                    </span>
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <strong>{{ message }}</strong>
+                                                <a href="{% url 'Site_Panel:index' %}" class="alert-link">{{ info }}</a>
+
+                                            </div>
+                                        {% endif %}
+                                        {% if success %}
+                                            <div class="alert round bg-success alert-icon-left alert-dismissible mb-2"
+                                                 role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-thumbs-up"></i>
+                                                    </span>
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <strong>{{ message }}</strong>
+                                                <a href="#" class="alert-link">{{ info }}</a>
+                                            </div>
+                                        {% endif %}
+                                    <form action="" method="post" enctype="multipart/form-data" class="icons-tab-steps">
+                                        {% csrf_token %}
+
+                                        <!-- Step 1 -->
+                                        <h6><i class="step-icon ft-home"></i>مشخصات متوفی</h6>
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="firstName2">نام* :</label>
+                                                        <input type="text" class="form-control" id="firstName2"
+                                                               name="first_name" >
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="lastName3">نام خانوادگی* :</label>
+                                                        <input type="text" class="form-control" id="lastName3"
+                                                               name="last_name">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="lastName4">وضعیت جنازه :</label>
+                                                        <select class="custom-select form-control" id="location2"
+                                                                name="deceased_status">
+                                                            <option disabled value="">جنسیت فرد متوفی را وارد کنید
+                                                            </option>
+                                                            <option selected value="MALE">مرد</option>
+                                                            <option value="FEMALE">زن</option>
+                                                            <option value="UNKNOWN">ناشناخته</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="lastName2">نام پدر* :</label>
+                                                        <input type="text" class="form-control" id="lastName2"
+                                                               name="fa_name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="firstName2">نوع جنازه :</label>
+                                                        <select class="custom-select form-control" id="location2"
+                                                                name="deceased_type">
+                                                            <option disabled value="">جنسیت فرد متوفی را وارد کنید
+                                                            </option>
+                                                            <option selected value="MALE">مرد</option>
+                                                            <option value="FEMALE">زن</option>
+                                                            <option value="UNKNOWN">ناشناخته</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="lastName3">آدرس :</label>
+                                                        <textarea cols="30" rows="1" class="form-control"
+                                                                  placeholder="لطفا آدرس فرد را وارد کنید"
+                                                                  name="address"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="lastName4">محل تولد :</label>
+                                                        <input type="text" class="form-control" id="lastName4"
+                                                               name="place_of_birth">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="lastName2">تاریخ صدور :</label>
+                                                        <input type="date" class="form-control" id="lastName2"
+                                                               name="issue_date">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="firstName2">نام مادر :</label>
+                                                        <input type="text" class="form-control" id="firstName2"
+                                                               name="mo_name">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="lastName3">کد ملی* :</label>
+                                                        <input type="text" class="form-control" id="lastName3"
+                                                               name="national_number">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="lastName4">شماره شناسنامه :</label>
+                                                        <input type="text" class="form-control" id="lastName4"
+                                                               name="identification_number">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="location2">جنسیت :</label>
+                                                        <select class="custom-select form-control" id="location2"
+                                                                name="sex">
+                                                            <option disabled value="">جنسیت فرد متوفی را وارد کنید
+                                                            </option>
+                                                            <option selected value="MALE">مرد</option>
+                                                            <option value="FEMALE">زن</option>
+                                                            <option value="UNKNOWN">ناشناخته</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="date2">تاریخ تولد* :</label>
+                                                        <input type="date" class="form-control" id="date2"
+                                                               name="birth_day">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="lastName2">زندگینامه :</label>
+                                                        <textarea cols="30" rows="10" class="form-control"
+                                                                  placeholder="لطفا زندگینامه فرد را وارد کنید"
+                                                                  name="bio"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </fieldset>
+                                        <h6><i class="step-icon ft-file-text"></i>مشخصات معرف</h6>
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="firstName2">نام معرف* :</label>
+                                                        <input type="text" class="form-control" id="firstName2"
+                                                               name="presenter_first_name">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="firstName2">نام خانوادگی معرف* :</label>
+                                                        <input type="text" class="form-control" id="firstName2"
+                                                               name="presenter_last_name">
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="location2">شماره تماس معرف* :</label>
+                                                        <input type="tel" class="form-control"
+                                                               placeholder="شماره تماس را وارد کنید"
+                                                               name="presenter_phone_number">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="firstName2">کد ملی معرف* :</label>
+                                                        <input type="text" placeholder="کد ملی" class="form-control"
+                                                               id="firstName2" name="presenter_national_number">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="firstName2">شماره شناسنامه معرف :</label>
+                                                        <input placeholder="شماره شناسنامه" type="text"
+                                                               class="form-control" id="firstName2"
+                                                               name="presenter_identification_number">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <fieldset class="form-group">
+                                                        <div class="custom-file">
+                                                            <input type="file" class="custom-file-input"
+                                                                   id="inputGroupFile01" name="presenter_document">
+                                                            <label class="custom-file-label" for="inputGroupFile01">فرم
+                                                                تاییدیه متوفی</label>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+
+                                        </fieldset>
+                                        <!-- Step 2 -->
+                                        <h6><i class="step-icon ft-file-text"></i>مشخصات محل دفن</h6>
+
+                                        <fieldset>
+                                            <div class="card-content">
+                                                <div class="card-body">
+                                                    <ul class="nav nav-tabs">
+
+
+                                                        <li class="nav-item dropdown">
+                                                            <a class="nav-link dropdown-toggle active"
+                                                               data-toggle="dropdown" href="#" role="button"
+                                                               aria-haspopup="true" aria-expanded="false">
+                                                                انتخاب محل دفن
+                                                            </a>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 50px, 0px);">
+                                                                <a class="dropdown-item" id="dropdown1-tab"
+                                                                   href="#dropdown1" data-toggle="tab"
+                                                                   aria-controls="dropdown1"
+                                                                   aria-expanded="true">اعزامی</a>
+                                                                <a class="dropdown-item active" id="dropdown2-tab"
+                                                                   href="#dropdown2" data-toggle="tab"
+                                                                   aria-controls="dropdown2" aria-expanded="true">فردوس
+                                                                    رضا</a>
+                                                            </div>
+                                                        </li>
+
+                                                    </ul>
+                                                    <div class="tab-content px-1 pt-1">
+
+                                                        <div class="tab-pane" id="dropdown1" role="tabpanel"
+                                                             aria-labelledby="dropdown1-tab" aria-expanded="false">
+                                                            <div class="form-group">
+                                                                <label for="location2"> انتخاب شهر :</label>
+                                                                <select class="custom-select form-control"
+                                                                        id="location2" name="location">
+
+                                                                    <option selected disabled value="">شهر یا روستا
+                                                                    </option>
+                                                                    <option value="Amsterdam">امیرآباد</option>
+                                                                    <option value="Berlin">کلاته</option>
+                                                                    <option value="Berlin">چهارده</option>
+
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tab-pane active" id="dropdown2" role="tabpanel"
+                                                             aria-labelledby="dropdown2-tab" aria-expanded="false">
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label for="firstName2">کد قبر* :</label>
+                                                                        <input type="number" class="form-control"
+                                                                               id="firstName2" name="code">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label for="firstName2">بلوک* :</label>
+                                                                        <input type="number" class="form-control"
+                                                                               id="firstName2" name="block">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label for="date2">ردیف* :</label>
+                                                                        <input type="number" class="form-control"
+                                                                               id="date2" name="radif">
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label for="firstName2">شماره* :</label>
+                                                                        <input type="number" class="form-control"
+                                                                               id="firstName2" name="number">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label for="date2">طبقه* :</label>
+                                                                        <input type="number" class="form-control"
+                                                                               id="date2" name="floor">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label for="location2">نوع قبر :</label>
+                                                                        <select class="custom-select form-control"
+                                                                                id="location2" name="place_type">
+                                                                            <option value="Celebrities">مشاهیر
+                                                                            </option>
+                                                                            <option selected value="Normal">عادی
+                                                                            </option>
+
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label for="firstName2">عرض جغرافیایی :</label>
+                                                                        <input type="number" class="form-control"
+                                                                               id="firstName2" name="latitude">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label for="date2">طول جغرافیایی :</label>
+                                                                        <input type="number" class="form-control"
+                                                                               id="date2" name="longitude">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label for="date2">مجوز دفن :</label>
+                                                                        <select class="custom-select form-control"
+                                                                                id="location2" name="license_status">
+                                                                            <option value="CONFIRMED">تایید شده
+                                                                            </option>
+                                                                            <option selected value="WAITING">درحال بررسی
+                                                                            </option>
+
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </fieldset>
+
+                                        <!-- Step 3 -->
+                                        <h6><i class="step-icon ft-activity"></i>گواهی فوت</h6>
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="firstName2">نام پزشک* :</label>
+                                                        <input type="text" class="form-control" id="firstName2"
+                                                               name="doctor_first_name">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="firstName2">نام خانوادگی پزشک* :</label>
+                                                        <input type="text" class="form-control" id="firstName2"
+                                                               name="doctor_last_name">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="date2">شماره نظام پزشکی* :</label>
+                                                        <input type="number" class="form-control" id="date2"
+                                                               name="medical_system_number">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="location2">شماره گواهی فوت* :</label>
+                                                        <input type="number" class="form-control" id="location2"
+                                                               name="death_certificate_number">
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="location2">تاریخ فوت* :</label>
+                                                        <input type="date" class="form-control" id="location2"
+                                                               name="date_of_death">
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="location2">تاییدیه :</label>
+                                                        <select class="custom-select form-control"
+                                                                id="location2"
+                                                                name="death_certificate_stats">
+                                                            <option disabled value="">تاییدیه</option>
+                                                            <option selected value="Accepted">تایید شده</option>
+                                                            <option selected value="UnAccepted">در انتظار تایید</option>
+                                                        </select>
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="location2">علت فوت :</label>
+                                                        <textarea class="form-control" name="cause_death" id=""
+                                                                  cols="30" rows="10"
+                                                                  placeholder="لطفا علت فوت را شرح دهید"></textarea>
+                                                        <button type="submit" style="position: absolute;
+    top: 244px;
+    left: 90px; z-index: 100000;" class="btn btn-primary"> ثبت اطلاعات
+                                                        </button>
+
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </fieldset>
+                                        <style>
+                                            #steps-uid-0 > div.actions.clearfix > ul > li:nth-child(3) > a {
+                                                display: none;
+                                            }
+                                        </style>
+                                        <!-- Step 4 -->
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+<!-- END: Content-->
+
+
+<!-- BEGIN: Customizer-->
+<div class="customizer border-left-blue-grey border-left-lighten-4 d-none d-xl-block"><a class="customizer-close"
+                                                                                         href="#"><i
+        class="ft-x font-medium-3"></i></a><a class="customizer-toggle bg-primary box-shadow-3" href="#"
+                                              id="customizer-toggle-setting"><i
+        class="ft-settings font-medium-3 spinner white"></i></a>
+    <div class="customizer-content p-2">
+        <h5 class="mt-1 mb-1 text-bold-500">تنظیمات رنگ ناوبری</h5>
+        <div class="navbar-color-options clearfix">
+            <div class="gradient-colors mb-1 clearfix">
+                <div class="bg-gradient-x-purple-blue navbar-color-option" data-bg="bg-gradient-x-purple-blue"
+                     title="bg-gradient-x-purple-blue"></div>
+                <div class="bg-gradient-x-purple-red navbar-color-option" data-bg="bg-gradient-x-purple-red"
+                     title="bg-gradient-x-purple-red"></div>
+                <div class="bg-gradient-x-blue-green navbar-color-option" data-bg="bg-gradient-x-blue-green"
+                     title="bg-gradient-x-blue-green"></div>
+                <div class="bg-gradient-x-orange-yellow navbar-color-option" data-bg="bg-gradient-x-orange-yellow"
+                     title="bg-gradient-x-orange-yellow"></div>
+                <div class="bg-gradient-x-blue-cyan navbar-color-option" data-bg="bg-gradient-x-blue-cyan"
+                     title="bg-gradient-x-blue-cyan"></div>
+                <div class="bg-gradient-x-red-pink navbar-color-option" data-bg="bg-gradient-x-red-pink"
+                     title="bg-gradient-x-red-pink"></div>
+            </div>
+            <div class="solid-colors clearfix">
+                <div class="bg-primary navbar-color-option" data-bg="bg-primary" title="اولیه"></div>
+                <div class="bg-success navbar-color-option" data-bg="bg-success" title="موفقیت"></div>
+                <div class="bg-info navbar-color-option" data-bg="bg-info" title="اطلاعات"></div>
+                <div class="bg-warning navbar-color-option" data-bg="bg-warning" title="هشدار"></div>
+                <div class="bg-danger navbar-color-option" data-bg="bg-danger" title="خطر"></div>
+                <div class="bg-blue navbar-color-option" data-bg="bg-blue" title="آبی"></div>
+            </div>
+        </div>
+
+        <hr>
+
+        <h5 class="my-1 text-bold-500">گزینه های طرح بندی</h5>
+        <div class="row">
+            <div class="col-12">
+                <div class="d-inline-block custom-control custom-radio mb-1 col-4">
+                    <input type="radio" class="custom-control-input bg-primary" name="layouts" id="default-layout"
+                           checked>
+                    <label class="custom-control-label" for="default-layout">پیش فرض</label>
+                </div>
+                <div class="d-inline-block custom-control custom-radio mb-1 col-4">
+                    <input type="radio" class="custom-control-input bg-primary" name="layouts" id="fixed-layout">
+                    <label class="custom-control-label" for="fixed-layout">ثابت</label>
+                </div>
+                <div class="d-inline-block custom-control custom-radio mb-1 col-4">
+                    <input type="radio" class="custom-control-input bg-primary" name="layouts" id="static-layout">
+                    <label class="custom-control-label" for="static-layout">استاتیک</label>
+                </div>
+                <div class="d-inline-block custom-control custom-radio mb-1">
+                    <input type="radio" class="custom-control-input bg-primary" name="layouts" id="boxed-layout">
+                    <label class="custom-control-label" for="boxed-layout">جعبه ای</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="d-inline-block custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input bg-primary" name="right-side-icons"
+                           id="right-side-icons">
+                    <label class="custom-control-label" for="right-side-icons">آیکون سمت راست</label>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <h5 class="mt-1 mb-1 text-bold-500">پس زمینه منوی نوار کناری</h5>
+        <!-- <div class="sidebar-color-options clearfix">
+            <div class="bg-black sidebar-color-option" data-sidebar="menu-dark" title="مشکی"></div>
+            <div class="bg-white sidebar-color-option" data-sidebar="menu-light" title="سفید"></div>
+        </div> -->
+        <div class="row sidebar-color-options ml-0">
+            <label for="sidebar-color-option" class="card-title font-medium-2 mr-2">حالت سفید</label>
+            <div class="text-center mb-1">
+                <input type="checkbox" id="sidebar-color-option" class="switchery" data-size="xs"/>
+            </div>
+            <label for="sidebar-color-option" class="card-title font-medium-2 ml-2">حالت تاریک</label>
+        </div>
+
+        <hr>
+
+        <label for="collapsed-sidebar" class="font-medium-2">سقوط منو</label>
+        <div class="float-right">
+            <input type="checkbox" id="collapsed-sidebar" class="switchery" data-size="xs"/>
+        </div>
+
+        <hr>
+
+        <!--Sidebar Background Image Starts-->
+        <h5 class="mt-1 mb-1 text-bold-500">تصویر پس زمینه نوار کناری</h5>
+        <div class="cz-bg-image row">
+            <div class="col mb-3">
+                <img src="../../../app-assets/images/backgrounds/04.jpg" class="rounded sidiebar-bg-img" width="50"
+                     height="100" alt="background image">
+            </div>
+            <div class="col mb-3">
+                <img src="../../../app-assets/images/backgrounds/01.jpg" class="rounded sidiebar-bg-img" width="50"
+                     height="100" alt="background image">
+            </div>
+            <div class="col mb-3">
+                <img src="../../../app-assets/images/backgrounds/02.jpg" class="rounded sidiebar-bg-img" width="50"
+                     height="100" alt="background image">
+            </div>
+            <div class="col mb-3">
+                <img src="../../../app-assets/images/backgrounds/05.jpg" class="rounded sidiebar-bg-img" width="50"
+                     height="100" alt="background image">
+            </div>
+        </div>
+        <!--Sidebar Background Image Ends-->
+
+        <!--Sidebar BG Image Toggle Starts-->
+        <div class="sidebar-image-visibility">
+            <div class="row ml-0">
+                <label for="toggle-sidebar-bg-img" class="card-title font-medium-2 mr-2">مخفی کردن تصویر</label>
+                <div class="text-center mb-1">
+                    <input type="checkbox" id="toggle-sidebar-bg-img" class="switchery" data-size="xs" checked/>
+                </div>
+                <label for="toggle-sidebar-bg-img" class="card-title font-medium-2 ml-2">نمایش تصویر</label>
+            </div>
+        </div>
+        <!--Sidebar BG Image Toggle Ends-->
+
+        <hr>
+
+        <div class="row mb-2">
+            <!-- <div class="col">
+                <a href="https://www.rtl-theme.com/author/barat/" class="btn btn-danger btn-block box-shadow-1" target="_blank">اکنون بخرید</a>
+            </div> -->
+            <div class="col">
+                <a href="https://www.rtl-theme.com/author/barat/" class="btn btn-primary btn-block box-shadow-1"
+                   target="_blank">تم های بیشتر</a>
+            </div>
+        </div>
+        <div class="text-center">
+            <button id="twitter" class="btn btn-social-icon btn-twitter sharrre mr-1"><i class="la la-twitter"></i>
+            </button>
+            <button id="facebook" class="btn btn-social-icon btn-facebook sharrre mr-1"><i class="la la-facebook"></i>
+            </button>
+            <button id="google" class="btn btn-social-icon btn-google sharrre"><i class="la la-google"></i></button>
+        </div>
+    </div>
+</div>
+<!-- End: Customizer-->
+
+
+<!-- BEGIN: Footer-->
+<footer class="footer footer-static footer-light navbar-border navbar-shadow">
+    <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span
+            class="float-md-left d-block d-md-inline-block">2019  &copy; کپی رایت: تمامی حقوق این قالب محفوظ است. طراحی و توسعه توسط <a
+            class="text-bold-800 grey darken-2" href="https://www.rtl-theme.com/author/barat/" target="_blank">Barat Hadian</a></span>
+        <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
+            <li class="list-inline-item"><a class="my-1" href="https://www.rtl-theme.com/author/barat/" target="_blank">
+                قالب های بیشتر</a></li>
+            <li class="list-inline-item"><a class="my-1" href="https://www.rtl-theme.com/user-profile/barat/"
+                                            target="_blank"> پشتیبانی</a></li>
+        </ul>
+    </div>
+</footer>
+<!-- END: Footer-->
+
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/vendors.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/forms/toggle/switchery.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/js/scripts/forms/switch.min.js' %}"
+            type="text/javascript"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/extensions/jquery.steps.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/pickers/dateTime/moment-with-locales.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/pickers/daterange/daterangepicker.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/forms/validation/jquery.validate.min.js' %}"
+            type="text/javascript"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="{% static 'admin-panel-static/app-assets/js/core/app-menu.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/js/core/app.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/js/scripts/customizer.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/jquery.sharrre.js' %}"
+            type="text/javascript"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="{% static 'admin-panel-static/app-assets/js/scripts/forms/wizard-steps.min.js' %}"
+            type="text/javascript"></script>
+    <!-- END: Page JS-->
+{% endblock %}
