@@ -1,10 +1,15 @@
 from django.urls import path
 from . import api_views
-
+from .views import *
 
 
 app_name = 'Main'
 urlpatterns = [
+
+	path('', Index, name='index'),
+	path('memorials/', Memorial, name='memorials'),
+
+
 	path('api/v1/chanters/', api_views.APIListMadah.as_view()),
 	path('api/v1/advance_search_dead/',api_views.DeceasedAdvanceSearchAPIView.as_view()),
 	path('api/v1/after_death/CreateList/',api_views.After_DeathCreateAPIView.as_view()),

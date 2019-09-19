@@ -75,7 +75,7 @@
                                                 <tbody>
                                                 {% for deceased in deceaseds %}
                                                 <tr>
-                                                    <th><a href="#">{{ deceased.get_full_name }}</a></th>
+                                                    <th><a href="{% url 'Site_Panel:edit-deceased-info' deceased.id %}">{{ deceased.get_full_name }}</a></th>
                                                     <td>{{ deceased.national_number }}</td>
                                                     <td>{% for item in deceased.license.select_related %}{{ item.place_id.block }}{% endfor %}</td>
                                                     <td>{% for item in deceased.license.select_related %}{{ item.place_id.radif }}{% endfor %}</td>

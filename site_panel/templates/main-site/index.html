@@ -297,8 +297,8 @@
                         <div class="wrap">
                             {% for new in news %}
                                 <div class="blog-entry animate-box">
-                                    <a href="blog.html" class="blog-img"
-                                       style="background-image: url({{ new.picture.url }});"></a>
+                                    <img src="{{ new.picture.url }}" class="blog-img" alt="">
+
                                     <div class="desc">
                                         <span>{{ new.created|day }} {{ new.created|month }}</span>
                                         <h2><a href="blog.html">{{ new.content|truncatewords:50 }}</a></h2>

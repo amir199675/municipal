@@ -33,7 +33,7 @@ AUTH_USER_MODEL = 'main.MyUser'
 
 
 CORS_ORIGIN_WHITELIST = [
-    'http://37.187.222.167',
+    'http://ferdosreza.ir',
 ]
 
 

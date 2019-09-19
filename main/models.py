@@ -23,7 +23,7 @@ class New(models.Model):
 	updated = models.DateTimeField(auto_now=True)
 	title = models.CharField(max_length=128,verbose_name='موضوع ')
 	content = models.TextField(verbose_name='محتوا ')
-	picture = models.ImageField(upload_to='news-pic/',null=True,blank=True ,verbose_name='تصویر ')
+	picture = models.ImageField(upload_to='news-pic/',default='news-pic/default.png',null=True,blank=True ,verbose_name='تصویر ')
 	class Meta:
 		verbose_name = 'اخبار'
 		verbose_name_plural = 'اخبار'

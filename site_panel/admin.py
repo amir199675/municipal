@@ -16,5 +16,6 @@ admin.site.register(Buyer)
 admin.site.register(Place)
 admin.site.register(Place_Service)
 admin.site.register(Bill)
+admin.site.register(City)
 
 

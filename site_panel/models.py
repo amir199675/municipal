@@ -73,11 +73,14 @@ class Place(models.Model):
 
 class Deceased(models.Model):
 	STATUS_CHOICES = (
-		('_','_'),
+		('One','one'),
+		('Two','two'),
 	)
 
 	TYPE_CHOICES = (
-		('_','_'),
+		('One','one'),
+		('Two','two'),
+
 	)
 
 	SEX_CHOICES = (
@@ -313,8 +316,10 @@ class Bill(models.Model):
 		return self.name + ' ' + self.user_id.get_full_name()
 
 class City(models.Model):
-	name = models.CharField(max_length=32)
-
+	name = models.CharField(max_length=32,verbose_name='اسم شهر ')
+	class Meta:
+		verbose_name = 'شهرهای اعزامی'
+		verbose_name_plural = 'شهرهای اعزامی'
 	def __str__(self):
 		return self.name
 
