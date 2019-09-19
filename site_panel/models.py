@@ -258,7 +258,7 @@ class Place_Service (models.Model):
 	buyer_id =models.ForeignKey(Buyer,on_delete=models.CASCADE,verbose_name='خریدار ')
 	place_id = models.OneToOneField(Place,on_delete=models.CASCADE,verbose_name='قبر ')
 	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE,null=True,blank=True,verbose_name='متوفی مربوطه ')
-	document = models.CharField(max_length=32,unique=True,blank=True,null=True,verbose_name='شماره سند ')
+	document = models.CharField(max_length=32,blank=True,null=True,verbose_name='شماره سند ')
 	payment_status = models.CharField(max_length=32,choices=PAYMENT_STATUS,default='NOT_PAID',verbose_name='وضعیت پرداخت ')
 	class Meta:
 		verbose_name = 'سفارش قبر'

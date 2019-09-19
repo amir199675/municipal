@@ -111,7 +111,7 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="lastName3">نام خانوادگی :</label>
-                                                            <input type="text" class="form-control" id="lastName3"
+                                                            <input type="text" class="form-control" id="lastName3" value="{{ last_name }}"
                                                                    name="last_name">
                                                         </div>
                                                     </div>
@@ -119,7 +119,7 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="location2">نام پدر :</label>
-                                                            <input type="text" class="form-control" name="fa_name">
+                                                            <input type="text" class="form-control" value="{{ fa_name }}" name="fa_name">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -129,7 +129,7 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="lastName2">شماره شناسنامه :</label>
-                                                            <input type="text" class="form-control" id="lastName2"
+                                                            <input type="text" class="form-control" id="lastName2" value="{{ identification_number }}"
                                                                    name="identification_number">
                                                         </div>
                                                     </div>
@@ -138,7 +138,7 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="lastName4">کد ملی :</label>
-                                                            <input type="text" class="form-control" id="lastName4"
+                                                            <input type="text" class="form-control" id="lastName4" value="{{ national_number }}"
                                                                    name="national_number">
                                                         </div>
                                                     </div>
@@ -155,7 +155,7 @@
                                                             <label for="lastName2">زندگینامه :</label>
                                                             <textarea cols="30" rows="10" class="form-control"
                                                                       placeholder="لطفا زندگینامه فرد را وارد کنید"
-                                                                      name="bio"></textarea>
+                                                                      name="bio">{{ bio }}</textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -168,14 +168,14 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="firstName2">نام معرف :</label>
-                                                            <input type="text" class="form-control" id="firstName2"
+                                                            <input type="text" class="form-control" id="firstName2" value="{{ presenter_first_name }}"
                                                                    name="presenter_first_name">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="firstName2">نام خانوادگی معرف :</label>
-                                                            <input type="text" class="form-control" id="firstName2"
+                                                            <input type="text" class="form-control" id="firstName2" value="{{ presenter_last_name }}"
                                                                    name="presenter_last_name">
                                                         </div>
                                                     </div>
@@ -185,7 +185,7 @@
                                                         <div class="form-group">
                                                             <label for="location2">شماره تماس معرف :</label>
                                                             <input type="tel" class="form-control"
-                                                                   placeholder="شماره تماس را وارد کنید"
+                                                                   placeholder="شماره تماس را وارد کنید" value="{{ presenter_phone_number }}"
                                                                    name="presenter_phone_number">
                                                         </div>
                                                     </div>
@@ -193,14 +193,14 @@
                                                         <div class="form-group">
                                                             <label for="firstName2">کد ملی معرف :</label>
                                                             <input type="text" placeholder="کد ملی" class="form-control"
-                                                                   id="firstName2" name="presenter_national_number">
+                                                                   id="firstName2" value="{{ presenter_national_number }}" name="presenter_national_number">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="firstName2">شماره شناسنامه معرف :</label>
                                                             <input placeholder="شماره شناسنامه" type="text"
-                                                                   class="form-control" id="firstName2"
+                                                                   class="form-control" id="firstName2" value="{{ presenter_identification_number }}"
                                                                    name="presenter_identification_number">
                                                         </div>
                                                     </div>
@@ -253,13 +253,12 @@
                                                                     <label for="location2"> انتخاب شهر :</label>
                                                                     <select class="custom-select form-control"
                                                                             id="location2" name="location">
-                                                                        <option selected disabled value="">شهر یا
+                                                                        <option selected value="">شهر یا
                                                                             روستا
                                                                         </option>
-                                                                        <option value="Amsterdam">امیرآباد</option>
-                                                                        <option value="Berlin">کلاته</option>
-                                                                        <option value="Berlin">چهارده</option>
-
+                                                                        {% for city in cities %}
+                                                                        <option {% if city.name == location %}selected{% endif %} value="{{ city.name }}">{{ city.name }}</option>
+                                                                        {% endfor %}
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -270,7 +269,7 @@
                                                                         <div class="form-group">
                                                                             <label for="firstName2">کد قبر :</label>
                                                                             <input type="number" class="form-control"
-                                                                                   id="firstName2" name="code">
+                                                                                   id="firstName2" value="{{ code }}" name="code">
                                                                         </div>
                                                                     </div>
 
@@ -278,14 +277,14 @@
                                                                         <div class="form-group">
                                                                             <label for="firstName2">بلوک :</label>
                                                                             <input type="number" class="form-control"
-                                                                                   id="firstName2" name="block">
+                                                                                   id="firstName2" value="{{ bloock }}" name="block">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <div class="form-group">
                                                                             <label for="date2">ردیف :</label>
                                                                             <input type="number" class="form-control"
-                                                                                   id="date2" name="radif">
+                                                                                   id="date2" value="{{ radif }}" name="radif">
                                                                         </div>
                                                                     </div>
 
@@ -295,7 +294,7 @@
                                                                         <div class="form-group">
                                                                             <label for="firstName2">شماره</label>
                                                                             <input type="number" class="form-control"
-                                                                                   id="firstName2" name="number">
+                                                                                   id="firstName2" value="{{ number }}" name="number">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-4">
@@ -303,10 +302,10 @@
                                                                             <label for="date2">طبقه :</label>
                                                                             <select class="custom-select form-control"
                                                                                     id="location2" name="floor">
-                                                                                <option selected value="OneFloor">طبقه
+                                                                                <option {% if floor == 'OneFloor' %}selected{% endif %} value="OneFloor">طبقه
                                                                                     اول
                                                                                 </option>
-                                                                                <option value="TwoFloor">طبقه دوم
+                                                                                <option {% if floor == 'TwoFloor' %}selected{% endif %} value="TwoFloor">طبقه دوم
                                                                                 </option>
 
                                                                             </select>
@@ -318,9 +317,9 @@
                                                                             <select class="custom-select form-control"
                                                                                     id="location2" name="place_type">
 
-                                                                                <option value="Celebrities">مشاهیر
+                                                                                <option {% if place_type == 'Celebrities' %}selected{% endif %} value="Celebrities">مشاهیر
                                                                                 </option>
-                                                                                <option selected value="Normal">عادی
+                                                                                <option {% if place_type == 'Normal' %}selected{% endif %} value="Normal">عادی
                                                                                 </option>
 
                                                                             </select>
@@ -335,14 +334,14 @@
                                                                             <label for="firstName2">عرض جغرافیایی
                                                                                 :</label>
                                                                             <input type="number" class="form-control"
-                                                                                   id="firstName2" name="latitude">
+                                                                                   id="firstName2" value="{{ latitude }}" name="latitude">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
                                                                             <label for="date2">طول جغرافیایی :</label>
                                                                             <input type="number" class="form-control"
-                                                                                   id="date2" name="longitude">
+                                                                                   id="date2" value="{{ longitude }}" name="longitude">
                                                                         </div>
                                                                     </div>
 
@@ -363,14 +362,14 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="firstName2">نام پزشک :</label>
-                                                            <input type="text" class="form-control" id="firstName2"
+                                                            <input type="text" class="form-control" id="firstName2" value="{{ doctor_first_name }}"
                                                                    name="doctor_first_name">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="firstName2">نام خانوادگی پزشک :</label>
-                                                            <input type="text" class="form-control" id="firstName2"
+                                                            <input type="text" class="form-control" id="firstName2" value="{{ doctor_last_name }}"
                                                                    name="doctor_last_name">
                                                         </div>
                                                     </div>
@@ -378,14 +377,14 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="date2">شماره نظام پزشکی :</label>
-                                                            <input type="number" class="form-control" id="date2"
+                                                            <input type="number" class="form-control" id="date2" value="{{ medical_system_number }}"
                                                                    name="medical_system_number">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="location2">شماره گواهی فوت :</label>
-                                                            <input type="number" class="form-control" id="location2"
+                                                            <input type="number" class="form-control" id="location2" value="{{ death_certificate_number }}"
                                                                    name="death_certificate_number">
 
 
@@ -394,7 +393,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="location2">تاریخ فوت :</label>
-                                                            <input type="date" class="form-control" id="location2"
+                                                            <input type="date" class="form-control" id="location2" value="{{ date_of_death }}"
                                                                    name="date_of_death">
 
 
@@ -420,7 +419,7 @@
                                                             <textarea class="form-control" id="" name="cause_death"
                                                                       cols="30"
                                                                       rows="10"
-                                                                      placeholder="لطفا علت فوت را شرح دهید"></textarea>
+                                                                      placeholder="لطفا علت فوت را شرح دهید">{{ cause_death }}</textarea>
 
 
                                                             <button type="submit" style="position: absolute;
