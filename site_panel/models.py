@@ -54,7 +54,7 @@ class Place(models.Model):
 	longitude = models.CharField(max_length=255,verbose_name='طول جغرافیایی ')
 	latitude = models.CharField(max_length=255,verbose_name='عرض جغرافیایی ')
 	price = models.CharField(max_length=8,default=0,null=True,blank=True,verbose_name='قیمت ')
-	ghete = models.CharField(max_length=4,verbose_name='قطعه ')
+	ghete = models.CharField(null=True,blank=True,max_length=4,verbose_name='قطعه ')
 	radif = models.CharField(max_length=4,verbose_name='ردیف ')
 	block = models.CharField(max_length=4,verbose_name='بلوک ')
 	number = models.CharField(max_length=4,verbose_name='شماره ')
