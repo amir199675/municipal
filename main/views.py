@@ -5,6 +5,9 @@ from datetime import datetime
 
 def Index(request):
 	place_count = Place.objects.all().count()
+	ferdos_deceased_count = License.objects.filter(move_status='FERDOS-REZA').count()
+	out_deceased_count = License.objects.filter(move_status='SEND-OUT').count()
+	users_count = MyUser.objects.all().count()
 	news = New.objects.all()[:5]
 	ahadith = Hadith.objects.all()
 	sliders = Slider.objects.filter(status='Active')
@@ -12,6 +15,9 @@ def Index(request):
 	if sliders.count() == 0:
 		black = True
 	context = {
+		'users_count':users_count,
+		'ferdos_deceased_count':ferdos_deceased_count,
+		'out_deceased_count':out_deceased_count,
 		'black':black,
 		'sliders': sliders,
 		'ahadith': ahadith,

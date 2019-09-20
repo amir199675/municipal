@@ -906,7 +906,7 @@ def Edit_Deceased(request, id):
 							'message': 'قبر انتخابی پیش فروش شده است.',
 							'info': 'برای دیدن لیست قبور شهرداری اینجا کلیک کنید!',
 						}
-						return render(request, 'admin-panel/quick-deceased.html', context)
+						return render(request, 'admin-panel/online-deceased.html', context)
 				else:
 					place.status = 'Sold'
 					place_save = True
@@ -950,7 +950,7 @@ def Edit_Deceased(request, id):
 						'error': True,
 						'message': ' لطفا همه فیلد های مربوط به مشخصات محل دفن را پر کنید.',
 					}
-					return render(request, 'admin-panel/quick-deceased.html', context)
+					return render(request, 'admin-panel/online-deceased.html', context)
 
 		if first_name == '' or last_name == '' or presenter_first_name == '' or presenter_last_name == '' or doctor_first_name == '' or doctor_last_name == '':
 			context = {
