@@ -1,0 +1,351 @@
+{% load static %}
+{% load main_tags %}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>search page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="author" content=""/>
+
+    <!-- Facebook and Twitter integration -->
+    <meta property="og:title" content=""/>
+    <meta property="og:image" content=""/>
+    <meta property="og:url" content=""/>
+    <meta property="og:site_name" content=""/>
+    <meta property="og:description" content=""/>
+    <meta name="twitter:title" content=""/>
+    <meta name="twitter:image" content=""/>
+    <meta name="twitter:url" content=""/>
+    <meta name="twitter:card" content=""/>
+    <!--    for an data picker-->
+    {% include 'main-site/partial/links.html' %}
+
+
+</head>
+<body>
+
+<div class="colorlib-loader"></div>
+<div id="page">
+    {% include 'main-site/partial/header.html' %}
+    <aside style="min-height: 0" id="colorlib-hero">
+        <div class="flexslider">
+            <ul style="height: 450px" class="slides">
+                <li style=" background-image: url({% static 'images/img_bg_4.jpg' %});">
+                    <div class="overlay"></div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-8 col-sm-12 col-md-offset-2 slider-text">
+                                <div class="slider-text-inner text-center">
+
+                                    <h1>جستجو متوفی</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <div style="direction: rtl;padding: 3em" id="colorlib-contact">
+        <div class="container">
+            <div class="row">
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div style="text-align: center" class="panel-heading">
+                            <h4 class="panel-title">
+                                <a style="cursor: pointer" id="an-full-document">اطلاعات را وارد کنید</a>
+                            </h4>
+                        </div>
+                        <div id="collapse1" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="usr">نام پدر:</label>
+                                        <input type="text" placeholder="لطفا نام پدر فرد مورد نظر را وارد کنید"
+                                               class="form-control" id="usr">
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="usr">نام خانوادگی:</label>
+                                        <input placeholder="لطفا نام خانوادگی را وارد کنید" type="text"
+                                               class="form-control" id="">
+                                    </div>
+
+                                </div>
+                                <div style="direction: rtl" class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="usr">نام:</label>
+                                        <input placeholder="لطفا نام را وارد کنید" type="text" class="form-control"
+                                               id="usr">
+                                    </div>
+
+                                </div>
+                                <div style="direction: rtl" class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="usr">از تاریخ:</label>
+                                        <input type="date" class="form-control" id="">
+                                    </div>
+
+                                </div>
+                                <div style="direction: rtl" class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="usr">تا تاریخ:</label>
+                                        <input type="date" class="form-control" id="usr">
+                                    </div>
+
+                                </div>
+
+                                <div style="direction: rtl" class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="usr">قطعه:</label>
+                                        <input placeholder="لطفا عدد قطعه را وارد کنید" type="text" class="form-control"
+                                               id="">
+                                    </div>
+
+                                </div>
+
+                                <div style="direction: rtl" class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="usr">بلوک:</label>
+                                        <input placeholder="لطفا عدد بلوک را وارد کنید" type="text" class="form-control"
+                                               id="">
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div style="text-align: center;background-color: #f5f5f5" class="panel-footer">
+
+                                <button data-toggle="modal" data-target="#myModal" id="an-search-button"
+                                        style="border-radius: 10px" class="btn btn-primary">جستجو کنید
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <br>
+                        </div>
+                        <div class="modal-body">
+
+                            <h2>افراد جستجو شده</h2>
+                            <p>برای دیدن اطلاعات روی نام فرد مورد نظر کلیک کنید</p>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>نام و نام خانوادگی</th>
+                                    <th>تولد</th>
+                                    <th>فوت</th>
+                                    <th>قطعه</th>
+                                    <th>ردیف</th>
+                                    <th>بلوک</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><a data-dismiss="modal" class="an-name-js">فلان فلان زاده</a></td>
+                                    <td>19/5/1367</td>
+                                    <td>19/5/1345</td>
+                                    <td>5</td>
+                                    <td>6</td>
+                                    <td>21</td>
+                                </tr>
+                                <tr>
+                                    <td><a data-dismiss="modal" class="an-name-js">فلان فلان زاده</a></td>
+                                    <td>19/5/1367</td>
+                                    <td>19/5/1345</td>
+                                    <td>5</td>
+                                    <td>6</td>
+                                    <td>21</td>
+                                </tr>
+                                <tr>
+                                    <td><a data-dismiss="modal" class="an-name-js">فلان فلان زاده</a></td>
+                                    <td>19/5/1367</td>
+                                    <td>19/5/1345</td>
+                                    <td>5</td>
+                                    <td>6</td>
+                                    <td>21</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <span id="an-show" style="display: none">
+            <ul style="float: right;direction: rtl" class="nav nav-tabs">
+                <li><a data-toggle="tab" href="#home">اطلاعات کلی</a></li>
+                <li><a data-toggle="tab" href="#majales">مجالس</a></li>
+                <li><a data-toggle="tab" href="#menu2">خدمات الکترونیکی</a></li>
+                <li class="active"><a data-toggle="tab" href="#menu3">زندگینامه</a></li>
+            </ul>
+
+            <div style="margin-top: 80px;" class="tab-content">
+                <div id="menu3" class="tab-pane fade in active">
+                    <h3>زندگینامه</h3>
+                    <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت</p>
+                </div>
+                <div id="menu2" class="tab-pane fade">
+                    <h3>لطفا اطلاعات خود را وارد کنید</h3>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <lable>نام:</lable>
+                            <input type="text" placeholder="نام خود را وارد کنید" class="form-control">
+                        </div>
+
+                        <div class="col-lg-4">
+                            <lable>نام خانوادگی:</lable>
+                            <input id="datepicker6" type="text" placeholder="نام خانوادگی خود را وارد کنید"
+                                   class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <lable>شماره تماس:</lable>
+                            <input type="text" placeholder="تلفن همراه خود را وارد کنید" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <lable>ایمیل:</lable>
+                            <input type="email" placeholder="ایمیل خود را وارد کنید" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <lable>تاریخ مجلس:</lable>
+                            <input type="date" placeholder="تاریخ مجلس" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <lable>زمان مجلس:</lable>
+                            <input type="time" class="form-control">
+                        </div>
+                    </div>
+                    <h1 style="margin-top:40px ">نوع خدمات خود را انتخاب کنید</h1>
+                    <div style="margin-top: 160px;text-align: center" class="row">
+                        <div class="col-lg-4">
+                            <h2 class="an-khadamat1">خدمات مداحان</h2>
+                        </div>
+                        <div class="col-lg-4">
+                            <h2 class="an-khadamat2">خدمات مجالس</h2>
+                        </div>
+                        <div class="col-lg-4">
+                            <h2 class="an-khadamat3">خدمات پس از دفت</h2>
+                        </div>
+                </div>
+                    </div>
+                <div id="majales" class="tab-pane fade">
+                    <h3>مجالس ثبت شده</h3>
+                    <table class="table table-dark">
+                        <thead>
+                        <tr>
+                            <th style="text-align: right" scope="col">#</th>
+                            <th style="text-align: right" scope="col">First</th>
+                            <th style="text-align: right" scope="col">Last</th>
+                            <th style="text-align: right" scope="col">Handle</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th style="text-align: right" scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: right" scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: right" scope="row">3</th>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>@twitter</td>
+                        </tr>
+                        </tbody>
+                    </table>                </div>
+                <div id="home" class="tab-pane fade">
+                    <h3>اطلاعات:امین علی نژاد</h3>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="col-lg-4">
+                                <h4>تولد:</h4>
+                                <span>19/6/1376</span>
+                            </div>
+                            <div class="col-lg-4">
+                                <h4>وفات:</h4>
+                                <span>19/6/1376</span>
+                            </div>
+                            <div class="col-lg-4">
+                                <h4>شماره:</h4>
+                                <span>21</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 12px" class="row">
+                        <div class="col-lg-12">
+                            <div class="col-lg-4">
+                                <h4>قطعه:</h4>
+                                <span>21</span>
+                            </div>
+                            <div class="col-lg-4">
+                                <h4>ردیف:</h4>
+                                <span>42</span>
+                            </div>
+                            <div class="col-lg-4">
+                                <h4>بلوک:</h4>
+                                <span>5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </span>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".an-name-js").click(function () {
+            $("#collapse1").slideToggle(3000);
+            $("#an-show").fadeIn(3000);
+        });
+        $("#an-full-document").click(function () {
+            $("#collapse1").slideToggle(3000);
+        });
+    });
+</script>
+
+</div>
+
+
+<div class="gototop js-top">
+    <a href="#" class="js-gotop"><i class="icon-arrow-up2"></i></a>
+</div>
+
+
+
+
+</body>
+</html>
+

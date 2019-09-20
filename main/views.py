@@ -15,6 +15,7 @@ def Index(request):
 	if sliders.count() == 0:
 		black = True
 	context = {
+		'index':True,
 		'users_count':users_count,
 		'ferdos_deceased_count':ferdos_deceased_count,
 		'out_deceased_count':out_deceased_count,
@@ -26,6 +27,12 @@ def Index(request):
 	}
 	return render(request, 'main-site/index.html', context)
 
+def About_Us(request):
+	context = {
+		'about_us':True,
+	}
+	return render(request,'main-site/about.html',context)
+
 
 def Memorial(request):
 	marasems = Marasem.objects.all()
@@ -34,3 +41,10 @@ def Memorial(request):
 		'black': True
 	}
 	return render(request, 'main-site/memorial.html', context)
+
+def Search(request):
+	context = {
+		'search':True,
+
+	}
+	return render(request,'main-site/search.html',context)
