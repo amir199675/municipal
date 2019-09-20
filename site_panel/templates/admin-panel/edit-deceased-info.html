@@ -235,14 +235,14 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="firstName2">نام معرف* :</label>
-                                                        <input type="text" class="form-control" id="firstName2"
+                                                        <input type="text" class="form-control" id="firstName2" value="{{ select_deceased.presenter_id.first_name }}"
                                                                name="presenter_first_name">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="firstName2">نام خانوادگی معرف* :</label>
-                                                        <input type="text" class="form-control" id="firstName2"
+                                                        <input type="text" class="form-control" id="firstName2" value="{{ select_deceased.presenter_id.last_name }}"
                                                                name="presenter_last_name">
                                                     </div>
                                                 </div>
@@ -251,7 +251,7 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="location2">شماره تماس معرف* :</label>
-                                                        <input type="tel" class="form-control"
+                                                        <input type="tel" class="form-control" value="{{ select_deceased.presenter_id.phone_number }}"
                                                                placeholder="شماره تماس را وارد کنید"
                                                                name="presenter_phone_number">
                                                     </div>
@@ -259,14 +259,14 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="firstName2">کد ملی معرف* :</label>
-                                                        <input type="text" placeholder="کد ملی" class="form-control"
+                                                        <input type="text" placeholder="کد ملی" class="form-control" value="{{ select_deceased.presenter_id.national_number }}"
                                                                id="firstName2" name="presenter_national_number">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="firstName2">شماره شناسنامه معرف :</label>
-                                                        <input placeholder="شماره شناسنامه" type="text"
+                                                        <input placeholder="شماره شناسنامه" type="text" value="{{ select_deceased.presenter_id.identification_number }}"
                                                                class="form-control" id="firstName2"
                                                                name="presenter_identification_number">
                                                     </div>
@@ -368,21 +368,29 @@
                                                                 <div class="col-md-4">
                                                                     <div class="form-group">
                                                                         <label for="date2">طبقه* :</label>
-                                                                        <input type="number" class="form-control"
-                                                                               id="date2" name="floor">
+                                                                        <select class="custom-select form-control"
+                                                                                    id="location2" name="floor">
+                                                                                <option {% if license.place_id.floor == 'OneFloor' %}selected{% endif %} value="OneFloor">طبقه
+                                                                                    اول
+                                                                                </option>
+                                                                                <option {% if license.place_id.floor == 'TwoFloor' %}selected{% endif %} value="TwoFloor">طبقه دوم
+                                                                                </option>
+
+                                                                            </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     <div class="form-group">
                                                                         <label for="location2">نوع قبر :</label>
                                                                         <select class="custom-select form-control"
-                                                                                id="location2" name="place_type">
-                                                                            <option value="Celebrities">مشاهیر
-                                                                            </option>
-                                                                            <option selected value="Normal">عادی
-                                                                            </option>
+                                                                                    id="location2" name="place_type">
 
-                                                                        </select>
+                                                                                <option {% if license.place_id.place_type == 'Celebrities' %}selected{% endif %} value="Celebrities">مشاهیر
+                                                                                </option>
+                                                                                <option {% if license.place_id.place_type == 'Normal' %}selected{% endif %} value="Normal">عادی
+                                                                                </option>
+
+                                                                            </select>
                                                                     </div>
                                                                 </div>
 
@@ -400,7 +408,7 @@
                                                                     <div class="form-group">
                                                                         <label for="date2">طول جغرافیایی :</label>
                                                                         <input type="number" class="form-control"
-                                                                               id="date2" {{ license.place_id.longitude }} name="longitude">
+                                                                               id="date2" value="{{ license.place_id.longitude }}" name="longitude">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-4">

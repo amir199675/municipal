@@ -595,7 +595,7 @@ def Online_Deceased(request):
 							'message': 'قبر انتخابی خالی نمیباشد.',
 							'info': 'اگر قصد تغییر مشخصات متوفی دارید از لیست متوفی اقدام کنید',
 						}
-						return render(request, 'admin-panel/quick-deceased.html', context)
+						return render(request, 'admin-panel/online-deceased.html', context)
 					else:
 						place.status = 'Sold'
 						place_save = True
@@ -638,7 +638,7 @@ def Online_Deceased(request):
 							'error': True,
 							'message': ' لطفا همه فیلد های مربوط به مشخصات محل دفن را پر کنید.',
 						}
-						return render(request, 'admin-panel/quick-deceased.html', context)
+						return render(request, 'admin-panel/online-deceased.html', context)
 
 			presenter = None
 			try:
@@ -739,7 +739,7 @@ def Deceased_List(request):
 
 		return render(request, 'admin-panel/deceased-list.html', context)
 	else:
-		return redirect('/Account/login/?next=/Admin/quick-new-deceased/')
+		return redirect('/Account/login/?next=/Admin/deceased-list/')
 
 
 def Edit_Deceased(request, id):
@@ -749,15 +749,27 @@ def Edit_Deceased(request, id):
 	certificate = Death_Certificate.objects.get(deceased_id=select_deceased)
 	# place_deceased = Place.objects.get()
 	if request.method == 'POST':
+		place_change = False
+		try:
+			place_last = license.place_id
+			place_last.status = 'Municipal'
+			place_last.deceased_id = None
+			place_last.save()
+			place_service = Place_Service.objects.get(deceased_id=select_deceased)
+			place_service.deceased_id = None
+			place_service.document = place_service.buyer_id.national_number
+			place_service.save()
+		except:
+			pass
 		first_name = request.POST['first_name']
 		last_name = request.POST['last_name']
 		fa_name = request.POST['fa_name']
 		identification_number = request.POST['identification_number']
 		national_number = request.POST['national_number']
-		birth_day = request.POST['birth_day']
+		birth_day_r = request.POST['birth_day']
 
 		try:
-			birth_day_miladi = datetime.strptime(birth_day, '%Y-%m-%d')
+			birth_day_miladi = datetime.strptime(birth_day_r, '%Y-%m-%d')
 			day = birth_day_miladi.day
 			year = birth_day_miladi.year
 			month = birth_day_miladi.month
@@ -777,9 +789,9 @@ def Edit_Deceased(request, id):
 		deceased_status = request.POST['deceased_status']
 		deceased_type = request.POST['deceased_type']
 		place_of_birth = request.POST['place_of_birth']
-		issue_date = request.POST['issue_date']
+		issue_date_r = request.POST['issue_date']
 		try:
-			issue_date_miladi = datetime.strptime(issue_date, '%Y-%m-%d')
+			issue_date_miladi = datetime.strptime(issue_date_r, '%Y-%m-%d')
 			day = issue_date_miladi.day
 			year = issue_date_miladi.year
 			month = issue_date_miladi.month
@@ -817,27 +829,23 @@ def Edit_Deceased(request, id):
 		doctor_last_name = request.POST['doctor_last_name']
 		medical_system_number = request.POST['medical_system_number']
 		death_certificate_number = request.POST['death_certificate_number']
-		date_of_death = request.POST['date_of_death']
+		date_of_death_r = request.POST['date_of_death']
+		try:
+			date_of_death_miladi = datetime.strptime(date_of_death_r, '%Y-%m-%d')
+			day = date_of_death_miladi.day
+			year = date_of_death_miladi.year
+			month = date_of_death_miladi.month
+			date_of_death = JalaliToGregorian(year, month, day)
+			date_of_death = issue_date.getGregorianList()
+			year = date_of_death[0]
+			month = date_of_death[1]
+			day = date_of_death[2]
+			make_format = str(year) + '-' + str(month) + '-' + str(day)
+			date_of_death = datetime.strptime(make_format, '%Y-%m-%d')
+		except:
+			date_of_death = None
 		cause_death = request.POST['cause_death']
 		death_certificate_stats = request.POST['death_certificate_stats']
-
-		if first_name == '' or last_name == '' or presenter_first_name == '' or presenter_last_name == '' or doctor_first_name == '' or doctor_last_name == '':
-			context = {
-				'cities': cities,
-				'error': True,
-				'message': 'لطفا نام و نام خانوادگی متوفی یا معرف و پزشک را وارد کنید! لطفا همه موارد ستاره دار را به دقت پر کنید',
-			}
-			return render(request, 'admin-panel/online-deceased.html', context)
-
-		if len(national_number) != 10 or len(presenter_national_number) != 10:
-			context = {
-				'cities': cities,
-				'error': True,
-				'message': 'کد ملی باید 11 رقمی باشد، لطفا نسبت به تصحیح آن اقدام فرمایید!'
-			}
-			return render(request, 'admin-panel/online-deceased.html', context)
-
-
 
 		place = None
 		try:
@@ -845,11 +853,17 @@ def Edit_Deceased(request, id):
 		except:
 			location = ''
 		code = ''
-
-		place_save = False
+		block = ''
+		radif = ''
+		number = ''
+		floor = ''
+		place_type = ''
+		latitude = ''
+		longitude = ''
+		location_require = False
 		if location != '':
 			location = request.POST['location']
-
+			location_require = True
 		else:
 			code = request.POST['code']
 			block = request.POST['block']
@@ -859,9 +873,14 @@ def Edit_Deceased(request, id):
 			place_type = request.POST['place_type']
 			latitude = request.POST['latitude']
 			longitude = request.POST['longitude']
-			license_status = request.POST['license_status']
+
+		place_save = False
+		if location_require:
+			pass
+		else:
 			try:
 				place = Place.objects.get(code=code)
+
 				if place.status == 'Pre_sell' or place.status == 'Sold':
 					deceased = None
 					try:
@@ -869,7 +888,7 @@ def Edit_Deceased(request, id):
 						deceased_full = True
 					except:
 						deceased_full = False
-					if deceased_full :
+					if deceased_full:
 						if deceased.deceased_id == select_deceased:
 							pass
 						else:
@@ -896,14 +915,137 @@ def Edit_Deceased(request, id):
 				if code != '' and block != '' and radif != '' and number != '' and floor != '' and place_type != '':
 					place = Place.objects.create(code=code, block=block, radif=radif, number=number, floor=floor,
 												 type=place_type, longitude=longitude, latitude=latitude)
-
 				else:
 					context = {
+						'first_name': first_name,
+						'birth_day': birth_day_r,
+						'last_name': last_name,
+						'fa_name': fa_name,
+						'identification_number': identification_number,
+						'national_number': national_number,
+						'presenter_first_name': presenter_first_name,
+						'presenter_last_name': presenter_last_name,
+						'presenter_phone_number': presenter_phone_number,
+						'presenter_national_number': presenter_national_number,
+						'presenter_identification_number': presenter_identification_number,
+						'bio': bio,
+						'code': code,
+
+						'bloock': block,
+						'radif': radif,
+						'number': number,
+						'location': location,
+						'floor': floor,
+						'place_type': place_type,
+						'latitude': latitude,
+						'longitude': longitude,
+						'doctor_last_name': doctor_last_name,
+						'doctor_first_name': doctor_first_name,
+						'medical_system_number': medical_system_number,
+						'death_certificate_number': death_certificate_number,
+						'date_of_death': date_of_death_r,
+						'cause_death': cause_death,
+
 						'cities': cities,
 						'error': True,
 						'message': ' لطفا همه فیلد های مربوط به مشخصات محل دفن را پر کنید.',
 					}
-					return render(request, 'admin-panel/online-deceased.html', context)
+					return render(request, 'admin-panel/quick-deceased.html', context)
+
+		if first_name == '' or last_name == '' or presenter_first_name == '' or presenter_last_name == '' or doctor_first_name == '' or doctor_last_name == '':
+			context = {
+				'first_name': first_name,
+				'birth_day': birth_day_r,
+				'last_name': last_name,
+				'fa_name': fa_name,
+				'mo_name': mo_name,
+				'address': address,
+				'identification_number': identification_number,
+				'deceased_status': deceased_status,
+				'deceased_type': deceased_type,
+				'place_of_birth': place_of_birth,
+				'issue_date': issue_date_r,
+				'sex': sex,
+				'license_status': license_status,
+				'death_certificate_stats': death_certificate_stats,
+				'national_number': national_number,
+				'presenter_first_name': presenter_first_name,
+				'presenter_last_name': presenter_last_name,
+				'presenter_phone_number': presenter_phone_number,
+				'presenter_national_number': presenter_national_number,
+				'presenter_identification_number': presenter_identification_number,
+				'bio': bio,
+				'code': code,
+				'bloock': block,
+				'radif': radif,
+				'number': number,
+				'location': location,
+				'floor': floor,
+				'place_type': place_type,
+				'latitude': latitude,
+				'longitude': longitude,
+				'doctor_last_name': doctor_last_name,
+				'doctor_first_name': doctor_first_name,
+				'medical_system_number': medical_system_number,
+				'death_certificate_number': death_certificate_number,
+				'date_of_death': date_of_death_r,
+				'cause_death': cause_death,
+
+
+				'cities': cities,
+				'error': True,
+				'message': 'لطفا نام و نام خانوادگی متوفی یا معرف و پزشک را وارد کنید! لطفا همه موارد ستاره دار را به دقت پر کنید',
+			}
+			return render(request, 'admin-panel/online-deceased.html', context)
+
+		if len(national_number) != 10 or len(presenter_national_number) != 10:
+			context = {
+				'first_name': first_name,
+				'birth_day': birth_day_r,
+				'last_name': last_name,
+				'fa_name': fa_name,
+				'mo_name': mo_name,
+				'address': address,
+				'identification_number': identification_number,
+				'deceased_status': deceased_status,
+				'deceased_type': deceased_type,
+				'place_of_birth': place_of_birth,
+				'issue_date': issue_date_r,
+				'sex': sex,
+				'license_status': license_status,
+				'death_certificate_stats': death_certificate_stats,
+				'national_number': national_number,
+				'presenter_first_name': presenter_first_name,
+				'presenter_last_name': presenter_last_name,
+				'presenter_phone_number': presenter_phone_number,
+				'presenter_national_number': presenter_national_number,
+				'presenter_identification_number': presenter_identification_number,
+				'bio': bio,
+				'code': code,
+				'bloock': block,
+				'radif': radif,
+				'number': number,
+				'location': location,
+				'floor': floor,
+				'place_type': place_type,
+				'latitude': latitude,
+				'longitude': longitude,
+				'doctor_last_name': doctor_last_name,
+				'doctor_first_name': doctor_first_name,
+				'medical_system_number': medical_system_number,
+				'death_certificate_number': death_certificate_number,
+				'date_of_death': date_of_death_r,
+				'cause_death': cause_death,
+
+
+				'cities': cities,
+				'error': True,
+				'message': 'کد ملی باید 10 رقمی باشد، لطفا نسبت به تصحیح آن اقدام فرمایید!'
+			}
+			return render(request, 'admin-panel/online-deceased.html', context)
+
+
+
 
 		if place_save:
 			place.save()
@@ -916,6 +1058,7 @@ def Edit_Deceased(request, id):
 		select_deceased.national_number = national_number
 		select_deceased.date_of_birth = birth_day
 		select_deceased.deceased_status = deceased_status
+		select_deceased.address = address
 		select_deceased.deceased_type = deceased_type
 		select_deceased.place_of_birth = place_of_birth
 		select_deceased.issue_date = issue_date
@@ -975,10 +1118,11 @@ def Edit_Deceased(request, id):
 
 			if license_status == 'CONFIRMED':
 				try:
-					place_service = Place_Service.objects.get(deceased_id=select_deceased)
-					place_service.buyer_id = buyer
-					place_service.payment_status = 'PAID'
-					place_service.save()
+					place_service = Place_Service.objects.get(place_id = place)
+					if place_service.deceased_id == None:
+						place_service.buyer_id = buyer
+						place_service.payment_status = 'PAID'
+						place_service.save()
 				except:
 					place_service = Place_Service.objects.create(buyer_id=buyer, place_id=place, deceased_id=select_deceased,
 																 payment_status='PAID')
@@ -1000,8 +1144,9 @@ def Edit_Deceased(request, id):
 
 
 	context = {
+
+		'cities': cities,
 		'certificate':certificate,
-		'cities':cities,
 		'license': license,
 		'select_deceased': select_deceased,
 	}
