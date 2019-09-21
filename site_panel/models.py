@@ -503,10 +503,10 @@ def AddBuyerToUser(sender, instance, created, *args, **kwargs):
 			buyer.user_id = user
 			buyer.save()
 		except:
-			MyUser.objects.create(first_name=instance.name, last_name=instance.name,
+			MyUser.objects.create(first_name=instance.first_name, last_name=instance.last_name,
 								  buyer_id=instance.id,
 								  email=instance.national_number + '@gmail.com', username=instance.national_number)
-			user = MyUser.objects.get(first_name=instance.name, last_name=instance.name,
+			user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.last_name,
 									  buyer_id=instance.id,
 									  email=instance.national_number + '@gmail.com', username=instance.national_number)
 
