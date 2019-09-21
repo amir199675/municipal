@@ -46,7 +46,10 @@
                                                                           data-i18n="">امور مالی</span></a>
 
             </li>
-            <li class=" nav-item"><a href="#"><i class="ft-zap"></i><span class="menu-title" data-i18n="">اضافه کردن اخبار</span></a>
+            <li class=" nav-item"><a href="{% url 'Site_Panel:add_news' %}"><i class="ft-zap"></i><span class="menu-title" data-i18n="">اضافه کردن اخبار</span></a>
+
+            </li>
+            <li class=" nav-item"><a href="{% url 'Site_Panel:news-list' %}"><i class="ft-zap"></i><span class="menu-title" data-i18n="">لیست اخبار</span></a>
 
             </li>
 
