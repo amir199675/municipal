@@ -151,7 +151,7 @@
             </div>
         </div>
     </div>
-    <div id="colorlib-counter" class="colorlib-counters" style="background-image: url(images/cover_img_1.jpg);"
+    <div id="colorlib-counter" class="colorlib-counters" style="background-image: url({% static 'images/havae.jpg' %});"
          data-stellar-background-ratio="0.5">
         <div class="overlay"></div>
         <div class="container">
@@ -293,15 +293,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
-                    <div class="row">
-                        <div class="wrap">
+                    <div class="row" style="direction: rtl">
+                        <div class="wrap" style="direction: rtl">
                             {% for new in news %}
-                                <div class="blog-entry animate-box">
+                                <div class="blog-entry animate-box" style="direction: rtl">
                                     <img src="{{ new.picture.url }}" class="blog-img" alt="">
 
                                     <div class="desc">
                                         <span>{{ new.created|day }} {{ new.created|month }}</span>
-                                        <h2><a href="blog.html">{{ new.content|truncatewords:50 }}</a></h2>
+                                        <h2><a href="">{{ new.content|truncatewords:50 }}</a></h2>
                                     </div>
                                 </div>
                             {% endfor %}

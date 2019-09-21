@@ -19,16 +19,21 @@ class MyUser(AbstractUser):
 
 
 class New(models.Model):
+	STATUS = {
+		('Publish','publish'),
+		('Draft','draft')
+	}
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	title = models.CharField(max_length=128,verbose_name='موضوع ')
 	content = models.TextField(verbose_name='محتوا ')
 	picture = models.ImageField(upload_to='news-pic/',default='news-pic/default.png',null=True,blank=True ,verbose_name='تصویر ')
+	status = models.CharField(max_length=32,choices=STATUS,default='Draft',verbose_name='وضعیت ')
 	class Meta:
 		verbose_name = 'اخبار'
 		verbose_name_plural = 'اخبار'
 	def __str__(self):
-		return self.title +' '+self.content[:50]
+		return self.title +' '+self.status
 
 class Hadith(models.Model):
 	created = models.DateTimeField(auto_now_add=True)

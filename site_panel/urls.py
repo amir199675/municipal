@@ -12,6 +12,9 @@ urlpatterns = [
 	path('Admin/online-new-deceased/',views.Online_Deceased,name = 'online_new_deceased'),
 	path('Admin/deceased-list/',views.Deceased_List,name = 'deceased_list'),
 	path('Admin/edit-deceased-info/<id>/',views.Edit_Deceased,name = 'edit-deceased-info'),
+	path('Admin/add-place/',views.Add_Place,name = 'add_place'),
+	path('Admin/places-list/',views.Place_List,name = 'places_list'),
+	path('Admin/add-news/',views.Add_New,name = 'add_news'),
 
 
 ]

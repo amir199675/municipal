@@ -52,6 +52,14 @@ def day(value):
 	return day
 
 
+@register.filter(name='year')
+def year(value):
+	date = jalali_date.date2jalali(value)
+	year = date.year
+
+	return year
+
+
 @register.filter(name='remaining')
 def remaining(value):
 	date = value

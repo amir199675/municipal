@@ -11,7 +11,7 @@
                         <li {% if about_us %}class="active"{% endif %} ><a {% if black %} style="color: black" {% endif %} href="{% url 'Main:about_us' %}">درباره ما</a></li>
 
                         <li><a {% if black %} style="color: black" {% endif %} href="services.html">لیست خدمات و نرم افزار ها</a></li>
-                        <li><a {% if black %} style="color: black" {% endif %} href="blog.html">اخبار</a></li>
+                        <li {% if all_news %}class="active"{% endif %} ><a {% if black %} style="color: black" {% endif %} href="{% url 'Main:all_news' %}">اخبار</a></li>
 
                         <li><a {% if black %} style="color: black" {% endif %} href="contact.html">ارتباط با ما</a></li>
                         <li {% if search %}class="active"{% endif %}><a {% if black %} style="color: black" {% endif %} href="{% url 'Main:search' %}">جستجوی متوفی</a></li>

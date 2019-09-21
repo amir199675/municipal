@@ -51,7 +51,7 @@ class Place(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	code = models.CharField(max_length=11,null=True,blank=True,unique=True,verbose_name='کد قبر ')
-	longitude = models.CharField(unique=True,max_length=255,verbose_name='طول جغرافیایی ')
+	longitude = models.CharField(max_length=255,verbose_name='طول جغرافیایی ')
 	latitude = models.CharField(max_length=255,verbose_name='عرض جغرافیایی ')
 	price = models.CharField(max_length=8,default=0,null=True,blank=True,verbose_name='قیمت ')
 	ghete = models.CharField(null=True,blank=True,max_length=4,verbose_name='قطعه ')

@@ -8,7 +8,7 @@ def Index(request):
 	ferdos_deceased_count = License.objects.filter(move_status='FERDOS-REZA').count()
 	out_deceased_count = License.objects.filter(move_status='SEND-OUT').count()
 	users_count = MyUser.objects.all().count()
-	news = New.objects.all()[:5]
+	news = New.objects.all().order_by('-created')[:3]
 	ahadith = Hadith.objects.all()
 	sliders = Slider.objects.filter(status='Active')
 	black = False
@@ -48,3 +48,12 @@ def Search(request):
 
 	}
 	return render(request,'main-site/search.html',context)
+
+
+def All_News(request):
+	news = New.objects.filter(status='Public')
+	context = {
+		'news':news,
+		'all_news':True
+	}
+	return render(request,'main-site/all_news.html',context)
