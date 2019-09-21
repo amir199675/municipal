@@ -1247,9 +1247,59 @@ def Place_List(request):
 	else:
 		return redirect('/Account/login/?next=/Admin/places-list/')
 
-def Edit_Place(request,code):
+def Edit_Place(request,id):
 	if request.user.is_authenticated and request.user.is_staff:
-		select_place = Place.objects.get(code=code)
+		select_place = Place.objects.get(id=id)
+		if request.method == 'POST':
+			code = request.POST['code']
+			block = request.POST['block']
+			radif = request.POST['radif']
+			price = request.POST['price']
+			number = request.POST['number']
+			floor = request.POST['floor']
+			place_type = request.POST['place_type']
+			latitude = request.POST['latitude']
+			longitude = request.POST['longitude']
+			if code != '' and block != '' and radif != '' and number != '' and floor != '' and place_type != '':
+				try:
+					select_place.code = code
+					select_place.block = block
+					select_place.radif = radif
+					select_place.price = price
+					select_place.number = number
+					select_place.floor = floor
+					select_place.type = place_type
+					select_place.latitude = latitude
+					select_place.longitude = longitude
+					select_place.save()
+					message = 'قبر با کد ' + code + ' با موفقیت ثبت شد.'
+					context = {
+						'success': True,
+						'message': message,
+						'info': 'برای تصحیح قبر اینجا کلیک کنید.',
+						'select_place':select_place,
+					}
+					return render(request,'admin-panel/edit-place-info.html',context)
+				except:
+
+					context = {
+
+						'code': code,
+						'bloock': block,
+						'price': price,
+						'radif': radif,
+						'number': number,
+						'floor': floor,
+						'place_type': place_type,
+						'latitude': latitude,
+						'longitude': longitude,
+
+						'error': True,
+						'message': 'قبر با این کد وجود دارد.',
+
+
+					}
+					return render(request, 'admin-panel/new-place.html', context)
 
 
 		context = {
@@ -1257,7 +1307,7 @@ def Edit_Place(request,code):
 		}
 		return render(request,'admin-panel/edit-place-info.html',context)
 	else:
-		return redirect('/Account/login/?next=/Admin/add-new/')
+		return redirect('/Account/login/?next=/Admin/edit-place-info/')
 
 def Add_New(request):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -1293,3 +1343,53 @@ def Add_New(request):
 
 	else:
 		return redirect('/Account/login/?next=/Admin/add-new/')
+
+def News_List(request):
+	if request.user.is_authenticated and request.user.is_staff:
+		news = New.objects.all()
+		context = {
+			'news':news
+		}
+		return render(request,'admin-panel/news-list.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/news-list/')
+
+def Edit_News(request,id):
+	if request.user.is_authenticated and request.user.is_staff:
+		select_new = New.objects.get(id=id)
+		if request.method == 'POST':
+			title = request.POST['title']
+			context = request.POST['context']
+			status = request.POST['status']
+			if title != '' and context != '':
+				select_new.title = title
+				select_new.content = context
+				select_new.status= status
+				select_new.save()
+				try:
+					picture = request.FILES['picture']
+					select_new.picture = picture
+					select_new.save()
+				except:
+					pass
+				message = 'خبر با عنوان <<' + select_new.title + '>> ثبت شد.'
+				context = {
+					'success': True,
+					'message': message,
+					'info': 'برای بازگشت به لیست اخبار کلیک کنید.',
+					'select_new': select_new
+				}
+				return render(request, 'admin-panel/edit-news-info.html', context)
+			else:
+				context = {
+					'error': True,
+					'message': 'لطفا هیچکدام از فیلد های "عنوان" و "جزئیات" را خالی نگذارید.',
+					'select_new': select_new
+				}
+				return render(request, 'admin-panel/edit-news-info.html', context)
+		context = {
+			'select_new':select_new
+		}
+		return render(request,'admin-panel/edit-news-info.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/edit-news-info/')
