@@ -43,7 +43,6 @@ class DeceasedAdvanceSearchAPIView(generics.ListAPIView):
 		queryset = License.objects.filter(move_status='FERDOS-REZA')
 		first_name = self.request.query_params.get('name','')
 		last_name = self.request.query_params.get('last_name','')
-		ghete = self.request.query_params.get('ghete','')
 		block = self.request.query_params.get('block','')
 		fa_name = self.request.query_params.get('father_name','')
 
@@ -68,7 +67,7 @@ class DeceasedAdvanceSearchAPIView(generics.ListAPIView):
 
 
 
-		return queryset.filter(deceased_id__certificate__date_of_death__lte=date_end,deceased_id__certificate__date_of_death__gte=date_start,deceased_id__fa_name__contains=fa_name,deceased_id__first_name__contains=first_name,deceased_id__last_name__contains=last_name,place_id__ghete__contains=ghete,place_id__block__contains=block)
+		return queryset.filter(deceased_id__certificate__date_of_death__lte=date_end,deceased_id__certificate__date_of_death__gte=date_start,deceased_id__fa_name__contains=fa_name,deceased_id__first_name__contains=first_name,deceased_id__last_name__contains=last_name,place_id__block__contains=block)
 
 
 

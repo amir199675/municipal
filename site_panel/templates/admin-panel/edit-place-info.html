@@ -1,0 +1,408 @@
+{% extends 'admin-panel/partial/main-panel.html' %}
+{% load static %}
+<!-- BEGIN: Main Menu-->
+{% block title %}
+    ویرایش اطلاعات قبر|{{ select_place.code }}
+{% endblock %}
+{% block body %}
+    <!-- BEGIN: Main Menu-->
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-wrapper">
+            <div class="content-wrapper-before"></div>
+            <div class="content-header row">
+                <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
+                    <h3 class="content-header-title mb-0 d-inline-block">صفحه اضافه کردن قبر جدید</h3>
+                    <div class="breadcrumbs-top d-inline-block">
+                        <div class="breadcrumb-wrapper mr-1">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">خانه</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#">عناصر فرم</a>
+                                </li>
+                                <li class="breadcrumb-item active">صفحه اضافه کردن قبر جدید
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-body"><!-- Form wizard with icon tabs section start -->
+                <section id="icon-tabs">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">لطفا مشخصات را درست وارد کنید</h4>
+                                    <a class="heading-elements-toggle"><i
+                                            class="la la-ellipsis-h font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-content collapse show">
+                                    <div class="card-body">
+                                    {% if error %}
+                                            <div class="alert round bg-danger alert-icon-left alert-dismissible mb-2"
+                                                 role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-thumbs-down"></i>
+                                                    </span>
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <strong>{{ message }}</strong>
+                                                <a href="#" class="alert-link">{{ info }}</a>
+
+                                            </div>
+                                        {% endif %}
+                                        {% if success %}
+                                            <div class="alert round bg-success alert-icon-left alert-dismissible mb-2"
+                                                 role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-thumbs-up"></i>
+                                                    </span>
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <strong>{{ message }}</strong>
+                                                <a href="#" class="alert-link">{{ info }}</a>
+                                            </div>
+                                        {% endif %}
+                                        <form action="" method="post" enctype="multipart/form-data"
+                                              class="">
+                                            {% csrf_token %}
+
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="firstName2">کد قبر* :</label>
+                                                        <input {% if select_place.status == 'Municipal' %}{% else %}disabled{% endif %} type="number" class="form-control"
+                                                               id="firstName2" value="{{ select_place.code }}" name="code">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="firstName2">بلوک* :</label>
+                                                        <input {% if select_place.status == 'Municipal' %}{% else %}disabled{% endif %} type="number" class="form-control"
+                                                               id="firstName2" value="{{ select_place.block }}" name="block">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="date2">ردیف* :</label>
+                                                        <input {% if select_place.status == 'Municipal' %}{% else %}disabled{% endif %} type="number" class="form-control"
+                                                               id="date2" value="{{ select_place.radif }}" name="radif">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="firstName2">شماره* :</label>
+                                                        <input {% if select_place.status == 'Municipal' %}{% else %}disabled{% endif %} type="number" class="form-control"
+                                                               id="firstName2" value="{{ select_place.number }}" name="number">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="date2">طبقه* :</label>
+                                                    <select {% if select_place.status == 'Municipal' %}{% else %}disabled{% endif %} class="custom-select form-control"
+                                                            id="location2" name="floor">
+                                                        <option {% if select_place.floor == 'OneFloor' %}selected{% endif %}
+                                                                value="OneFloor">طبقه
+                                                            اول
+                                                        </option>
+                                                        <option {% if select_place.floor == 'TwoFloor' %}selected{% endif %}
+                                                                value="TwoFloor">طبقه دوم
+                                                        </option>
+
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="firstName2">قیمت* :</label>
+                                                        <input {% if select_place.status == 'Municipal' %}{% else %}disabled{% endif %}  type="number" class="form-control"
+                                                               id="firstName2" value="{{ select_place.price }}" name="price">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="firstName2">عرض جغرافیایی :</label>
+                                                        <input {% if select_place.status == 'Municipal' %}{% else %}disabled{% endif %} type="number" class="form-control"
+                                                               id="firstName2" value="{{ select_place.latitude }}" name="latitude">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="date2">طول جغرافیایی :</label>
+                                                        <input {% if select_place.status == 'Municipal' %}{% else %}disabled{% endif %} type="number" class="form-control"
+                                                               id="date2" value="{{ select_place.longitude }}" name="longitude">
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="location2">وضعیت قبر :</label>
+                                                        <select disabled class="custom-select form-control"
+                                                                id="basicSelect" name="status">
+                                                            <option selected disabled>لطفا وضعیت قبر را انتخاب کنید
+                                                            </option>
+                                                            <option {% if select_place.status == 'Pre_sell' %}selected{% endif %} value="Pre_sell">پیش فروش</option>
+                                                            <option {% if select_place.status == 'Municipal' %}selected{% endif %} value="Municipal">شهرداری</option>
+                                                            <option {% if select_place.status == 'Sold' %}selected{% endif %} value="Sold" >فروخته شده</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="location2">نوع قبر :</label>
+                                                        <select {% if select_place.status == 'Municipal' %}{% else %}disabled{% endif %} class="custom-select form-control"
+                                                                id="location2" name="place_type">
+                                                            <option {% if select_place.place_type == 'Normal' %}selected{% endif %}
+                                                                    value="Normal">عادی
+                                                            </option>
+                                                            <option {% if select_place.place_type == 'Celebrities' %}selected{% endif %}
+                                                                    value="Celebrities">مشاهیر
+                                                            </option>
+
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div style="text-align: center" class="col-lg-12">
+                                                    <button type="submit" class="btn btn-primary">ثبت اطلاعات</button>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- END: Content-->
+
+
+    <!-- BEGIN: Customizer-->
+    <div class="customizer border-left-blue-grey border-left-lighten-4 d-none d-xl-block"><a class="customizer-close"
+                                                                                             href="#"><i
+            class="ft-x font-medium-3"></i></a><a class="customizer-toggle bg-primary box-shadow-3" href="#"
+                                                  id="customizer-toggle-setting"><i
+            class="ft-settings font-medium-3 spinner white"></i></a>
+        <div class="customizer-content p-2">
+            <h5 class="mt-1 mb-1 text-bold-500">تنظیمات رنگ ناوبری</h5>
+            <div class="navbar-color-options clearfix">
+                <div class="gradient-colors mb-1 clearfix">
+                    <div class="bg-gradient-x-purple-blue navbar-color-option" data-bg="bg-gradient-x-purple-blue"
+                         title="bg-gradient-x-purple-blue"></div>
+                    <div class="bg-gradient-x-purple-red navbar-color-option" data-bg="bg-gradient-x-purple-red"
+                         title="bg-gradient-x-purple-red"></div>
+                    <div class="bg-gradient-x-blue-green navbar-color-option" data-bg="bg-gradient-x-blue-green"
+                         title="bg-gradient-x-blue-green"></div>
+                    <div class="bg-gradient-x-orange-yellow navbar-color-option" data-bg="bg-gradient-x-orange-yellow"
+                         title="bg-gradient-x-orange-yellow"></div>
+                    <div class="bg-gradient-x-blue-cyan navbar-color-option" data-bg="bg-gradient-x-blue-cyan"
+                         title="bg-gradient-x-blue-cyan"></div>
+                    <div class="bg-gradient-x-red-pink navbar-color-option" data-bg="bg-gradient-x-red-pink"
+                         title="bg-gradient-x-red-pink"></div>
+                </div>
+                <div class="solid-colors clearfix">
+                    <div class="bg-primary navbar-color-option" data-bg="bg-primary" title="اولیه"></div>
+                    <div class="bg-success navbar-color-option" data-bg="bg-success" title="موفقیت"></div>
+                    <div class="bg-info navbar-color-option" data-bg="bg-info" title="اطلاعات"></div>
+                    <div class="bg-warning navbar-color-option" data-bg="bg-warning" title="هشدار"></div>
+                    <div class="bg-danger navbar-color-option" data-bg="bg-danger" title="خطر"></div>
+                    <div class="bg-blue navbar-color-option" data-bg="bg-blue" title="آبی"></div>
+                </div>
+            </div>
+
+            <hr>
+
+            <h5 class="my-1 text-bold-500">گزینه های طرح بندی</h5>
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-inline-block custom-control custom-radio mb-1 col-4">
+                        <input type="radio" class="custom-control-input bg-primary" name="layouts" id="default-layout"
+                               checked>
+                        <label class="custom-control-label" for="default-layout">پیش فرض</label>
+                    </div>
+                    <div class="d-inline-block custom-control custom-radio mb-1 col-4">
+                        <input type="radio" class="custom-control-input bg-primary" name="layouts" id="fixed-layout">
+                        <label class="custom-control-label" for="fixed-layout">ثابت</label>
+                    </div>
+                    <div class="d-inline-block custom-control custom-radio mb-1 col-4">
+                        <input type="radio" class="custom-control-input bg-primary" name="layouts" id="static-layout">
+                        <label class="custom-control-label" for="static-layout">استاتیک</label>
+                    </div>
+                    <div class="d-inline-block custom-control custom-radio mb-1">
+                        <input type="radio" class="custom-control-input bg-primary" name="layouts" id="boxed-layout">
+                        <label class="custom-control-label" for="boxed-layout">جعبه ای</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-inline-block custom-control custom-checkbox mb-1">
+                        <input type="checkbox" class="custom-control-input bg-primary" name="right-side-icons"
+                               id="right-side-icons">
+                        <label class="custom-control-label" for="right-side-icons">آیکون سمت راست</label>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <h5 class="mt-1 mb-1 text-bold-500">پس زمینه منوی نوار کناری</h5>
+            <!-- <div class="sidebar-color-options clearfix">
+                <div class="bg-black sidebar-color-option" data-sidebar="menu-dark" title="مشکی"></div>
+                <div class="bg-white sidebar-color-option" data-sidebar="menu-light" title="سفید"></div>
+            </div> -->
+            <div class="row sidebar-color-options ml-0">
+                <label for="sidebar-color-option" class="card-title font-medium-2 mr-2">حالت سفید</label>
+                <div class="text-center mb-1">
+                    <input type="checkbox" id="sidebar-color-option" class="switchery" data-size="xs"/>
+                </div>
+                <label for="sidebar-color-option" class="card-title font-medium-2 ml-2">حالت تاریک</label>
+            </div>
+
+            <hr>
+
+            <label for="collapsed-sidebar" class="font-medium-2">سقوط منو</label>
+            <div class="float-right">
+                <input type="checkbox" id="collapsed-sidebar" class="switchery" data-size="xs"/>
+            </div>
+
+            <hr>
+
+            <!--Sidebar Background Image Starts-->
+            <h5 class="mt-1 mb-1 text-bold-500">تصویر پس زمینه نوار کناری</h5>
+            <div class="cz-bg-image row">
+                <div class="col mb-3">
+                    <img src="../../../app-assets/images/backgrounds/04.jpg" class="rounded sidiebar-bg-img" width="50"
+                         height="100" alt="background image">
+                </div>
+                <div class="col mb-3">
+                    <img src="../../../app-assets/images/backgrounds/01.jpg" class="rounded sidiebar-bg-img" width="50"
+                         height="100" alt="background image">
+                </div>
+                <div class="col mb-3">
+                    <img src="../../../app-assets/images/backgrounds/02.jpg" class="rounded sidiebar-bg-img" width="50"
+                         height="100" alt="background image">
+                </div>
+                <div class="col mb-3">
+                    <img src="../../../app-assets/images/backgrounds/05.jpg" class="rounded sidiebar-bg-img" width="50"
+                         height="100" alt="background image">
+                </div>
+            </div>
+            <!--Sidebar Background Image Ends-->
+
+            <!--Sidebar BG Image Toggle Starts-->
+            <div class="sidebar-image-visibility">
+                <div class="row ml-0">
+                    <label for="toggle-sidebar-bg-img" class="card-title font-medium-2 mr-2">مخفی کردن تصویر</label>
+                    <div class="text-center mb-1">
+                        <input type="checkbox" id="toggle-sidebar-bg-img" class="switchery" data-size="xs" checked/>
+                    </div>
+                    <label for="toggle-sidebar-bg-img" class="card-title font-medium-2 ml-2">نمایش تصویر</label>
+                </div>
+            </div>
+            <!--Sidebar BG Image Toggle Ends-->
+
+            <hr>
+
+            <div class="row mb-2">
+                <!-- <div class="col">
+                    <a href="https://www.rtl-theme.com/author/barat/" class="btn btn-danger btn-block box-shadow-1" target="_blank">اکنون بخرید</a>
+                </div> -->
+                <div class="col">
+                    <a href="https://www.rtl-theme.com/author/barat/" class="btn btn-primary btn-block box-shadow-1"
+                       target="_blank">تم های بیشتر</a>
+                </div>
+            </div>
+            <div class="text-center">
+                <button id="twitter" class="btn btn-social-icon btn-twitter sharrre mr-1"><i class="la la-twitter"></i>
+                </button>
+                <button id="facebook" class="btn btn-social-icon btn-facebook sharrre mr-1"><i
+                        class="la la-facebook"></i></button>
+                <button id="google" class="btn btn-social-icon btn-google sharrre"><i class="la la-google"></i></button>
+            </div>
+        </div>
+    </div>
+    <!-- End: Customizer-->
+
+
+    <!-- BEGIN: Footer-->
+    <footer class="footer footer-static footer-light navbar-border navbar-shadow">
+        <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span
+                class="float-md-left d-block d-md-inline-block">2019  &copy; کپی رایت: تمامی حقوق این قالب محفوظ است. طراحی و توسعه توسط <a
+                class="text-bold-800 grey darken-2" href="https://www.rtl-theme.com/author/barat/" target="_blank">Barat Hadian</a></span>
+            <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
+                <li class="list-inline-item"><a class="my-1" href="https://www.rtl-theme.com/author/barat/"
+                                                target="_blank"> قالب های بیشتر</a></li>
+                <li class="list-inline-item"><a class="my-1" href="https://www.rtl-theme.com/user-profile/barat/"
+                                                target="_blank"> پشتیبانی</a></li>
+            </ul>
+        </div>
+    </footer>
+    <!-- END: Footer-->
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/vendors.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/forms/toggle/switchery.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/js/scripts/forms/switch.min.js' %}"
+            type="text/javascript"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/extensions/jquery.steps.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/pickers/dateTime/moment-with-locales.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/pickers/daterange/daterangepicker.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/forms/validation/jquery.validate.min.js' %}"
+            type="text/javascript"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="{% static 'admin-panel-static/app-assets/js/core/app-menu.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/js/core/app.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/js/scripts/customizer.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/jquery.sharrre.js' %}"
+            type="text/javascript"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="{% static 'admin-panel-static/app-assets/js/scripts/forms/wizard-steps.min.js' %}"
+            type="text/javascript"></script>
+    <!-- END: Page JS-->
+{% endblock %}

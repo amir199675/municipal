@@ -1247,6 +1247,17 @@ def Place_List(request):
 	else:
 		return redirect('/Account/login/?next=/Admin/places-list/')
 
+def Edit_Place(request,code):
+	if request.user.is_authenticated and request.user.is_staff:
+		select_place = Place.objects.get(code=code)
+
+
+		context = {
+			'select_place':select_place
+		}
+		return render(request,'admin-panel/edit-place-info.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/add-new/')
 
 def Add_New(request):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -1279,5 +1290,6 @@ def Add_New(request):
 				return render(request, 'admin-panel/add_news.html', context)
 		context ={}
 		return render(request,'admin-panel/add_news.html',context)
+
 	else:
-		return redirect('/Account/login/?next=/Admin/places-list/')
+		return redirect('/Account/login/?next=/Admin/add-new/')
