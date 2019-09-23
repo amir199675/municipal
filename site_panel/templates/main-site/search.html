@@ -154,12 +154,12 @@
                                     </thead>
                                     <tbody>
                                     <tr v-for="person in persons" v-if="person.deceased_id && person.place_id">
-                                        <td><a data-dismiss="modal" class="an-name-js" @click="select_person(person)">{{ person.deceased_id.first_name }} {{ person.deceased_id.last_name }}</a></td>
-                                        <td>{{ person.deceased_id.date_of_birth }}</td>
+                                        <td><a data-dismiss="modal" class="an-name-js" @click="select_person(person)">[[ person.deceased_id.first_name ]] [[ person.deceased_id.last_name ]]</a></td>
+                                        <td><span v-if="person.deceased_id">[[ person.deceased_id.date_of_birth ]]</span></td>
                                         <td></td>
-                                        <td>{{ person.place_id.ghete }}</td>
-                                        <td>{{ person.place_id.radif }}</td>
-                                        <td>{{ person.place_id.block }}</td>
+                                        <td>[[ person.place_id.ghete ]]</td>
+                                        <td>[[ person.place_id.radif ]]</td>
+                                        <td>[[ person.place_id.block ]]</td>
                                     </tr>
                                   <!--   <tr>
                                         <td><a data-dismiss="modal" class="an-name-js" >فلان فلان زاده</a></td>
@@ -347,6 +347,7 @@
 
 		new Vue({
             el: '#colorlib-contact',
+            delimiters: ['[[', ']]'],
             data: {
                 persons: [],
                 person: {},
@@ -391,7 +392,8 @@
 			            "dataType": 'json',
 			            "headers": {'Content-Type': 'application/json'}
 			        }).then(result => {
-			            self.persons = result;
+			            self.persons = result.data;
+			            console.log(self.persons);
 			        }, error => {
 			            console.log(error);
 			        });
