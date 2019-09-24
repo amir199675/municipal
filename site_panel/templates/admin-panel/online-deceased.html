@@ -2,7 +2,7 @@
 {% load static %}
 <!-- BEGIN: Main Menu-->
 {% block title %}
-    ثبت متوفی جدید
+    پنل ادمین|ثبت متوفی جدید
 {% endblock %}
 {% block body %}
 <!-- BEGIN: Content-->
@@ -318,16 +318,8 @@
                                                              aria-labelledby="dropdown1-tab" aria-expanded="false">
                                                             <div class="form-group">
                                                                 <label for="location2"> انتخاب شهر :</label>
-                                                                <select class="custom-select form-control"
-                                                                        id="location2" name="location">
-
-                                                                    <option selected disabled value="">شهر یا روستا
-                                                                    </option>
-                                                                    {% for city in cities %}
-                                                                    <option {% if location == city.name %}selected{% endif %} value="{{ city.name }}">{{ city.name }}</option>
-                                                                    {% endfor %}
-
-                                                                </select>
+                                                                <input type="text" class="form-control"
+                                                                   id="firstName2" value="{{ location }}" name="location">
                                                             </div>
                                                         </div>
                                                         <div class="tab-pane active" id="dropdown2" role="tabpanel"

@@ -6,9 +6,19 @@ from datetime import datetime
 from jdatetime import JalaliToGregorian, GregorianToJalali
 
 
+def Index(request):
+	if request.user.is_authenticated and request.user.is_staff:
+
+		context = {
+
+		}
+		return render(request,'admin-panel/index.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/')
+
+
 def Quick_Deceased(request):
 	if request.user.is_authenticated and request.user.is_staff:
-		cities = City.objects.all()
 		if request.method == 'POST':
 
 			first_name = request.POST['first_name']
@@ -123,7 +133,6 @@ def Quick_Deceased(request):
 					'date_of_death': date_of_death_r,
 					'cause_death': cause_death,
 
-					'cities': cities,
 					'error': True,
 					'message': 'لطفا نام و نام خانوادگی متوفی یا معرف و پزشک را وارد کنید! لطفا همه موارد ستاره دار را به دقت پر کنید',
 				}
@@ -159,7 +168,7 @@ def Quick_Deceased(request):
 					'date_of_death': date_of_death_r,
 					'cause_death': cause_death,
 
-					'cities': cities,
+
 					'error': True,
 					'message': 'کد ملی به صورت صحیح وارد نشده است!',
 				}
@@ -245,7 +254,6 @@ def Quick_Deceased(request):
 							'date_of_death': date_of_death_r,
 							'cause_death': cause_death,
 
-							'cities': cities,
 							'error': True,
 							'message': ' لطفا همه فیلد های مربوط به مشخصات محل دفن را پر کنید.',
 						}
@@ -318,10 +326,9 @@ def Quick_Deceased(request):
 				place.save()
 
 			if location:
-				city = City.objects.get(name=location)
 				license = License.objects.get(deceased_id=deceased)
 				license.move_status = 'SEND-OUT'
-				license.city_id = city
+				license.city_name = location
 				license.picture = picture
 				license.license_status = 'CONFIRMED'
 				license.save()
@@ -357,7 +364,6 @@ def Quick_Deceased(request):
 					'اگر متوفی قبلا در سیستم ثبت شده است و قصد ویرایش اطلاعات دارید از طریق لیست متوفی اقدام کنید.']
 		context = {
 			'warnings': warnings,
-			'cities': cities,
 
 		}
 		return render(request, 'admin-panel/quick-deceased.html', context)
@@ -368,7 +374,6 @@ def Quick_Deceased(request):
 
 def Online_Deceased(request):
 	if request.user.is_authenticated and request.user.is_staff:
-		cities = City.objects.all()
 
 		if request.method == 'POST':
 			license_status = request.POST['license_status']
@@ -515,7 +520,6 @@ def Online_Deceased(request):
 					'date_of_death': date_of_death_r,
 					'cause_death': cause_death,
 
-					'cities': cities,
 					'error': True,
 					'message': 'لطفا نام و نام خانوادگی متوفی یا معرف و پزشک را وارد کنید! لطفا همه موارد ستاره دار را به دقت پر کنید',
 					'info': ''
@@ -524,7 +528,6 @@ def Online_Deceased(request):
 
 			if len(national_number) != 10 or len(presenter_national_number) != 10:
 				context = {
-					'cities': cities,
 					'error': True,
 					'message': 'کد ملی باید 10 رقمی باشد، لطفا نسبت به تصحیح آن اقدام فرمایید!'
 				}
@@ -538,7 +541,6 @@ def Online_Deceased(request):
 			try:
 				deceased = Deceased.objects.get(national_number=national_number)
 				context = {
-					'cities': cities,
 					'error': True,
 					'message': 'متوفی با این شماره ملی قبلا ثبت شده است!',
 					'info': 'اگر قصد تغییر مشخصات متوفی با این شماره ملی را دارید اینجا کلیک کنید',
@@ -628,7 +630,6 @@ def Online_Deceased(request):
 							'date_of_death': date_of_death_r,
 							'cause_death': cause_death,
 
-							'cities': cities,
 							'error': True,
 							'message': ' لطفا همه فیلد های مربوط به مشخصات محل دفن را پر کنید.',
 						}
@@ -668,7 +669,7 @@ def Online_Deceased(request):
 			if location:
 				license = License.objects.get(deceased_id=deceased)
 				license.move_status = 'SEND-OUT'
-				license.city_id = location
+				license.city_name = location
 				license.picture = picture
 				license.license_status = license_status
 				license.save()
@@ -698,7 +699,6 @@ def Online_Deceased(request):
 			death_certificate.save()
 			message = 'متوفی ' + deceased.get_full_name() + ' با موفقیت ثبت شد'
 			context = {
-				'cities': cities,
 				'success': True,
 				'message': message,
 				'info': 'برای ویرایش اطلاعات وارد شده اینجا کلیک کنید.',
@@ -710,7 +710,6 @@ def Online_Deceased(request):
 					'پس از وارد کردن متوفی لطفا جهت وارد کردن هزینه قبر آن اقدام نمایید.',
 					'اگر متوفی قبلا در سیستم ثبت شده است و قصد ویرایش اطلاعات دارید از طریق لیست متوفی اقدام کنید.']
 		context = {
-			'cities': cities,
 			'warnings': warnings,
 
 		}
@@ -744,7 +743,6 @@ def Edit_Deceased(request, id):
 			service_late = Place_Service.objects.get(place_id=place_late)
 		except:
 			pass
-		cities = City.objects.all()
 		certificate = Death_Certificate.objects.get(deceased_id=select_deceased)
 		# place_deceased = Place.objects.get()
 		if request.method == 'POST':
@@ -878,7 +876,6 @@ def Edit_Deceased(request, id):
 								pass
 							else:
 								context = {
-									'cities': cities,
 									'error': True,
 									'message': 'قبر انتخابی خالی نمیباشد.',
 									'info': 'برای دیدن لیست قبور شهرداری اینجا کلیک کنید!',
@@ -886,7 +883,6 @@ def Edit_Deceased(request, id):
 								return render(request, 'admin-panel/edit-deceased-info.html', context)
 						else:
 							context = {
-								'cities': cities,
 								'error': True,
 								'message': 'قبر انتخابی پیش فروش شده است.',
 								'info': 'برای دیدن لیست قبور شهرداری اینجا کلیک کنید!',
@@ -915,7 +911,6 @@ def Edit_Deceased(request, id):
 								'select_deceased': select_deceased,
 								'certificate': certificate,
 								'license': license,
-								'cities': cities,
 								'error': True,
 								'message': 'لطفا نسبت به مشخصات وارد شده مربوط به قبر اطمینان حاصل فرمایید',
 								'info': ''
@@ -927,7 +922,6 @@ def Edit_Deceased(request, id):
 							'select_deceased': select_deceased,
 							'certificate': certificate,
 							'license': license,
-							'cities': cities,
 
 							'error': True,
 							'message': ' لطفا همه فیلد های مربوط به مشخصات محل دفن را پر کنید.',
@@ -939,7 +933,6 @@ def Edit_Deceased(request, id):
 					'select_deceased': select_deceased,
 					'certificate': certificate,
 					'license': license,
-					'cities': cities,
 					'error': True,
 					'message': 'لطفا نام و نام خانوادگی متوفی یا معرف و پزشک را وارد کنید! لطفا همه موارد ستاره دار را به دقت پر کنید',
 				}
@@ -950,7 +943,6 @@ def Edit_Deceased(request, id):
 					'select_deceased': select_deceased,
 					'certificate': certificate,
 					'license': license,
-					'cities': cities,
 					'error': True,
 					'message': 'کد ملی باید 10 رقمی باشد، لطفا نسبت به تصحیح آن اقدام فرمایید!'
 				}
@@ -1012,7 +1004,7 @@ def Edit_Deceased(request, id):
 			if location:
 				license = License.objects.get(deceased_id=select_deceased)
 				license.move_status = 'SEND-OUT'
-				license.city_id = location
+				license.city_name = location
 				license.picture = picture
 				license.place_id = None
 				license.license_status = license_status
@@ -1030,7 +1022,7 @@ def Edit_Deceased(request, id):
 				license.move_status = 'FERDOS-REZA'
 				license.place_id = place
 				license.picture = picture
-				license.city_id = None
+				license.city_name = None
 				license.license_status = license_status
 				license.save()
 
@@ -1062,7 +1054,6 @@ def Edit_Deceased(request, id):
 
 		context = {
 
-			'cities': cities,
 			'certificate': certificate,
 			'license': license,
 			'select_deceased': select_deceased,

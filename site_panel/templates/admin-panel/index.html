@@ -2,140 +2,23 @@
 {% load static %}
 <!-- BEGIN: Main Menu-->
 {% block title %}
-    پنل ادمین|اضافه کردن خبر جدید
+
+    پنل ادمین
 {% endblock %}
 {% block body %}
+
     <!-- BEGIN: Content-->
     <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-wrapper-before"></div>
             <div class="content-header row">
                 <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
-                    <h3 class="content-header-title mb-0 d-inline-block">صفحه اضافه کردن اخبار جدید</h3>
-                    <div class="breadcrumbs-top d-inline-block">
-                        <div class="breadcrumb-wrapper mr-1">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">خانه</a>
-                                </li>
-                                <li class="breadcrumb-item"><a href="#">عناصر فرم</a>
-                                </li>
-                                <li class="breadcrumb-item active">صفحه اضافه کردن اخبار جدید
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
+                    <h3 class="content-header-title mb-0 d-inline-block">پنل ادمین</h3>
+
                 </div>
             </div>
+
             <div class="content-body"><!-- Form wizard with icon tabs section start -->
-                <section id="icon-tabs">
-
-
-                    <div class="row">
-
-                        <div class="col-12">
-
-                            <div class="card">
-
-                                <div class="card-header">
-
-                                    <h4 class="card-title">لطفا مشخصات را درست وارد کنید</h4>
-                                    <a class="heading-elements-toggle"><i
-                                            class="la la-ellipsis-h font-medium-3"></i></a>
-                                    <div class="heading-elements">
-                                        <ul class="list-inline mb-0">
-                                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                                            <li><a data-action="close"><i class="ft-x"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="card-content collapse show">
-                                    <div class="card-body">
-                                        {% if error %}
-                                            <div class="alert round bg-danger alert-icon-left alert-dismissible mb-2"
-                                                 role="alert">
-                                                    <span class="alert-icon">
-                                                        <i class="ft-thumbs-down"></i>
-                                                    </span>
-                                                <button type="button" class="close" data-dismiss="alert"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                                <strong>{{ message }}</strong>
-                                                <a href="#" class="alert-link">{{ info }}</a>
-
-                                            </div>
-                                        {% endif %}
-                                        {% if success %}
-                                            <div class="alert round bg-success alert-icon-left alert-dismissible mb-2"
-                                                 role="alert">
-                                                    <span class="alert-icon">
-                                                        <i class="ft-thumbs-up"></i>
-                                                    </span>
-                                                <button type="button" class="close" data-dismiss="alert"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                                <strong>{{ message }}</strong>
-                                                <a href="#" class="alert-link">{{ info }}</a>
-                                            </div>
-                                        {% endif %}
-                                        <form action="" method="post" enctype="multipart/form-data">
-                                            {% csrf_token %}
-                                            <div style="margin-left: auto;margin-right: auto" class="col-lg-4">
-                                                <div class="form-group">
-                                                    <label for="lastName3">عنوان خبر* :</label>
-                                                    <input type="text" class="form-control" id="lastName3" name="title">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div class="form-group">
-                                                    <label for="lastName2">جزئیات خبر :</label>
-                                                    <textarea cols="30" rows="10" class="form-control"
-                                                              placeholder="لطفا زندگینامه فرد را وارد کنید"
-                                                              name="context"></textarea>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label for="location2">تصویر :</label>
-
-                                                            <div class="custom-file">
-                                                                <input type="file" class="custom-file-input"
-                                                                       id="inputGroupFile01" name="picture">
-                                                                <label class="custom-file-label" for="inputGroupFile01">عکس
-                                                                    خبر</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label for="location2">وضعیت :</label>
-                                                            <select class="custom-select form-control" id="location2"
-                                                                    name="status">
-                                                                <option disabled value="">نمایش یا عدم نمایش خبر
-                                                                </option>
-                                                                <option selected value="Publish">نمایش
-                                                                </option>
-                                                                <option value="Draft">عدم نمایش
-                                                                </option>
-
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12" style="text-align: left">
-                                                    <button type="submit" class="btn btn-danger">ثبت کردن</button>
-                                                </div>
-                                            </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </form>
-                </section>
 
             </div>
         </div>
@@ -306,6 +189,7 @@
     </footer>
     <!-- END: Footer-->
 
+
     <!-- BEGIN: Vendor JS-->
     <script src="{% static 'admin-panel-static/app-assets/vendors/js/vendors.min.js' %}"
             type="text/javascript"></script>
@@ -338,4 +222,6 @@
     <!-- BEGIN: Page JS-->
     <script src="{% static 'admin-panel-static/app-assets/js/scripts/forms/wizard-steps.min.js' %}"
             type="text/javascript"></script>
+    <!-- END: Page JS-->
 {% endblock %}
+<!-- END: Body-->

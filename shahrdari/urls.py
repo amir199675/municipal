@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 
 app_name = 'Master'
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('SuperAdmin/', admin.site.urls),
     path('',include('main.urls',namespace='Main')),
     path('',include('site_panel.urls',namespace='Site_Panel')),
     path('Account/',include('Account.urls',namespace='Site_Panel')),

@@ -318,14 +318,6 @@ class Bill(models.Model):
 	def __str__(self):
 		return self.name + ' ' + self.user_id.get_full_name()
 
-class City(models.Model):
-	name = models.CharField(max_length=32,verbose_name='اسم شهر ')
-	class Meta:
-		verbose_name = 'شهرهای اعزامی'
-		verbose_name_plural = 'شهرهای اعزامی'
-	def __str__(self):
-		return self.name
-
 class License(models.Model):
 	LICENSE_STATUS = (
 		('WAITING','درحال بررسی'),
@@ -340,12 +332,12 @@ class License(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	document = models.CharField(max_length=32,unique=True,verbose_name='شماره مجوز ')
-	place_id = models.ForeignKey(Place,related_name='license',null=True,blank=True,on_delete=models.DO_NOTHING,verbose_name='قبر مربوطه ')
+	place_id = models.ForeignKey(Place,related_name='license',null=True,blank=True,on_delete=models.CASCADE,verbose_name='قبر مربوطه ')
 	deceased_id = models.ForeignKey(Deceased,related_name='license', on_delete=models.CASCADE,verbose_name='متوفی ')
 	license_status = models.CharField(max_length=32,choices=LICENSE_STATUS,default='WAITING',verbose_name='وضعیت مجوز ')
 	picture = models.ImageField(upload_to='license-pic/',null=True,blank=True)
 	move_status = models.CharField(max_length=32,choices=MOVE_STATUS,default='FERDOS-REZA',verbose_name='وضعیت انتقال ')
-	city_id = models.ForeignKey(City ,null=True,blank=True,on_delete=models.CASCADE, verbose_name='شهر اعزامی ')
+	city_name = models.CharField(max_length=32,null=True,blank=True, verbose_name='شهر اعزامی ')
 	class Meta:
 		verbose_name = 'مجوز دفن'
 		verbose_name_plural = 'مجوز دفن'
