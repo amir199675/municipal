@@ -59,7 +59,7 @@
                     <div class="panel panel-default">
                         <div style="text-align: center" class="panel-heading">
                             <h4  class="panel-title">
-                                <a style="cursor: pointer" id="an-full-document">اطلاعات را وارد کنید</a>
+                                <a style="cursor: pointer" id="an-full-document" @click="back_collapse()">اطلاعات را وارد کنید</a>
                             </h4>
                         </div>
                         <div id="collapse1" class="panel-collapse collapse in">
@@ -199,7 +199,7 @@
             <div style="margin-top: 80px;" class="tab-content">
                 <div id="menu3" class="tab-pane fade in active">
                     <h3>زندگینامه</h3>
-                    <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت</p>
+                    <p v-if="person.deceased_id">[[ person.deceased_id.bio ]]</p>
                 </div>
                 <div id="menu2" class="tab-pane fade">
                     <h3>لطفا اطلاعات خود را وارد کنید</h3>
@@ -393,15 +393,18 @@
 			            "headers": {'Content-Type': 'application/json'}
 			        }).then(result => {
 			            self.persons = result.data;
-			            console.log(self.persons);
 			        }, error => {
 			            console.log(error);
 			        });
 
                 },
                 select_person(person){
-
                     this.person = person;
+                    $("#collapse1").slideToggle(3000);
+                    $("#an-show").fadeIn(3000);
+                },
+                back_collapse(){
+                    $("#collapse1").slideToggle(3000);
                 },
             }
         })
