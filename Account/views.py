@@ -20,8 +20,9 @@ def Login (request):
 				'message':'اطلاعات وارد شده صحیح نیست.'
 					   }
 			return render(request, 'admin-panel/login/login.html', context)
-	context = {}
-	return render(request,'admin-panel/login/login.html',context)
+	else:
+		context = {}
+		return render(request,'admin-panel/login/login.html',context)
 
 def Logout(request):
 	Logout(request)

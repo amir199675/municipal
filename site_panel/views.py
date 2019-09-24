@@ -371,7 +371,7 @@ def Online_Deceased(request):
 		cities = City.objects.all()
 
 		if request.method == 'POST':
-			license_status = None
+			license_status = request.POST['license_status']
 
 			first_name = request.POST['first_name']
 			last_name = request.POST['last_name']
@@ -739,22 +739,17 @@ def Edit_Deceased(request, id):
 
 		select_deceased = Deceased.objects.get(pk=id)
 		license = License.objects.get(deceased_id=select_deceased)
+		place_late = license.place_id
+		try:
+			service_late = Place_Service.objects.get(place_id=place_late)
+		except:
+			pass
 		cities = City.objects.all()
 		certificate = Death_Certificate.objects.get(deceased_id=select_deceased)
 		# place_deceased = Place.objects.get()
 		if request.method == 'POST':
 			place_change = False
-			try:
-				place_last = license.place_id
-				place_last.status = 'Municipal'
-				place_last.deceased_id = None
-				place_last.save()
-				place_service = Place_Service.objects.get(deceased_id=select_deceased)
-				place_service.deceased_id = None
-				place_service.document = place_service.buyer_id.national_number
-				place_service.save()
-			except:
-				pass
+
 			first_name = request.POST['first_name']
 			last_name = request.POST['last_name']
 			fa_name = request.POST['fa_name']
@@ -825,7 +820,7 @@ def Edit_Deceased(request, id):
 				year = date_of_death_miladi.year
 				month = date_of_death_miladi.month
 				date_of_death = JalaliToGregorian(year, month, day)
-				date_of_death = issue_date.getGregorianList()
+				date_of_death = date_of_death.getGregorianList()
 				year = date_of_death[0]
 				month = date_of_death[1]
 				day = date_of_death[2]
@@ -868,7 +863,8 @@ def Edit_Deceased(request, id):
 				pass
 			else:
 				try:
-					place = Place.objects.get(code=code)
+					place = Place.objects.get(code=code, block=block, radif=radif, number=number, floor=floor,
+											  type=place_type, latitude=latitude, longitude=longitude)
 
 					if place.status == 'Pre_sell' or place.status == 'Sold':
 						deceased = None
@@ -887,7 +883,7 @@ def Edit_Deceased(request, id):
 									'message': 'قبر انتخابی خالی نمیباشد.',
 									'info': 'برای دیدن لیست قبور شهرداری اینجا کلیک کنید!',
 								}
-								return render(request, 'admin-panel/quick-deceased.html', context)
+								return render(request, 'admin-panel/edit-deceased-info.html', context)
 						else:
 							context = {
 								'cities': cities,
@@ -895,144 +891,79 @@ def Edit_Deceased(request, id):
 								'message': 'قبر انتخابی پیش فروش شده است.',
 								'info': 'برای دیدن لیست قبور شهرداری اینجا کلیک کنید!',
 							}
-							return render(request, 'admin-panel/online-deceased.html', context)
+							return render(request, 'admin-panel/edit-deceased-info.html', context)
 					else:
+
 						place.status = 'Sold'
 						place_save = True
 
 				except:
 					if code != '' and block != '' and radif != '' and number != '' and floor != '' and place_type != '':
-						place = Place.objects.create(code=code, block=block, radif=radif, number=number, floor=floor,
-													 type=place_type, longitude=longitude, latitude=latitude)
+						try:
+							place = Place.objects.create(code=code, block=block, radif=radif, number=number,
+														 floor=floor,
+														 type=place_type, longitude=longitude, latitude=latitude)
+							try:
+								service_late.delete()
+							except:
+								pass
+
+
+						except:
+
+							context = {
+								'select_deceased': select_deceased,
+								'certificate': certificate,
+								'license': license,
+								'cities': cities,
+								'error': True,
+								'message': 'لطفا نسبت به مشخصات وارد شده مربوط به قبر اطمینان حاصل فرمایید',
+								'info': ''
+							}
+							return render(request, 'admin-panel/edit-deceased-info.html', context)
 					else:
 						context = {
-							'first_name': first_name,
-							'birth_day': birth_day_r,
-							'last_name': last_name,
-							'fa_name': fa_name,
-							'identification_number': identification_number,
-							'national_number': national_number,
-							'presenter_first_name': presenter_first_name,
-							'presenter_last_name': presenter_last_name,
-							'presenter_phone_number': presenter_phone_number,
-							'presenter_national_number': presenter_national_number,
-							'presenter_identification_number': presenter_identification_number,
-							'bio': bio,
-							'code': code,
 
-							'bloock': block,
-							'radif': radif,
-							'number': number,
-							'location': location,
-							'floor': floor,
-							'place_type': place_type,
-							'latitude': latitude,
-							'longitude': longitude,
-							'doctor_last_name': doctor_last_name,
-							'doctor_first_name': doctor_first_name,
-							'medical_system_number': medical_system_number,
-							'death_certificate_number': death_certificate_number,
-							'date_of_death': date_of_death_r,
-							'cause_death': cause_death,
-
+							'select_deceased': select_deceased,
+							'certificate': certificate,
+							'license': license,
 							'cities': cities,
+
 							'error': True,
 							'message': ' لطفا همه فیلد های مربوط به مشخصات محل دفن را پر کنید.',
 						}
-						return render(request, 'admin-panel/online-deceased.html', context)
+						return render(request, 'admin-panel/edit-deceased-info.html', context)
 
 			if first_name == '' or last_name == '' or presenter_first_name == '' or presenter_last_name == '' or doctor_first_name == '' or doctor_last_name == '':
 				context = {
-					'first_name': first_name,
-					'birth_day': birth_day_r,
-					'last_name': last_name,
-					'fa_name': fa_name,
-					'mo_name': mo_name,
-					'address': address,
-					'identification_number': identification_number,
-					'deceased_status': deceased_status,
-					'deceased_type': deceased_type,
-					'place_of_birth': place_of_birth,
-					'issue_date': issue_date_r,
-					'sex': sex,
-					'license_status': license_status,
-					'death_certificate_stats': death_certificate_stats,
-					'national_number': national_number,
-					'presenter_first_name': presenter_first_name,
-					'presenter_last_name': presenter_last_name,
-					'presenter_phone_number': presenter_phone_number,
-					'presenter_national_number': presenter_national_number,
-					'presenter_identification_number': presenter_identification_number,
-					'bio': bio,
-					'code': code,
-					'bloock': block,
-					'radif': radif,
-					'number': number,
-					'location': location,
-					'floor': floor,
-					'place_type': place_type,
-					'latitude': latitude,
-					'longitude': longitude,
-					'doctor_last_name': doctor_last_name,
-					'doctor_first_name': doctor_first_name,
-					'medical_system_number': medical_system_number,
-					'death_certificate_number': death_certificate_number,
-					'date_of_death': date_of_death_r,
-					'cause_death': cause_death,
-
+					'select_deceased': select_deceased,
+					'certificate': certificate,
+					'license': license,
 					'cities': cities,
 					'error': True,
 					'message': 'لطفا نام و نام خانوادگی متوفی یا معرف و پزشک را وارد کنید! لطفا همه موارد ستاره دار را به دقت پر کنید',
 				}
-				return render(request, 'admin-panel/online-deceased.html', context)
+				return render(request, 'admin-panel/edit-deceased-info.html', context)
 
 			if len(national_number) != 10 or len(presenter_national_number) != 10:
 				context = {
-					'first_name': first_name,
-					'birth_day': birth_day_r,
-					'last_name': last_name,
-					'fa_name': fa_name,
-					'mo_name': mo_name,
-					'address': address,
-					'identification_number': identification_number,
-					'deceased_status': deceased_status,
-					'deceased_type': deceased_type,
-					'place_of_birth': place_of_birth,
-					'issue_date': issue_date_r,
-					'sex': sex,
-					'license_status': license_status,
-					'death_certificate_stats': death_certificate_stats,
-					'national_number': national_number,
-					'presenter_first_name': presenter_first_name,
-					'presenter_last_name': presenter_last_name,
-					'presenter_phone_number': presenter_phone_number,
-					'presenter_national_number': presenter_national_number,
-					'presenter_identification_number': presenter_identification_number,
-					'bio': bio,
-					'code': code,
-					'bloock': block,
-					'radif': radif,
-					'number': number,
-					'location': location,
-					'floor': floor,
-					'place_type': place_type,
-					'latitude': latitude,
-					'longitude': longitude,
-					'doctor_last_name': doctor_last_name,
-					'doctor_first_name': doctor_first_name,
-					'medical_system_number': medical_system_number,
-					'death_certificate_number': death_certificate_number,
-					'date_of_death': date_of_death_r,
-					'cause_death': cause_death,
-
+					'select_deceased': select_deceased,
+					'certificate': certificate,
+					'license': license,
 					'cities': cities,
 					'error': True,
 					'message': 'کد ملی باید 10 رقمی باشد، لطفا نسبت به تصحیح آن اقدام فرمایید!'
 				}
-				return render(request, 'admin-panel/online-deceased.html', context)
+				return render(request, 'admin-panel/edit-deceased-info.html', context)
 
 			if place_save:
-				place.save()
+				if place_late == place:
+					place.save()
+				else:
+					service_late.delete()
+					place.save()
+
+
 
 			select_deceased.first_name = first_name
 			select_deceased.last_name = last_name
@@ -1139,7 +1070,7 @@ def Edit_Deceased(request, id):
 		return render(request, 'admin-panel/edit-deceased-info.html', context)
 
 	else:
-		return redirect('/Account/login/?next=/Admin/online-new-deceased/')
+		return redirect('/Account/login/?next=/Admin/edit-deceased-info/')
 
 
 def Add_Place(request):
@@ -1241,73 +1172,80 @@ def Place_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		places = Place.objects.all()
 		context = {
-			'places':places,
+			'places': places,
 		}
-		return render(request,'admin-panel/place-list.html',context)
+		return render(request, 'admin-panel/place-list.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/places-list/')
 
-def Edit_Place(request,id):
+
+def Edit_Place(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
 		select_place = Place.objects.get(id=id)
 		if request.method == 'POST':
-			code = request.POST['code']
-			block = request.POST['block']
-			radif = request.POST['radif']
-			price = request.POST['price']
-			number = request.POST['number']
-			floor = request.POST['floor']
-			place_type = request.POST['place_type']
-			latitude = request.POST['latitude']
-			longitude = request.POST['longitude']
-			if code != '' and block != '' and radif != '' and number != '' and floor != '' and place_type != '':
+			try:
+				code = request.POST['code']
+				block = request.POST['block']
+				radif = request.POST['radif']
+				price = request.POST['price']
+				number = request.POST['number']
+				floor = request.POST['floor']
+				place_type = request.POST['place_type']
+				latitude = request.POST['latitude']
+				longitude = request.POST['longitude']
+				if code != '' and block != '' and radif != '' and number != '' and floor != '' and place_type != '':
+					try:
+						select_place.code = code
+						select_place.block = block
+						select_place.radif = radif
+						select_place.price = price
+						select_place.number = number
+						select_place.floor = floor
+						select_place.type = place_type
+						select_place.latitude = latitude
+						select_place.longitude = longitude
+						select_place.save()
+						message = 'قبر با کد ' + code + ' با موفقیت ثبت شد.'
+						context = {
+							'success': True,
+							'message': message,
+							'info': 'برای تصحیح قبر اینجا کلیک کنید.',
+							'select_place': select_place,
+						}
+						return render(request, 'admin-panel/edit-place-info.html', context)
+					except:
+
+						context = {
+
+							'code': code,
+							'bloock': block,
+							'price': price,
+							'radif': radif,
+							'number': number,
+							'floor': floor,
+							'place_type': place_type,
+							'latitude': latitude,
+							'longitude': longitude,
+
+							'error': True,
+							'message': 'قبر با این کد وجود دارد.',
+
+						}
+						return render(request, 'admin-panel/new-place.html', context)
+			except:
 				try:
-					select_place.code = code
-					select_place.block = block
-					select_place.radif = radif
+					price = request.POST['price']
 					select_place.price = price
-					select_place.number = number
-					select_place.floor = floor
-					select_place.type = place_type
-					select_place.latitude = latitude
-					select_place.longitude = longitude
 					select_place.save()
-					message = 'قبر با کد ' + code + ' با موفقیت ثبت شد.'
-					context = {
-						'success': True,
-						'message': message,
-						'info': 'برای تصحیح قبر اینجا کلیک کنید.',
-						'select_place':select_place,
-					}
-					return render(request,'admin-panel/edit-place-info.html',context)
 				except:
-
-					context = {
-
-						'code': code,
-						'bloock': block,
-						'price': price,
-						'radif': radif,
-						'number': number,
-						'floor': floor,
-						'place_type': place_type,
-						'latitude': latitude,
-						'longitude': longitude,
-
-						'error': True,
-						'message': 'قبر با این کد وجود دارد.',
-
-
-					}
-					return render(request, 'admin-panel/new-place.html', context)
-
-
+					pass
 		context = {
-			'select_place':select_place
+			'select_place': select_place
 		}
-		return render(request,'admin-panel/edit-place-info.html',context)
+		return render(request, 'admin-panel/edit-place-info.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/edit-place-info/')
+
 
 def Add_New(request):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -1316,21 +1254,21 @@ def Add_New(request):
 			context = request.POST['context']
 			status = request.POST['status']
 			if title != '' and context != '':
-				new = New.objects.create(title=title,content=context,status=status)
+				new = New.objects.create(title=title, content=context, status=status)
 				try:
 					picture = request.FILES['picture']
 					new.picture = picture
 					new.save()
 				except:
 					pass
-				message = 'خبر با عنوان <<'+new.title+'>> ایجاد شد.'
+				message = 'خبر با عنوان <<' + new.title + '>> ایجاد شد.'
 				context = {
-					'success':True,
-					'message':message,
-					'info':'برای ویرایش خبر اینجا کلیک کنید.',
-					'new':new
+					'success': True,
+					'message': message,
+					'info': 'برای ویرایش خبر اینجا کلیک کنید.',
+					'new': new
 				}
-				return render(request,'admin-panel/add_news.html',context)
+				return render(request, 'admin-panel/add_news.html', context)
 			else:
 				context = {
 					'error': True,
@@ -1338,23 +1276,25 @@ def Add_New(request):
 
 				}
 				return render(request, 'admin-panel/add_news.html', context)
-		context ={}
-		return render(request,'admin-panel/add_news.html',context)
+		context = {}
+		return render(request, 'admin-panel/add_news.html', context)
 
 	else:
 		return redirect('/Account/login/?next=/Admin/add-new/')
+
 
 def News_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		news = New.objects.all()
 		context = {
-			'news':news
+			'news': news
 		}
-		return render(request,'admin-panel/news-list.html',context)
+		return render(request, 'admin-panel/news-list.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/news-list/')
 
-def Edit_News(request,id):
+
+def Edit_News(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
 		select_new = New.objects.get(id=id)
 		if request.method == 'POST':
@@ -1364,7 +1304,7 @@ def Edit_News(request,id):
 			if title != '' and context != '':
 				select_new.title = title
 				select_new.content = context
-				select_new.status= status
+				select_new.status = status
 				select_new.save()
 				try:
 					picture = request.FILES['picture']
@@ -1388,8 +1328,8 @@ def Edit_News(request,id):
 				}
 				return render(request, 'admin-panel/edit-news-info.html', context)
 		context = {
-			'select_new':select_new
+			'select_new': select_new
 		}
-		return render(request,'admin-panel/edit-news-info.html',context)
+		return render(request, 'admin-panel/edit-news-info.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/edit-news-info/')

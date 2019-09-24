@@ -75,7 +75,7 @@
                                             <tbody>
                                             {% for place in places %}
                                             <tr>
-                                                <td><a href="#">{{ place.code }}</a></td>
+                                                <td><a href="{% url 'Site_Panel:edit-place-info' place.id %}">{{ place.code }}</a></td>
                                                 <td>{{ place.price }}</td>
                                                 <td>{% if place.status == 'Municipal' %}شهرداری{% elif place.status == 'Sold' %}فروخته شد{% else %}پیش فروش شده{% endif %}</td>
                                                 <td>{% if place.type == 'Celebrities' %}مشاهیر{% else %}عادی{% endif %}</td>

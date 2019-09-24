@@ -54,7 +54,7 @@ class Place(models.Model):
 	longitude = models.CharField(max_length=255,verbose_name='طول جغرافیایی ')
 	latitude = models.CharField(max_length=255,verbose_name='عرض جغرافیایی ')
 	price = models.CharField(max_length=8,default=0,null=True,blank=True,verbose_name='قیمت ')
-	ghete = models.CharField(null=True,blank=True,max_length=4,verbose_name='قطعه ')
+	ghete = models.CharField(default='',null=True,blank=True,max_length=4,verbose_name='قطعه ')
 	radif = models.CharField(max_length=4,verbose_name='ردیف ')
 	block = models.CharField(max_length=4,verbose_name='بلوک ')
 	number = models.CharField(max_length=4,verbose_name='شماره ')
@@ -256,7 +256,7 @@ class Place_Service (models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	buyer_id =models.ForeignKey(Buyer,on_delete=models.CASCADE,verbose_name='خریدار ')
-	place_id = models.OneToOneField(Place,on_delete=models.CASCADE,verbose_name='قبر ')
+	place_id = models.OneToOneField(Place,related_name='place_service',on_delete=models.CASCADE,verbose_name='قبر ')
 	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE,null=True,blank=True,verbose_name='متوفی مربوطه ')
 	document = models.CharField(max_length=32,blank=True,null=True,verbose_name='شماره سند ')
 	payment_status = models.CharField(max_length=32,choices=PAYMENT_STATUS,default='NOT_PAID',verbose_name='وضعیت پرداخت ')
@@ -270,7 +270,7 @@ class Place_Service (models.Model):
 			pass
 		super(Place_Service,self).save(*args,**kwargs)
 	def __str__(self):
-		return self.payment_status + ' ' + self.buyer_id.get_full_name()
+		return self.payment_status + ' ' + self.buyer_id.get_full_name() + ' ' + str(self.place_id.code) + ' ' + self.place_id.status
 
 
 
@@ -340,7 +340,7 @@ class License(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	document = models.CharField(max_length=32,unique=True,verbose_name='شماره مجوز ')
-	place_id = models.ForeignKey(Place,related_name='license',null=True,blank=True,on_delete=models.CASCADE,verbose_name='قبر مربوطه ')
+	place_id = models.ForeignKey(Place,related_name='license',null=True,blank=True,on_delete=models.DO_NOTHING,verbose_name='قبر مربوطه ')
 	deceased_id = models.ForeignKey(Deceased,related_name='license', on_delete=models.CASCADE,verbose_name='متوفی ')
 	license_status = models.CharField(max_length=32,choices=LICENSE_STATUS,default='WAITING',verbose_name='وضعیت مجوز ')
 	picture = models.ImageField(upload_to='license-pic/',null=True,blank=True)
@@ -475,7 +475,14 @@ def total_price_computer(sender,instance,action,reverse,pk_set,**kwargs):
 			x = x - o.price
 		after.total_price = x
 		after.save()
-
+@receiver(pre_delete,sender=Place_Service)
+def DeleteBillandChangePlaceStatus(sender,instance,*args,**kwargs):
+	if instance.payment_status == 'PAID':
+		place = instance.place_id
+		place.status = 'Municipal'
+		place.save()
+		bill = Bill.objects.get(order_id=instance)
+		bill.delete()
 
 @receiver(post_save,sender=Place_Service)
 def AddOrderToBill(sender,instance,created,*args,**kwargs):
@@ -490,6 +497,25 @@ def AddOrderToBill(sender,instance,created,*args,**kwargs):
 			place = instance.place_id
 			place.status = 'Pre_sell'
 			place.save()
+	else:
+		if instance.payment_status == 'PAID':
+			if instance.deceased_id:
+				try:
+					Bill.objects.get(name='خرید قبر',price=instance.place_id.price,order_id=instance,deceased_id=instance.deceased_id,user_id=instance.buyer_id)
+				except:
+					Bill.objects.create(name='خرید قبر', price=instance.place_id.price, order_id=instance,
+										deceased_id=instance.deceased_id, user_id=instance.buyer_id)
+					place = instance.place_id
+					place.status = 'Sold'
+					place.save()
+			else:
+				try:
+					Bill.objects.get(name='خرید قبر',price=instance.place_id.price,order_id=instance, user_id=instance.buyer_id)
+				except:
+					Bill.objects.create(name='خرید قبر',price=instance.place_id.price,order_id=instance, user_id=instance.buyer_id)
+					place = instance.place_id
+					place.status = 'Pre_sell'
+					place.save()
 
 
 @receiver(post_save, sender=Buyer)
@@ -543,6 +569,27 @@ def EditBuyrDeceased(sender, instance, created, *args, **kwargs):
 		place = instance.place_id
 		place.status = 'Sold'
 		place.save()
+
+@receiver(post_save,sender=Place)
+def UpdateBillPlacePrice(sender,instance,created,*args,**kwargs):
+	if created:
+		pass
+	else:
+		if instance.price != 0 :
+			try:
+				license = License.objects.get(place_id=instance)
+				if license.license_status == 'CONFIRMED':
+					try:
+						place_service = Place_Service.objects.get(place_id=instance)
+						bill = Bill.objects.get(order_id=place_service)
+						bill.price = instance.price
+						bill.save()
+					except:
+						place_service = Place_Service.objects.create(place_id=instance,deceased_id=license.deceased_id,payment_status='PAID')
+			except:
+				pass
+
+
 # @receiver(post_save,sender=Order)
 # def Add_Order(sender,instance,created,*args,**kwargs):
 # 	if created and instance.payment_status == 'PAID' :

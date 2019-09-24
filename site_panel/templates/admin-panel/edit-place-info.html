@@ -76,8 +76,7 @@
                                                 <a href="#" class="alert-link">{{ info }}</a>
                                             </div>
                                         {% endif %}
-                                        <form action="" method="post" enctype="multipart/form-data"
-                                              class="">
+                                        <form action="" method="post" enctype="multipart/form-data">
                                             {% csrf_token %}
 
                                             <div class="row">
@@ -130,7 +129,7 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="firstName2">قیمت* :</label>
-                                                        <input {% if select_place.status == 'Municipal' %}{% else %}disabled{% endif %}  type="number" class="form-control"
+                                                        <input {% if select_place.status == 'Municipal' or select_place.price == '0' %}{% else %}disabled{% endif %}  type="number" class="form-control"
                                                                id="firstName2" value="{{ select_place.price }}" name="price">
                                                     </div>
                                                 </div>
