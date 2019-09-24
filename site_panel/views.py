@@ -733,6 +733,7 @@ def Deceased_List(request):
 		return redirect('/Account/login/?next=/Admin/deceased-list/')
 
 
+
 def Edit_Deceased(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
 
@@ -1238,6 +1239,70 @@ def Edit_Place(request, id):
 		return redirect('/Account/login/?next=/Admin/edit-place-info/')
 
 
+def Select_Deceased(request,id):
+	if request.user.is_authenticated and request.user.is_staff:
+		select_deceased = Deceased.objects.get(id=id)
+		context = {
+			'select_deceased':select_deceased
+		}
+		return render(request,'admin-panel/partial/select-deceased-base.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/select-deceased/'+id+'/')
+
+def Add_Service(request,id):
+	if request.user.is_authenticated and request.user.is_staff:
+		select_deceased = Deceased.objects.get(id = id)
+		if request.method == 'POST':
+			name = request.POST['name']
+			price = request.POST['price']
+			first_name = request.POST['first_name']
+			last_name = request.POST['last_name']
+			national_number = request.POST['national_number']
+			status = request.POST['status']
+			if name == '' and price == '' and first_name == '' and last_name == '' and status == '':
+				context = {
+					'error': True,
+					'message': 'لطفا همه فیلد ها را پر کنید.',
+					'select_deceased':select_deceased,
+
+				}
+				return render(request, 'admin-panel/add-service.html', context)
+
+			if len(national_number) != 10:
+				context = {
+					'error': True,
+					'select_deceased':select_deceased,
+
+					'message': 'کد ملی باید 10 رقمی باشد.'
+				}
+				return render(request, 'admin-panel/add-service.html', context)
+
+			try:
+				buyer = Buyer.objects.get(national_number=national_number)
+			except:
+				buyer = Buyer.objects.create(first_name=first_name,last_name=last_name,national_number=national_number)
+
+			additional_service = Additional_Service.objects.create(name=name,price=price,buyer_id=buyer,status=status,deceased_id=select_deceased)
+			warnings = ['لطفا صفحه را رفرش نکنید، در غیر اینورت خدمات دوباره برای شما ثبت میشود!']
+			message = 'خدمات '+name+' با موفقیت برای '+select_deceased.get_full_name()+' ثبت شد.'
+			context = {
+				'warnings':warnings,
+				'success':True,
+				'message':message,
+				'select_deceased': select_deceased
+
+			}
+			return render(request,'admin-panel/add-service.html',context)
+
+		else:
+			context = {
+				'select_deceased':select_deceased
+			}
+			return render(request,'admin-panel/add-service.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/add-service/' + id + '/')
+
+
 def Add_New(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		if request.method == 'POST':
@@ -1324,3 +1389,4 @@ def Edit_News(request, id):
 		return render(request, 'admin-panel/edit-news-info.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/edit-news-info/')
+
