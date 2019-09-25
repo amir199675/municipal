@@ -15,20 +15,16 @@
             <div class="card border-grey border-lighten-3 px-1 py-1 m-0">
                 <div class="card-header border-0">
                     <div class="text-center mb-1">
-                            <img src="../../../app-assets/images/logo/logo.png" alt="branding logo">
+                        <a href="{% url 'Main:index' %}"><img src="{% static 'images/logo.png' %}" alt="branding logo"></a>
                     </div>
-                    <div class="font-large-1  text-center">                       
-                        ورود اعضا
-                    </div>
+
                 </div>
                 <div class="card-content">
                    
                     <div class="card-body">
                         <form class="form-horizontal" action="" method="post" novalidate>
                             {% csrf_token %}
-                            {% if request.GET.next %}
-                                    <input type="hidden" name="next" value="{{ request.GET.next }}">
-                                {% endif %}
+
                             <fieldset class="form-group position-relative has-icon-left">
                                 <input type="text" class="form-control round" id="user-name" placeholder="نام کاربری شما" name="username" required>
                                 <div class="form-control-position">
@@ -55,8 +51,6 @@
                     </div>
                     <p class="card-subtitle line-on-side text-center font-small-3 text-danger"><span>{% if error %}{{ message }}{% else %}لطفا اطلاعات خود را جهت ورود وارد کنید{% endif %}</span></p>
 
-                    
-                    <p class="card-subtitle text-muted text-right font-small-3 mx-2 my-1"><span>حساب کاربری ندارید؟ <a href="register.html" class="card-link">ثبت نام</a></span></p>                    
                 </div>
             </div>
         </div>

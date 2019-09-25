@@ -43,16 +43,6 @@ def Quick_Deceased(request):
 				birth_day = None
 			bio = request.POST['bio']
 
-			presenter_first_name = request.POST['presenter_first_name']
-			presenter_last_name = request.POST['presenter_last_name']
-			presenter_phone_number = request.POST['presenter_phone_number']
-			presenter_national_number = request.POST['presenter_national_number']
-			presenter_identification_number = request.POST['presenter_identification_number']
-
-			doctor_first_name = request.POST['doctor_first_name']
-			doctor_last_name = request.POST['doctor_last_name']
-			medical_system_number = request.POST['medical_system_number']
-			death_certificate_number = request.POST['death_certificate_number']
 			date_of_death_r = request.POST['date_of_death']
 			try:
 				date_of_death_miladi = datetime.strptime(date_of_death_r, '%Y-%m-%d')
@@ -68,7 +58,6 @@ def Quick_Deceased(request):
 				date_of_death = datetime.strptime(make_format, '%Y-%m-%d')
 			except:
 				date_of_death = None
-			cause_death = request.POST['cause_death']
 
 			try:
 				picture = request.FILES['presenter_document']
@@ -102,7 +91,7 @@ def Quick_Deceased(request):
 				latitude = request.POST['latitude']
 				longitude = request.POST['longitude']
 
-			if first_name == '' or last_name == '' or presenter_first_name == '' or presenter_last_name == '' or doctor_first_name == '' or doctor_last_name == '':
+			if first_name == '' or last_name == '' :
 				context = {
 					'first_name': first_name,
 					'birth_day': birth_day_r,
@@ -110,11 +99,7 @@ def Quick_Deceased(request):
 					'fa_name': fa_name,
 					'identification_number': identification_number,
 					'national_number': national_number,
-					'presenter_first_name': presenter_first_name,
-					'presenter_last_name': presenter_last_name,
-					'presenter_phone_number': presenter_phone_number,
-					'presenter_national_number': presenter_national_number,
-					'presenter_identification_number': presenter_identification_number,
+
 					'bio': bio,
 					'code': code,
 
@@ -126,19 +111,13 @@ def Quick_Deceased(request):
 					'place_type': place_type,
 					'latitude': latitude,
 					'longitude': longitude,
-					'doctor_last_name': doctor_last_name,
-					'doctor_first_name': doctor_first_name,
-					'medical_system_number': medical_system_number,
-					'death_certificate_number': death_certificate_number,
-					'date_of_death': date_of_death_r,
-					'cause_death': cause_death,
 
 					'error': True,
 					'message': 'لطفا نام و نام خانوادگی متوفی یا معرف و پزشک را وارد کنید! لطفا همه موارد ستاره دار را به دقت پر کنید',
 				}
 				return render(request, 'admin-panel/quick-deceased.html', context)
 
-			if len(national_number) != 10 or len(presenter_national_number) != 10:
+			if len(national_number) != 10 :
 				context = {
 					'first_name': first_name,
 					'birth_day': birth_day_r,
@@ -146,11 +125,7 @@ def Quick_Deceased(request):
 					'fa_name': fa_name,
 					'identification_number': identification_number,
 					'national_number': national_number,
-					'presenter_first_name': presenter_first_name,
-					'presenter_last_name': presenter_last_name,
-					'presenter_phone_number': presenter_phone_number,
-					'presenter_national_number': presenter_national_number,
-					'presenter_identification_number': presenter_identification_number,
+
 					'bio': bio,
 					'code': code,
 					'bloock': block,
@@ -161,13 +136,8 @@ def Quick_Deceased(request):
 					'place_type': place_type,
 					'latitude': latitude,
 					'longitude': longitude,
-					'doctor_last_name': doctor_last_name,
-					'doctor_first_name': doctor_first_name,
-					'medical_system_number': medical_system_number,
-					'death_certificate_number': death_certificate_number,
-					'date_of_death': date_of_death_r,
-					'cause_death': cause_death,
 
+					'date_of_death': date_of_death_r,
 
 					'error': True,
 					'message': 'کد ملی به صورت صحیح وارد نشده است!',
@@ -189,11 +159,7 @@ def Quick_Deceased(request):
 							'fa_name': fa_name,
 							'identification_number': identification_number,
 							'national_number': national_number,
-							'presenter_first_name': presenter_first_name,
-							'presenter_last_name': presenter_last_name,
-							'presenter_phone_number': presenter_phone_number,
-							'presenter_national_number': presenter_national_number,
-							'presenter_identification_number': presenter_identification_number,
+
 							'bio': bio,
 							'code': code,
 							'bloock': block,
@@ -204,12 +170,8 @@ def Quick_Deceased(request):
 							'place_type': place_type,
 							'latitude': latitude,
 							'longitude': longitude,
-							'doctor_last_name': doctor_last_name,
-							'doctor_first_name': doctor_first_name,
-							'medical_system_number': medical_system_number,
-							'death_certificate_number': death_certificate_number,
+
 							'date_of_death': date_of_death_r,
-							'cause_death': cause_death,
 
 							'error': True,
 							'message': 'قبر انتخابی خالی نمیباشد.',
@@ -231,11 +193,7 @@ def Quick_Deceased(request):
 							'fa_name': fa_name,
 							'identification_number': identification_number,
 							'national_number': national_number,
-							'presenter_first_name': presenter_first_name,
-							'presenter_last_name': presenter_last_name,
-							'presenter_phone_number': presenter_phone_number,
-							'presenter_national_number': presenter_national_number,
-							'presenter_identification_number': presenter_identification_number,
+
 							'bio': bio,
 							'code': code,
 
@@ -247,12 +205,8 @@ def Quick_Deceased(request):
 							'place_type': place_type,
 							'latitude': latitude,
 							'longitude': longitude,
-							'doctor_last_name': doctor_last_name,
-							'doctor_first_name': doctor_first_name,
-							'medical_system_number': medical_system_number,
-							'death_certificate_number': death_certificate_number,
+
 							'date_of_death': date_of_death_r,
-							'cause_death': cause_death,
 
 							'error': True,
 							'message': ' لطفا همه فیلد های مربوط به مشخصات محل دفن را پر کنید.',
@@ -268,11 +222,7 @@ def Quick_Deceased(request):
 					'fa_name': fa_name,
 					'identification_number': identification_number,
 					'national_number': national_number,
-					'presenter_first_name': presenter_first_name,
-					'presenter_last_name': presenter_last_name,
-					'presenter_phone_number': presenter_phone_number,
-					'presenter_national_number': presenter_national_number,
-					'presenter_identification_number': presenter_identification_number,
+
 					'bio': bio,
 					'code': code,
 					'bloock': block,
@@ -283,12 +233,8 @@ def Quick_Deceased(request):
 					'place_type': place_type,
 					'latitude': latitude,
 					'longitude': longitude,
-					'doctor_last_name': doctor_last_name,
-					'doctor_first_name': doctor_first_name,
-					'medical_system_number': medical_system_number,
-					'death_certificate_number': death_certificate_number,
+
 					'date_of_death': date_of_death_r,
-					'cause_death': cause_death,
 
 					'error': True,
 					'message': 'متوفی با این شماره ملی قبلا ثبت شده است!',
@@ -299,28 +245,11 @@ def Quick_Deceased(request):
 			except:
 				pass
 
-			presenter = None
-			try:
-				presenter = Presenter.objects.get(national_number=presenter_national_number)
-			except:
-				presenter = Presenter.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
-													 phone_number=presenter_phone_number,
-													 national_number=presenter_national_number,
-													 identification_number=presenter_identification_number)
-			try:
-				buyer = Buyer.objects.get(national_number=presenter_national_number)
-			except:
-				buyer = Buyer.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
-											 phone_number=presenter_phone_number,
-											 national_number=presenter_national_number,
-											 identification_number=presenter_identification_number)
 
 			deceased = Deceased.objects.create(national_number=national_number, first_name=first_name,
 											   last_name=last_name, fa_name=fa_name,
 											   identification_number=identification_number, bio=bio,
 											   date_of_birth=birth_day)
-			deceased.presenter_id = presenter
-			deceased.save()
 
 			if place_save:
 				place.save()
@@ -343,12 +272,9 @@ def Quick_Deceased(request):
 															 payment_status='PAID')
 
 			death_certificate = Death_Certificate.objects.get(deceased_id=deceased)
-			death_certificate.doctor_first_name = doctor_first_name
-			death_certificate.doctor_last_name = doctor_last_name
-			death_certificate.medical_system_number = medical_system_number
-			death_certificate.death_certificate_number = death_certificate_number
+
 			death_certificate.date_of_death = date_of_death
-			death_certificate.cause_death = cause_death
+
 			death_certificate.status = 'Accepted'
 			death_certificate.save()
 			message = 'متوفی ' + deceased.get_full_name() + ' با موفقیت ثبت شد'
@@ -430,6 +356,7 @@ def Online_Deceased(request):
 			presenter_phone_number = request.POST['presenter_phone_number']
 			presenter_national_number = request.POST['presenter_national_number']
 			presenter_identification_number = request.POST['presenter_identification_number']
+			presenter_address = request.POST['presenter_address']
 
 			doctor_first_name = request.POST['doctor_first_name']
 			doctor_last_name = request.POST['doctor_last_name']
@@ -503,6 +430,7 @@ def Online_Deceased(request):
 					'presenter_phone_number': presenter_phone_number,
 					'presenter_national_number': presenter_national_number,
 					'presenter_identification_number': presenter_identification_number,
+					'presenter_address': presenter_address,
 					'bio': bio,
 					'code': code,
 					'bloock': block,
@@ -570,6 +498,7 @@ def Online_Deceased(request):
 							'presenter_phone_number': presenter_phone_number,
 							'presenter_national_number': presenter_national_number,
 							'presenter_identification_number': presenter_identification_number,
+							'presenter_address': presenter_address,
 							'bio': bio,
 							'code': code,
 							'bloock': block,
@@ -612,8 +541,10 @@ def Online_Deceased(request):
 							'presenter_phone_number': presenter_phone_number,
 							'presenter_national_number': presenter_national_number,
 							'presenter_identification_number': presenter_identification_number,
+							'presenter_address':presenter_address,
 							'bio': bio,
 							'code': code,
+
 
 							'bloock': block,
 							'radif': radif,
@@ -642,8 +573,9 @@ def Online_Deceased(request):
 				presenter = Presenter.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
 													 phone_number=presenter_phone_number,
 													 national_number=presenter_national_number,
-													 identification_number=presenter_identification_number)
+													 identification_number=presenter_identification_number,address=presenter_address)
 				user = MyUser.objects.get(username=presenter_national_number)
+
 
 			try:
 				buyer = Buyer.objects.get(national_number=presenter_national_number)
@@ -801,6 +733,7 @@ def Edit_Deceased(request, id):
 			presenter_phone_number = request.POST['presenter_phone_number']
 			presenter_national_number = request.POST['presenter_national_number']
 			presenter_identification_number = request.POST['presenter_identification_number']
+			presenter_address = request.POST['presenter_address']
 			try:
 				picture = request.FILES['presenter_document']
 			except:
@@ -929,17 +862,17 @@ def Edit_Deceased(request, id):
 						}
 						return render(request, 'admin-panel/edit-deceased-info.html', context)
 
-			if first_name == '' or last_name == '' or presenter_first_name == '' or presenter_last_name == '' or doctor_first_name == '' or doctor_last_name == '':
+			if first_name == '' or last_name == '' :
 				context = {
 					'select_deceased': select_deceased,
 					'certificate': certificate,
 					'license': license,
 					'error': True,
-					'message': 'لطفا نام و نام خانوادگی متوفی یا معرف و پزشک را وارد کنید! لطفا همه موارد ستاره دار را به دقت پر کنید',
+					'message': 'لطفا نام و نام خانوادگی متوفی را وارد کنید! ',
 				}
 				return render(request, 'admin-panel/edit-deceased-info.html', context)
 
-			if len(national_number) != 10 or len(presenter_national_number) != 10:
+			if len(national_number) != 10 :
 				context = {
 					'select_deceased': select_deceased,
 					'certificate': certificate,
@@ -972,35 +905,57 @@ def Edit_Deceased(request, id):
 			select_deceased.mo_name = mo_name
 			select_deceased.sex = sex
 			select_deceased.bio = bio
-			buyer = None
-			try:
-				presenter = Presenter.objects.get(national_number=presenter_national_number)
-				presenter.first_name = presenter_first_name
-				presenter.last_name = presenter_last_name
-				presenter.national_number = presenter_national_number
-				presenter.identification_number = presenter_identification_number
-				presenter.phone_number = presenter_phone_number
-				presenter.save()
-			except:
-				presenter = Presenter.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
-													 national_number=presenter_national_number,
-													 identification_number=presenter_identification_number
-													 , phone_number=presenter_phone_number)
+			if presenter_national_number != '':
+				if len(presenter_national_number)!= 10:
+					if presenter_last_name != '' or presenter_first_name != '':
+						buyer = None
+						try:
+							presenter = Presenter.objects.get(national_number=presenter_national_number)
+							presenter.first_name = presenter_first_name
+							presenter.last_name = presenter_last_name
+							presenter.national_number = presenter_national_number
+							presenter.identification_number = presenter_identification_number
+							presenter.phone_number = presenter_phone_number
+							presenter.address = presenter_address
+							presenter.save()
+						except:
+							presenter = Presenter.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
+																 national_number=presenter_national_number,
+																 identification_number=presenter_identification_number
+																 , phone_number=presenter_phone_number,address=presenter_address)
 
-			select_deceased.presenter_id = presenter
-			try:
-				buyer = Buyer.objects.get(national_number=presenter_national_number)
-				buyer.first_name = presenter_first_name
-				buyer.last_name = presenter_last_name
-				buyer.national_number = presenter_national_number
-				buyer.identification_number = presenter_identification_number
-				buyer.phone_number = presenter_phone_number
-				buyer.save()
-			except:
-				buyer = Buyer.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
-											 national_number=presenter_national_number,
-											 identification_number=presenter_identification_number
-											 , phone_number=presenter_phone_number)
+						select_deceased.presenter_id = presenter
+						try:
+							buyer = Buyer.objects.get(national_number=presenter_national_number)
+							buyer.first_name = presenter_first_name
+							buyer.last_name = presenter_last_name
+							buyer.national_number = presenter_national_number
+							buyer.identification_number = presenter_identification_number
+							buyer.phone_number = presenter_phone_number
+							buyer.save()
+						except:
+							buyer = Buyer.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
+														 national_number=presenter_national_number,
+														 identification_number=presenter_identification_number
+														 , phone_number=presenter_phone_number)
+					else:
+						context={
+							'select_deceased': select_deceased,
+							'certificate': certificate,
+							'license': license,
+							'error':True,
+							'message':'لطفا همه اطلاعات مربوط به متوفی را وارد کنید!'
+						}
+						return render(request,'admin-panel/edit-deceased-info.html',context)
+				else:
+					context = {
+						'select_deceased': select_deceased,
+						'certificate': certificate,
+						'license': license,
+						'error': True,
+						'message': 'لطفا کد ملی معرف را درست وارد کنید!!'
+					}
+					return render(request, 'admin-panel/edit-deceased-info.html', context)
 
 			if location:
 				license = License.objects.get(deceased_id=select_deceased)
@@ -1062,7 +1017,7 @@ def Edit_Deceased(request, id):
 		return render(request, 'admin-panel/edit-deceased-info.html', context)
 
 	else:
-		return redirect('/Account/login/?next=/Admin/edit-deceased-info/')
+		return redirect('/Account/login/?next=/Admin/edit-deceased-info/'+id)
 
 
 def Add_Place(request):

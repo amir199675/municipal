@@ -83,7 +83,7 @@
                                                                   href="#"><i class="ft-menu font-large-1"></i></a></li>
             <li class="nav-item"><a class="navbar-brand" href="index.html"><img class="brand-logo"
                                                                                 alt="creaative admin logo"
-                                                                                src="../../../app-assets/images/logo/logo.png">
+                                                                                src="{% static 'admin-panel-static/app-assets/images/logo/logo.png' %}">
                 <h3 class="brand-text">آفتاب پرست</h3></a></li>
             <li class="nav-item d-md-none"><a class="nav-link open-navbar-container" data-toggle="collapse"
                                               data-target="#navbar-mobile"><i class="la la-ellipsis-v"></i></a></li>
@@ -303,11 +303,11 @@
                     <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link"
                                                                    href="#" data-toggle="dropdown"> <span
                             class="avatar avatar-online"><img
-                            src="../../../app-assets/images/portrait/small/avatar-s-19.png" alt="avatar"></span></a>
+                            src="{% static 'images/login.png' %}" alt="avatar"></span></a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="arrow_box_right"><a class="dropdown-item" href="#"><span
                                     class="avatar avatar-online"><img
-                                    src="../../../app-assets/images/portrait/small/avatar-s-19.png" alt="avatar"><span
+                                    src="{% static 'images/login.png' %}" alt="avatar"><span
                                     class="user-name text-bold-700 ml-1">برات هادیان</span></span></a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="user-profile.html"><i class="ft-user"></i> ویرایش مشخصات</a><a
@@ -317,7 +317,7 @@
                                                                                  href="gap-application.html"><i
                                         class="ft-message-square"></i> نمودار</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="login.html"><i class="ft-power"></i> خروج</a>
+                                <a class="dropdown-item" href="/Account/logout/?next={{ request.path }}"><i class="ft-power"></i> خروج</a>
                             </div>
                         </div>
                     </li>

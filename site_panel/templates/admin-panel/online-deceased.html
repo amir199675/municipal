@@ -5,47 +5,48 @@
     پنل ادمین|ثبت متوفی جدید
 {% endblock %}
 {% block body %}
-<!-- BEGIN: Content-->
-<div class="app-content content">
-    <div class="content-wrapper">
-        <div class="content-wrapper-before"></div>
-        <div class="content-header row">
-            <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
-                <h3 class="content-header-title mb-0 d-inline-block">صفحه اضافه کردن میت جدید</h3>
-                <div class="breadcrumbs-top d-inline-block">
-                    <div class="breadcrumb-wrapper mr-1">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">خانه</a>
-                            </li>
-                            <li class="breadcrumb-item"><a href="#">عناصر فرم</a>
-                            </li>
-                            <li class="breadcrumb-item active">صفحه اضافه کردن میت جدید
-                            </li>
-                        </ol>
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-wrapper">
+            <div class="content-wrapper-before"></div>
+            <div class="content-header row">
+                <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
+                    <h3 class="content-header-title mb-0 d-inline-block">صفحه اضافه کردن میت جدید</h3>
+                    <div class="breadcrumbs-top d-inline-block">
+                        <div class="breadcrumb-wrapper mr-1">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">خانه</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#">عناصر فرم</a>
+                                </li>
+                                <li class="breadcrumb-item active">صفحه اضافه کردن میت جدید
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="content-body"><!-- Form wizard with icon tabs section start -->
-            <section id="icon-tabs">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">لطفا مشخصات را درست وارد کنید</h4>
-                                <a class="heading-elements-toggle"><i class="la la-ellipsis-h font-medium-3"></i></a>
-                                <div class="heading-elements">
-                                    <ul class="list-inline mb-0">
-                                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                                        <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                                        <li><a data-action="close"><i class="ft-x"></i></a></li>
-                                    </ul>
+            <div class="content-body"><!-- Form wizard with icon tabs section start -->
+                <section id="icon-tabs">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">لطفا مشخصات را درست وارد کنید</h4>
+                                    <a class="heading-elements-toggle"><i
+                                            class="la la-ellipsis-h font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="card-content collapse show">
-                                <div class="card-body">
-                                    {% for warning in warnings %}
+                                <div class="card-content collapse show">
+                                    <div class="card-body">
+                                        {% for warning in warnings %}
                                             <div class="alert round alert-secondary alert-icon-left alert-dismissible mb-2"
                                                  role="alert">
                                                     <span class="alert-icon">
@@ -84,194 +85,217 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                                 <strong>{{ message }}</strong>
-                                                <a href="{% url 'Site_Panel:edit-deceased-info' deceased.id %}" class="alert-link">{{ info }}</a>
+                                                <a href="{% url 'Site_Panel:edit-deceased-info' deceased.id %}"
+                                                   class="alert-link">{{ info }}</a>
                                             </div>
                                         {% endif %}
-                                    <form action="" method="post" enctype="multipart/form-data" class="icons-tab-steps">
-                                        {% csrf_token %}
+                                        <form action="" method="post" enctype="multipart/form-data"
+                                              class="icons-tab-steps">
+                                            {% csrf_token %}
 
-                                        <!-- Step 1 -->
-                                        <h6><i class="step-icon ft-home"></i>مشخصات متوفی</h6>
-                                        <fieldset>
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="firstName2">نام* :</label>
-                                                        <input type="text" class="form-control" id="firstName2" value="{{ first_name }}"
-                                                               name="first_name" >
+                                            <!-- Step 1 -->
+                                            <h6><i class="step-icon ft-home"></i>مشخصات متوفی</h6>
+                                            <fieldset>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="firstName2">نام* :</label>
+                                                            <input type="text" class="form-control" id="firstName2"
+                                                                   value="{{ first_name }}"
+                                                                   name="first_name">
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="lastName3">نام خانوادگی* :</label>
-                                                        <input type="text" class="form-control" id="lastName3" value="{{ last_name }}"
-                                                               name="last_name">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="lastName3">نام خانوادگی* :</label>
+                                                            <input type="text" class="form-control" id="lastName3"
+                                                                   value="{{ last_name }}"
+                                                                   name="last_name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="lastName4">وضعیت جنازه :</label>
+                                                            <select class="custom-select form-control" id="location2"
+                                                                    name="deceased_status">
+                                                                <option disabled value="">جنسیت فرد متوفی را وارد کنید
+                                                                </option>
+                                                                <option selected value="MALE">مرد</option>
+                                                                <option value="One">زن</option>
+                                                                <option value="Two">ناشناخته</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="lastName2">نام پدر* :</label>
+                                                            <input type="text" class="form-control" id="lastName2"
+                                                                   value="{{ fa_name }}"
+                                                                   name="fa_name">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="lastName4">وضعیت جنازه :</label>
-                                                        <select class="custom-select form-control" id="location2"
-                                                                name="deceased_status">
-                                                            <option disabled value="">جنسیت فرد متوفی را وارد کنید
-                                                            </option>
-                                                            <option selected value="MALE">مرد</option>
-                                                            <option value="One">زن</option>
-                                                            <option value="Two">ناشناخته</option>
-                                                        </select>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="firstName2">نوع جنازه :</label>
+                                                            <select class="custom-select form-control" id="location2"
+                                                                    name="deceased_type">
+                                                                <option disabled value="">جنسیت فرد متوفی را وارد کنید
+                                                                </option>
+                                                                <option selected value="Two">مرد</option>
+                                                                <option value="One">زن</option>
+                                                                <option value="UNKNOWN">ناشناخته</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="lastName2">نام پدر* :</label>
-                                                        <input type="text" class="form-control" id="lastName2" value="{{ fa_name }}"
-                                                               name="fa_name">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="firstName2">نوع جنازه :</label>
-                                                        <select class="custom-select form-control" id="location2"
-                                                                name="deceased_type">
-                                                            <option disabled value="">جنسیت فرد متوفی را وارد کنید
-                                                            </option>
-                                                            <option selected value="Two">مرد</option>
-                                                            <option value="One">زن</option>
-                                                            <option value="UNKNOWN">ناشناخته</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
 
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="lastName3">آدرس :</label>
-                                                        <textarea cols="30" rows="1" class="form-control"
-                                                                  placeholder="لطفا آدرس فرد را وارد کنید"
-                                                                  name="address">{{ address }}</textarea>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="lastName3">آدرس :</label>
+                                                            <textarea cols="30" rows="1" class="form-control"
+                                                                      placeholder="لطفا آدرس فرد را وارد کنید"
+                                                                      name="address">{{ address }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="lastName4">محل تولد :</label>
+                                                            <input type="text" class="form-control" id="lastName4"
+                                                                   value="{{ place_of_birth }}"
+                                                                   name="place_of_birth">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="lastName2">تاریخ صدور :</label>
+                                                            <input type="date" class="form-control" id="lastName2"
+                                                                   value="{{ issue_date }}"
+                                                                   name="issue_date">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="lastName4">محل تولد :</label>
-                                                        <input type="text" class="form-control" id="lastName4" value="{{ place_of_birth }}"
-                                                               name="place_of_birth">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="firstName2">نام مادر :</label>
+                                                            <input type="text" class="form-control" id="firstName2"
+                                                                   value="{{ mo_name }}"
+                                                                   name="mo_name">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="lastName2">تاریخ صدور :</label>
-                                                        <input type="date" class="form-control" id="lastName2" value="{{ issue_date }}"
-                                                               name="issue_date">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="firstName2">نام مادر :</label>
-                                                        <input type="text" class="form-control" id="firstName2" value="{{ mo_name }}"
-                                                               name="mo_name">
-                                                    </div>
-                                                </div>
 
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="lastName3">کد ملی* :</label>
-                                                        <input type="text" class="form-control" id="lastName3" value="{{ national_number }}"
-                                                               name="national_number">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="lastName3">کد ملی* :</label>
+                                                            <input type="text" class="form-control" id="lastName3"
+                                                                   value="{{ national_number }}"
+                                                                   name="national_number">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="lastName4">شماره شناسنامه :</label>
-                                                        <input type="text" class="form-control" id="lastName4" value="{{ identification_number }}"
-                                                               name="identification_number">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="lastName4">شماره شناسنامه :</label>
+                                                            <input type="text" class="form-control" id="lastName4"
+                                                                   value="{{ identification_number }}"
+                                                                   name="identification_number">
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                            </div>
-                                            <div class="row">
-
-
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="location2">جنسیت :</label>
-                                                        <select class="custom-select form-control" id="location2"
-                                                                name="sex">
-                                                            <option disabled value="">جنسیت فرد متوفی را وارد کنید
-                                                            </option>
-                                                            <option {% if sex == 'MALE' %}selected{% endif %} value="MALE">مرد</option>
-                                                            <option {% if sex == 'FEMALE' %}selected{% endif %} value="FEMALE">زن</option>
-                                                            <option {% if sex == 'FEMALE' %}selected{% endif %} value="UNKNOWN">ناشناخته</option>
-                                                        </select>
-                                                    </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="date2">تاریخ تولد* :</label>
-                                                        <input type="date" class="form-control" id="date2" value="{{ birth_day }}"
-                                                               name="birth_day">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="lastName2">زندگینامه :</label>
-                                                        <textarea cols="30" rows="10" class="form-control"
-                                                                  placeholder="لطفا زندگینامه فرد را وارد کنید"
-                                                                  name="bio">{{ bio }}</textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <div class="row">
 
 
-                                        </fieldset>
-                                        <h6><i class="step-icon ft-file-text"></i>مشخصات معرف</h6>
-                                        <fieldset>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="firstName2">نام معرف* :</label>
-                                                        <input type="text" class="form-control" id="firstName2" value="{{ presenter_first_name }}"
-                                                               name="presenter_first_name">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="location2">جنسیت :</label>
+                                                            <select class="custom-select form-control" id="location2"
+                                                                    name="sex">
+                                                                <option disabled value="">جنسیت فرد متوفی را وارد کنید
+                                                                </option>
+                                                                <option {% if sex == 'MALE' %}selected{% endif %}
+                                                                        value="MALE">مرد
+                                                                </option>
+                                                                <option {% if sex == 'FEMALE' %}selected{% endif %}
+                                                                        value="FEMALE">زن
+                                                                </option>
+                                                                <option {% if sex == 'FEMALE' %}selected{% endif %}
+                                                                        value="UNKNOWN">ناشناخته
+                                                                </option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="firstName2">نام خانوادگی معرف* :</label>
-                                                        <input type="text" class="form-control" id="firstName2" value="{{ presenter_last_name }}"
-                                                               name="presenter_last_name">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="date2">تاریخ تولد* :</label>
+                                                            <input type="date" class="form-control" id="date2"
+                                                                   value="{{ birth_day }}"
+                                                                   name="birth_day">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="lastName2">زندگینامه :</label>
+                                                            <textarea cols="30" rows="10" class="form-control"
+                                                                      placeholder="لطفا زندگینامه فرد را وارد کنید"
+                                                                      name="bio">{{ bio }}</textarea>
+                                                        </div>
                                                     </div>
                                                 </div>
 
 
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="location2">شماره تماس معرف* :</label>
-                                                        <input type="tel" class="form-control"
-                                                               placeholder="شماره تماس را وارد کنید" value="{{ presenter_phone_number }}"
-                                                               name="presenter_phone_number">
+                                            </fieldset>
+                                            <h6><i class="step-icon ft-file-text"></i>مشخصات معرف</h6>
+                                            <fieldset>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="firstName2">نام معرف* :</label>
+                                                            <input type="text" class="form-control" id="firstName2"
+                                                                   value="{{ presenter_first_name }}"
+                                                                   name="presenter_first_name">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="firstName2">کد ملی معرف* :</label>
-                                                        <input type="text" placeholder="کد ملی" class="form-control"
-                                                               id="firstName2" value="{{ presenter_national_number }}" name="presenter_national_number">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="firstName2">نام خانوادگی معرف* :</label>
+                                                            <input type="text" class="form-control" id="firstName2"
+                                                                   value="{{ presenter_last_name }}"
+                                                                   name="presenter_last_name">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="firstName2">شماره شناسنامه معرف :</label>
-                                                        <input placeholder="شماره شناسنامه" type="text"
-                                                               class="form-control" id="firstName2" value="{{ presenter_identification_number }}"
-                                                               name="presenter_identification_number">
+
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="location2">شماره تماس معرف* :</label>
+                                                            <input type="tel" class="form-control"
+                                                                   placeholder="شماره تماس را وارد کنید"
+                                                                   value="{{ presenter_phone_number }}"
+                                                                   name="presenter_phone_number">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <fieldset class="form-group">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="firstName2">کد ملی معرف* :</label>
+                                                            <input type="text" placeholder="کد ملی" class="form-control"
+                                                                   id="firstName2"
+                                                                   value="{{ presenter_national_number }}"
+                                                                   name="presenter_national_number">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="firstName2">شماره شناسنامه معرف :</label>
+                                                            <input placeholder="شماره شناسنامه" type="text"
+                                                                   class="form-control" id="firstName2"
+                                                                   value="{{ presenter_identification_number }}"
+                                                                   name="presenter_identification_number">
+                                                        </div>
+                                                    </div>
+                                                    <div style="margin-top: 27px" class="col-lg-6">
+                                                        <fieldset class="form-group">
                                                         <div class="custom-file">
                                                             <input type="file" class="custom-file-input"
                                                                    id="inputGroupFile01" name="presenter_document">
@@ -279,412 +303,450 @@
                                                                 تاییدیه متوفی</label>
                                                         </div>
                                                     </fieldset>
-                                                </div>
-                                            </div>
-
-                                        </fieldset>
-                                        <!-- Step 2 -->
-                                        <h6><i class="step-icon ft-file-text"></i>مشخصات محل دفن</h6>
-
-                                        <fieldset>
-                                            <div class="card-content">
-                                                <div class="card-body">
-                                                    <ul class="nav nav-tabs">
-
-
-                                                        <li class="nav-item dropdown">
-                                                            <a class="nav-link dropdown-toggle active"
-                                                               data-toggle="dropdown" href="#" role="button"
-                                                               aria-haspopup="true" aria-expanded="false">
-                                                                انتخاب محل دفن
-                                                            </a>
-                                                            <div class="dropdown-menu" x-placement="bottom-start"
-                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 50px, 0px);">
-                                                                <a class="dropdown-item" id="dropdown1-tab"
-                                                                   href="#dropdown1" data-toggle="tab"
-                                                                   aria-controls="dropdown1"
-                                                                   aria-expanded="true">اعزامی</a>
-                                                                <a class="dropdown-item active" id="dropdown2-tab"
-                                                                   href="#dropdown2" data-toggle="tab"
-                                                                   aria-controls="dropdown2" aria-expanded="true">فردوس
-                                                                    رضا</a>
-                                                            </div>
-                                                        </li>
-
-                                                    </ul>
-                                                    <div class="tab-content px-1 pt-1">
-
-                                                        <div class="tab-pane" id="dropdown1" role="tabpanel"
-                                                             aria-labelledby="dropdown1-tab" aria-expanded="false">
-                                                            <div class="form-group">
-                                                                <label for="location2"> انتخاب شهر :</label>
-                                                                <input type="text" class="form-control"
-                                                                   id="firstName2" value="{{ location }}" name="location">
-                                                            </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="firstName2">آدرس معرف :</label>
+                                                            <input type="text" placeholder="آدرس دقیق معرف را وارد کنید"
+                                                                   class="form-control" id="firstName2" value="{{ presenter_address }}" name="presenter_address">
                                                         </div>
-                                                        <div class="tab-pane active" id="dropdown2" role="tabpanel"
-                                                             aria-labelledby="dropdown2-tab" aria-expanded="false">
-                                                            <div class="row">
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="firstName2">کد قبر* :</label>
-                                                                        <input type="number" class="form-control"
-                                                                               id="firstName2" value="{{ code }}" name="code">
-                                                                    </div>
-                                                                </div>
+                                                    </div>
+                                                </div>
 
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="firstName2">بلوک* :</label>
-                                                                        <input type="number" class="form-control"
-                                                                               id="firstName2" value="{{ bloock }}" name="block">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="date2">ردیف* :</label>
-                                                                        <input type="number" class="form-control"
-                                                                               id="date2" value="{{ radif }}" name="radif">
-                                                                    </div>
-                                                                </div>
 
+                                            </fieldset>
+                                            <!-- Step 2 -->
+                                            <h6><i class="step-icon ft-file-text"></i>مشخصات محل دفن</h6>
+
+                                            <fieldset>
+                                                <div class="card-content">
+                                                    <div class="card-body">
+                                                        <ul class="nav nav-tabs">
+
+
+                                                            <li class="nav-item dropdown">
+                                                                <a class="nav-link dropdown-toggle active"
+                                                                   data-toggle="dropdown" href="#" role="button"
+                                                                   aria-haspopup="true" aria-expanded="false">
+                                                                    انتخاب محل دفن
+                                                                </a>
+                                                                <div class="dropdown-menu" x-placement="bottom-start"
+                                                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 50px, 0px);">
+                                                                    <a class="dropdown-item" id="dropdown1-tab"
+                                                                       href="#dropdown1" data-toggle="tab"
+                                                                       aria-controls="dropdown1"
+                                                                       aria-expanded="true">اعزامی</a>
+                                                                    <a class="dropdown-item active" id="dropdown2-tab"
+                                                                       href="#dropdown2" data-toggle="tab"
+                                                                       aria-controls="dropdown2" aria-expanded="true">فردوس
+                                                                        رضا</a>
+                                                                </div>
+                                                            </li>
+
+                                                        </ul>
+                                                        <div class="tab-content px-1 pt-1">
+
+                                                            <div class="tab-pane" id="dropdown1" role="tabpanel"
+                                                                 aria-labelledby="dropdown1-tab" aria-expanded="false">
+                                                                <div class="form-group">
+                                                                    <label for="location2"> انتخاب شهر :</label>
+                                                                    <input type="text" class="form-control"
+                                                                           id="firstName2" value="{{ location }}"
+                                                                           name="location">
+                                                                </div>
                                                             </div>
-                                                            <div class="row">
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="firstName2">شماره* :</label>
-                                                                        <input type="number" class="form-control"
-                                                                               id="firstName2" value="{{ number }}" name="number">
+                                                            <div class="tab-pane active" id="dropdown2" role="tabpanel"
+                                                                 aria-labelledby="dropdown2-tab" aria-expanded="false">
+                                                                <div class="row">
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <label for="firstName2">کد قبر* :</label>
+                                                                            <input type="number" class="form-control"
+                                                                                   id="firstName2" value="{{ code }}"
+                                                                                   name="code">
+                                                                        </div>
                                                                     </div>
+
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <label for="firstName2">بلوک* :</label>
+                                                                            <input type="number" class="form-control"
+                                                                                   id="firstName2" value="{{ bloock }}"
+                                                                                   name="block">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <label for="date2">ردیف* :</label>
+                                                                            <input type="number" class="form-control"
+                                                                                   id="date2" value="{{ radif }}"
+                                                                                   name="radif">
+                                                                        </div>
+                                                                    </div>
+
                                                                 </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="date2">طبقه* :</label>
-                                                                        <select class="custom-select form-control"
+                                                                <div class="row">
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <label for="firstName2">شماره* :</label>
+                                                                            <input type="number" class="form-control"
+                                                                                   id="firstName2" value="{{ number }}"
+                                                                                   name="number">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <label for="date2">طبقه* :</label>
+                                                                            <select class="custom-select form-control"
                                                                                     id="location2" name="floor">
-                                                                                <option {% if floor == 'OneFloor' %}selected{% endif %} value="OneFloor">طبقه
+                                                                                <option {% if floor == 'OneFloor' %}selected{% endif %}
+                                                                                        value="OneFloor">طبقه
                                                                                     اول
                                                                                 </option>
-                                                                                <option {% if floor == 'TwoFloor' %}selected{% endif %} value="TwoFloor">طبقه دوم
+                                                                                <option {% if floor == 'TwoFloor' %}selected{% endif %}
+                                                                                        value="TwoFloor">طبقه دوم
                                                                                 </option>
 
                                                                             </select>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="location2">نوع قبر :</label>
-                                                                        <select class="custom-select form-control"
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <label for="location2">نوع قبر :</label>
+                                                                            <select class="custom-select form-control"
                                                                                     id="location2" name="place_type">
 
-                                                                                <option {% if place_type == 'Celebrities' %}selected{% endif %} value="Celebrities">مشاهیر
+                                                                                <option {% if place_type == 'Celebrities' %}selected{% endif %}
+                                                                                        value="Celebrities">مشاهیر
                                                                                 </option>
-                                                                                <option {% if place_type == 'Normal' %}selected{% endif %} value="Normal">عادی
+                                                                                <option {% if place_type == 'Normal' %}selected{% endif %}
+                                                                                        value="Normal">عادی
                                                                                 </option>
 
                                                                             </select>
+                                                                        </div>
                                                                     </div>
+
+
                                                                 </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <label for="firstName2">عرض جغرافیایی
+                                                                                :</label>
+                                                                            <input type="number" class="form-control"
+                                                                                   id="firstName2"
+                                                                                   value="{{ latitude }}"
+                                                                                   name="latitude">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <label for="date2">طول جغرافیایی :</label>
+                                                                            <input type="number" class="form-control"
+                                                                                   id="date2" value="{{ longitude }}"
+                                                                                   name="longitude">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <label for="date2">مجوز دفن :</label>
+                                                                            <select class="custom-select form-control"
+                                                                                    title="تایید مجوز دفن به منزله تایید پرداخت هزینه قبر است."
+                                                                                    id="location2"
+                                                                                    name="license_status">
+                                                                                <option {% if license_status == 'CONFIRMED' %}selected{% endif %}
+                                                                                        value="CONFIRMED">تایید شده
+                                                                                </option>
+                                                                                <option {% if license_status == 'WAITING' %}selected{% endif %}
+                                                                                        value="WAITING">درحال بررسی
+                                                                                </option>
+
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="text-info">تایید مجوز دفن به منزله
+                                                                            تایید پرداخت هزینه قبر است.
+                                                                        </div>
+                                                                    </div>
 
 
+                                                                </div>
                                                             </div>
-                                                            <div class="row">
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="firstName2">عرض جغرافیایی :</label>
-                                                                        <input type="number" class="form-control"
-                                                                               id="firstName2" value="{{ latitude }}" name="latitude">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="date2">طول جغرافیایی :</label>
-                                                                        <input type="number" class="form-control"
-                                                                               id="date2" value="{{ longitude }}" name="longitude">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="date2">مجوز دفن :</label>
-                                                                        <select class="custom-select form-control" title="تایید مجوز دفن به منزله تایید پرداخت هزینه قبر است."
-                                                                                id="location2" name="license_status">
-                                                                            <option {% if license_status == 'CONFIRMED' %}selected{% endif %} value="CONFIRMED">تایید شده
-                                                                            </option>
-                                                                            <option {% if license_status == 'WAITING' %}selected{% endif %} value="WAITING">درحال بررسی
-                                                                            </option>
 
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="text-info">تایید مجوز دفن به منزله تایید پرداخت هزینه قبر است.</div>
-                                                                </div>
-
-
-                                                            </div>
                                                         </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </fieldset>
-
-                                        <!-- Step 3 -->
-                                        <h6><i class="step-icon ft-activity"></i>گواهی فوت</h6>
-                                        <fieldset>
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="firstName2">نام پزشک* :</label>
-                                                        <input type="text" class="form-control" id="firstName2" value="{{ doctor_first_name }}"
-                                                               name="doctor_first_name">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="firstName2">نام خانوادگی پزشک* :</label>
-                                                        <input type="text" class="form-control" id="firstName2" value="{{ doctor_last_name }}"
-                                                               name="doctor_last_name">
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="date2">شماره نظام پزشکی* :</label>
-                                                        <input type="number" class="form-control" id="date2" value="{{ medical_system_number }}"
-                                                               name="medical_system_number">
+                                            </fieldset>
+
+                                            <!-- Step 3 -->
+                                            <h6><i class="step-icon ft-activity"></i>گواهی فوت</h6>
+                                            <fieldset>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="firstName2">نام پزشک* :</label>
+                                                            <input type="text" class="form-control" id="firstName2"
+                                                                   value="{{ doctor_first_name }}"
+                                                                   name="doctor_first_name">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="location2">شماره گواهی فوت* :</label>
-                                                        <input type="number" class="form-control" id="location2" value="{{ death_certificate_number }}"
-                                                               name="death_certificate_number">
-
-
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="firstName2">نام خانوادگی پزشک* :</label>
+                                                            <input type="text" class="form-control" id="firstName2"
+                                                                   value="{{ doctor_last_name }}"
+                                                                   name="doctor_last_name">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="location2">تاریخ فوت* :</label>
-                                                        <input type="date" class="form-control" id="location2" value="{{ date_of_death }}"
-                                                               name="date_of_death">
 
-
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="date2">شماره نظام پزشکی* :</label>
+                                                            <input type="number" class="form-control" id="date2"
+                                                                   value="{{ medical_system_number }}"
+                                                                   name="medical_system_number">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="location2">تاییدیه :</label>
-                                                        <select class="custom-select form-control"
-                                                                id="location2"
-                                                                name="death_certificate_stats">
-                                                            <option {% if death_certificate_stats == 'Accepted' %}selected{% endif %} value="Accepted">تایید شده</option>
-                                                            <option {% if death_certificate_stats == 'UnAccepted' %}selected{% endif %} value="UnAccepted">در انتظار تایید</option>
-                                                        </select>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="location2">شماره گواهی فوت* :</label>
+                                                            <input type="number" class="form-control" id="location2"
+                                                                   value="{{ death_certificate_number }}"
+                                                                   name="death_certificate_number">
 
 
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="location2">علت فوت :</label>
-                                                        <textarea class="form-control" name="cause_death" id=""
-                                                                  cols="30" rows="10"
-                                                                  placeholder="لطفا علت فوت را شرح دهید">{{ cause_death }}</textarea>
-                                                        <button type="submit" style="position: absolute;
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="location2">تاریخ فوت* :</label>
+                                                            <input type="date" class="form-control" id="location2"
+                                                                   value="{{ date_of_death }}"
+                                                                   name="date_of_death">
+
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="location2">تاییدیه :</label>
+                                                            <select class="custom-select form-control"
+                                                                    id="location2"
+                                                                    name="death_certificate_stats">
+                                                                <option {% if death_certificate_stats == 'Accepted' %}selected{% endif %}
+                                                                        value="Accepted">تایید شده
+                                                                </option>
+                                                                <option {% if death_certificate_stats == 'UnAccepted' %}selected{% endif %}
+                                                                        value="UnAccepted">در انتظار تایید
+                                                                </option>
+                                                            </select>
+
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="location2">علت فوت :</label>
+                                                            <textarea class="form-control" name="cause_death" id=""
+                                                                      cols="30" rows="10"
+                                                                      placeholder="لطفا علت فوت را شرح دهید">{{ cause_death }}</textarea>
+                                                            <button type="submit" style="position: absolute;
     top: 244px;
     left: 90px; z-index: 100000;" class="btn btn-primary"> ثبت اطلاعات
-                                                        </button>
+                                                            </button>
 
+                                                        </div>
                                                     </div>
+
+
                                                 </div>
+                                            </fieldset>
+                                            <style>
+                                                #steps-uid-0 > div.actions.clearfix > ul > li:nth-child(3) > a {
+                                                    display: none;
+                                                }
+                                            </style>
+                                            <!-- Step 4 -->
 
-
-                                            </div>
-                                        </fieldset>
-                                        <style>
-                                            #steps-uid-0 > div.actions.clearfix > ul > li:nth-child(3) > a {
-                                                display: none;
-                                            }
-                                        </style>
-                                        <!-- Step 4 -->
-
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
+            </div>
         </div>
     </div>
-</div>
-<!-- END: Content-->
+    <!-- END: Content-->
 
 
-<!-- BEGIN: Customizer-->
-<div class="customizer border-left-blue-grey border-left-lighten-4 d-none d-xl-block"><a class="customizer-close"
-                                                                                         href="#"><i
-        class="ft-x font-medium-3"></i></a><a class="customizer-toggle bg-primary box-shadow-3" href="#"
-                                              id="customizer-toggle-setting"><i
-        class="ft-settings font-medium-3 spinner white"></i></a>
-    <div class="customizer-content p-2">
-        <h5 class="mt-1 mb-1 text-bold-500">تنظیمات رنگ ناوبری</h5>
-        <div class="navbar-color-options clearfix">
-            <div class="gradient-colors mb-1 clearfix">
-                <div class="bg-gradient-x-purple-blue navbar-color-option" data-bg="bg-gradient-x-purple-blue"
-                     title="bg-gradient-x-purple-blue"></div>
-                <div class="bg-gradient-x-purple-red navbar-color-option" data-bg="bg-gradient-x-purple-red"
-                     title="bg-gradient-x-purple-red"></div>
-                <div class="bg-gradient-x-blue-green navbar-color-option" data-bg="bg-gradient-x-blue-green"
-                     title="bg-gradient-x-blue-green"></div>
-                <div class="bg-gradient-x-orange-yellow navbar-color-option" data-bg="bg-gradient-x-orange-yellow"
-                     title="bg-gradient-x-orange-yellow"></div>
-                <div class="bg-gradient-x-blue-cyan navbar-color-option" data-bg="bg-gradient-x-blue-cyan"
-                     title="bg-gradient-x-blue-cyan"></div>
-                <div class="bg-gradient-x-red-pink navbar-color-option" data-bg="bg-gradient-x-red-pink"
-                     title="bg-gradient-x-red-pink"></div>
-            </div>
-            <div class="solid-colors clearfix">
-                <div class="bg-primary navbar-color-option" data-bg="bg-primary" title="اولیه"></div>
-                <div class="bg-success navbar-color-option" data-bg="bg-success" title="موفقیت"></div>
-                <div class="bg-info navbar-color-option" data-bg="bg-info" title="اطلاعات"></div>
-                <div class="bg-warning navbar-color-option" data-bg="bg-warning" title="هشدار"></div>
-                <div class="bg-danger navbar-color-option" data-bg="bg-danger" title="خطر"></div>
-                <div class="bg-blue navbar-color-option" data-bg="bg-blue" title="آبی"></div>
-            </div>
-        </div>
-
-        <hr>
-
-        <h5 class="my-1 text-bold-500">گزینه های طرح بندی</h5>
-        <div class="row">
-            <div class="col-12">
-                <div class="d-inline-block custom-control custom-radio mb-1 col-4">
-                    <input type="radio" class="custom-control-input bg-primary" name="layouts" id="default-layout"
-                           checked>
-                    <label class="custom-control-label" for="default-layout">پیش فرض</label>
+    <!-- BEGIN: Customizer-->
+    <div class="customizer border-left-blue-grey border-left-lighten-4 d-none d-xl-block"><a class="customizer-close"
+                                                                                             href="#"><i
+            class="ft-x font-medium-3"></i></a><a class="customizer-toggle bg-primary box-shadow-3" href="#"
+                                                  id="customizer-toggle-setting"><i
+            class="ft-settings font-medium-3 spinner white"></i></a>
+        <div class="customizer-content p-2">
+            <h5 class="mt-1 mb-1 text-bold-500">تنظیمات رنگ ناوبری</h5>
+            <div class="navbar-color-options clearfix">
+                <div class="gradient-colors mb-1 clearfix">
+                    <div class="bg-gradient-x-purple-blue navbar-color-option" data-bg="bg-gradient-x-purple-blue"
+                         title="bg-gradient-x-purple-blue"></div>
+                    <div class="bg-gradient-x-purple-red navbar-color-option" data-bg="bg-gradient-x-purple-red"
+                         title="bg-gradient-x-purple-red"></div>
+                    <div class="bg-gradient-x-blue-green navbar-color-option" data-bg="bg-gradient-x-blue-green"
+                         title="bg-gradient-x-blue-green"></div>
+                    <div class="bg-gradient-x-orange-yellow navbar-color-option" data-bg="bg-gradient-x-orange-yellow"
+                         title="bg-gradient-x-orange-yellow"></div>
+                    <div class="bg-gradient-x-blue-cyan navbar-color-option" data-bg="bg-gradient-x-blue-cyan"
+                         title="bg-gradient-x-blue-cyan"></div>
+                    <div class="bg-gradient-x-red-pink navbar-color-option" data-bg="bg-gradient-x-red-pink"
+                         title="bg-gradient-x-red-pink"></div>
                 </div>
-                <div class="d-inline-block custom-control custom-radio mb-1 col-4">
-                    <input type="radio" class="custom-control-input bg-primary" name="layouts" id="fixed-layout">
-                    <label class="custom-control-label" for="fixed-layout">ثابت</label>
-                </div>
-                <div class="d-inline-block custom-control custom-radio mb-1 col-4">
-                    <input type="radio" class="custom-control-input bg-primary" name="layouts" id="static-layout">
-                    <label class="custom-control-label" for="static-layout">استاتیک</label>
-                </div>
-                <div class="d-inline-block custom-control custom-radio mb-1">
-                    <input type="radio" class="custom-control-input bg-primary" name="layouts" id="boxed-layout">
-                    <label class="custom-control-label" for="boxed-layout">جعبه ای</label>
+                <div class="solid-colors clearfix">
+                    <div class="bg-primary navbar-color-option" data-bg="bg-primary" title="اولیه"></div>
+                    <div class="bg-success navbar-color-option" data-bg="bg-success" title="موفقیت"></div>
+                    <div class="bg-info navbar-color-option" data-bg="bg-info" title="اطلاعات"></div>
+                    <div class="bg-warning navbar-color-option" data-bg="bg-warning" title="هشدار"></div>
+                    <div class="bg-danger navbar-color-option" data-bg="bg-danger" title="خطر"></div>
+                    <div class="bg-blue navbar-color-option" data-bg="bg-blue" title="آبی"></div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="d-inline-block custom-control custom-checkbox mb-1">
-                    <input type="checkbox" class="custom-control-input bg-primary" name="right-side-icons"
-                           id="right-side-icons">
-                    <label class="custom-control-label" for="right-side-icons">آیکون سمت راست</label>
+
+            <hr>
+
+            <h5 class="my-1 text-bold-500">گزینه های طرح بندی</h5>
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-inline-block custom-control custom-radio mb-1 col-4">
+                        <input type="radio" class="custom-control-input bg-primary" name="layouts" id="default-layout"
+                               checked>
+                        <label class="custom-control-label" for="default-layout">پیش فرض</label>
+                    </div>
+                    <div class="d-inline-block custom-control custom-radio mb-1 col-4">
+                        <input type="radio" class="custom-control-input bg-primary" name="layouts" id="fixed-layout">
+                        <label class="custom-control-label" for="fixed-layout">ثابت</label>
+                    </div>
+                    <div class="d-inline-block custom-control custom-radio mb-1 col-4">
+                        <input type="radio" class="custom-control-input bg-primary" name="layouts" id="static-layout">
+                        <label class="custom-control-label" for="static-layout">استاتیک</label>
+                    </div>
+                    <div class="d-inline-block custom-control custom-radio mb-1">
+                        <input type="radio" class="custom-control-input bg-primary" name="layouts" id="boxed-layout">
+                        <label class="custom-control-label" for="boxed-layout">جعبه ای</label>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <hr>
-
-        <h5 class="mt-1 mb-1 text-bold-500">پس زمینه منوی نوار کناری</h5>
-        <!-- <div class="sidebar-color-options clearfix">
-            <div class="bg-black sidebar-color-option" data-sidebar="menu-dark" title="مشکی"></div>
-            <div class="bg-white sidebar-color-option" data-sidebar="menu-light" title="سفید"></div>
-        </div> -->
-        <div class="row sidebar-color-options ml-0">
-            <label for="sidebar-color-option" class="card-title font-medium-2 mr-2">حالت سفید</label>
-            <div class="text-center mb-1">
-                <input type="checkbox" id="sidebar-color-option" class="switchery" data-size="xs"/>
-            </div>
-            <label for="sidebar-color-option" class="card-title font-medium-2 ml-2">حالت تاریک</label>
-        </div>
-
-        <hr>
-
-        <label for="collapsed-sidebar" class="font-medium-2">سقوط منو</label>
-        <div class="float-right">
-            <input type="checkbox" id="collapsed-sidebar" class="switchery" data-size="xs"/>
-        </div>
-
-        <hr>
-
-        <!--Sidebar Background Image Starts-->
-        <h5 class="mt-1 mb-1 text-bold-500">تصویر پس زمینه نوار کناری</h5>
-        <div class="cz-bg-image row">
-            <div class="col mb-3">
-                <img src="../../../app-assets/images/backgrounds/04.jpg" class="rounded sidiebar-bg-img" width="50"
-                     height="100" alt="background image">
-            </div>
-            <div class="col mb-3">
-                <img src="../../../app-assets/images/backgrounds/01.jpg" class="rounded sidiebar-bg-img" width="50"
-                     height="100" alt="background image">
-            </div>
-            <div class="col mb-3">
-                <img src="../../../app-assets/images/backgrounds/02.jpg" class="rounded sidiebar-bg-img" width="50"
-                     height="100" alt="background image">
-            </div>
-            <div class="col mb-3">
-                <img src="../../../app-assets/images/backgrounds/05.jpg" class="rounded sidiebar-bg-img" width="50"
-                     height="100" alt="background image">
-            </div>
-        </div>
-        <!--Sidebar Background Image Ends-->
-
-        <!--Sidebar BG Image Toggle Starts-->
-        <div class="sidebar-image-visibility">
-            <div class="row ml-0">
-                <label for="toggle-sidebar-bg-img" class="card-title font-medium-2 mr-2">مخفی کردن تصویر</label>
-                <div class="text-center mb-1">
-                    <input type="checkbox" id="toggle-sidebar-bg-img" class="switchery" data-size="xs" checked/>
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-inline-block custom-control custom-checkbox mb-1">
+                        <input type="checkbox" class="custom-control-input bg-primary" name="right-side-icons"
+                               id="right-side-icons">
+                        <label class="custom-control-label" for="right-side-icons">آیکون سمت راست</label>
+                    </div>
                 </div>
-                <label for="toggle-sidebar-bg-img" class="card-title font-medium-2 ml-2">نمایش تصویر</label>
             </div>
-        </div>
-        <!--Sidebar BG Image Toggle Ends-->
 
-        <hr>
+            <hr>
 
-        <div class="row mb-2">
-            <!-- <div class="col">
-                <a href="https://www.rtl-theme.com/author/barat/" class="btn btn-danger btn-block box-shadow-1" target="_blank">اکنون بخرید</a>
+            <h5 class="mt-1 mb-1 text-bold-500">پس زمینه منوی نوار کناری</h5>
+            <!-- <div class="sidebar-color-options clearfix">
+                <div class="bg-black sidebar-color-option" data-sidebar="menu-dark" title="مشکی"></div>
+                <div class="bg-white sidebar-color-option" data-sidebar="menu-light" title="سفید"></div>
             </div> -->
-            <div class="col">
-                <a href="https://www.rtl-theme.com/author/barat/" class="btn btn-primary btn-block box-shadow-1"
-                   target="_blank">تم های بیشتر</a>
+            <div class="row sidebar-color-options ml-0">
+                <label for="sidebar-color-option" class="card-title font-medium-2 mr-2">حالت سفید</label>
+                <div class="text-center mb-1">
+                    <input type="checkbox" id="sidebar-color-option" class="switchery" data-size="xs"/>
+                </div>
+                <label for="sidebar-color-option" class="card-title font-medium-2 ml-2">حالت تاریک</label>
+            </div>
+
+            <hr>
+
+            <label for="collapsed-sidebar" class="font-medium-2">سقوط منو</label>
+            <div class="float-right">
+                <input type="checkbox" id="collapsed-sidebar" class="switchery" data-size="xs"/>
+            </div>
+
+            <hr>
+
+            <!--Sidebar Background Image Starts-->
+            <h5 class="mt-1 mb-1 text-bold-500">تصویر پس زمینه نوار کناری</h5>
+            <div class="cz-bg-image row">
+                <div class="col mb-3">
+                    <img src="../../../app-assets/images/backgrounds/04.jpg" class="rounded sidiebar-bg-img" width="50"
+                         height="100" alt="background image">
+                </div>
+                <div class="col mb-3">
+                    <img src="../../../app-assets/images/backgrounds/01.jpg" class="rounded sidiebar-bg-img" width="50"
+                         height="100" alt="background image">
+                </div>
+                <div class="col mb-3">
+                    <img src="../../../app-assets/images/backgrounds/02.jpg" class="rounded sidiebar-bg-img" width="50"
+                         height="100" alt="background image">
+                </div>
+                <div class="col mb-3">
+                    <img src="../../../app-assets/images/backgrounds/05.jpg" class="rounded sidiebar-bg-img" width="50"
+                         height="100" alt="background image">
+                </div>
+            </div>
+            <!--Sidebar Background Image Ends-->
+
+            <!--Sidebar BG Image Toggle Starts-->
+            <div class="sidebar-image-visibility">
+                <div class="row ml-0">
+                    <label for="toggle-sidebar-bg-img" class="card-title font-medium-2 mr-2">مخفی کردن تصویر</label>
+                    <div class="text-center mb-1">
+                        <input type="checkbox" id="toggle-sidebar-bg-img" class="switchery" data-size="xs" checked/>
+                    </div>
+                    <label for="toggle-sidebar-bg-img" class="card-title font-medium-2 ml-2">نمایش تصویر</label>
+                </div>
+            </div>
+            <!--Sidebar BG Image Toggle Ends-->
+
+            <hr>
+
+            <div class="row mb-2">
+                <!-- <div class="col">
+                    <a href="https://www.rtl-theme.com/author/barat/" class="btn btn-danger btn-block box-shadow-1" target="_blank">اکنون بخرید</a>
+                </div> -->
+                <div class="col">
+                    <a href="https://www.rtl-theme.com/author/barat/" class="btn btn-primary btn-block box-shadow-1"
+                       target="_blank">تم های بیشتر</a>
+                </div>
+            </div>
+            <div class="text-center">
+                <button id="twitter" class="btn btn-social-icon btn-twitter sharrre mr-1"><i class="la la-twitter"></i>
+                </button>
+                <button id="facebook" class="btn btn-social-icon btn-facebook sharrre mr-1"><i
+                        class="la la-facebook"></i>
+                </button>
+                <button id="google" class="btn btn-social-icon btn-google sharrre"><i class="la la-google"></i></button>
             </div>
         </div>
-        <div class="text-center">
-            <button id="twitter" class="btn btn-social-icon btn-twitter sharrre mr-1"><i class="la la-twitter"></i>
-            </button>
-            <button id="facebook" class="btn btn-social-icon btn-facebook sharrre mr-1"><i class="la la-facebook"></i>
-            </button>
-            <button id="google" class="btn btn-social-icon btn-google sharrre"><i class="la la-google"></i></button>
+    </div>
+    <!-- End: Customizer-->
+
+
+    <!-- BEGIN: Footer-->
+    <footer class="footer footer-static footer-light navbar-border navbar-shadow">
+        <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span
+                class="float-md-left d-block d-md-inline-block">2019  &copy; کپی رایت: تمامی حقوق این قالب محفوظ است. طراحی و توسعه توسط <a
+                class="text-bold-800 grey darken-2" href="https://www.rtl-theme.com/author/barat/" target="_blank">Barat Hadian</a></span>
+            <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
+                <li class="list-inline-item"><a class="my-1" href="https://www.rtl-theme.com/author/barat/"
+                                                target="_blank">
+                    قالب های بیشتر</a></li>
+                <li class="list-inline-item"><a class="my-1" href="https://www.rtl-theme.com/user-profile/barat/"
+                                                target="_blank"> پشتیبانی</a></li>
+            </ul>
         </div>
-    </div>
-</div>
-<!-- End: Customizer-->
-
-
-<!-- BEGIN: Footer-->
-<footer class="footer footer-static footer-light navbar-border navbar-shadow">
-    <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span
-            class="float-md-left d-block d-md-inline-block">2019  &copy; کپی رایت: تمامی حقوق این قالب محفوظ است. طراحی و توسعه توسط <a
-            class="text-bold-800 grey darken-2" href="https://www.rtl-theme.com/author/barat/" target="_blank">Barat Hadian</a></span>
-        <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
-            <li class="list-inline-item"><a class="my-1" href="https://www.rtl-theme.com/author/barat/" target="_blank">
-                قالب های بیشتر</a></li>
-            <li class="list-inline-item"><a class="my-1" href="https://www.rtl-theme.com/user-profile/barat/"
-                                            target="_blank"> پشتیبانی</a></li>
-        </ul>
-    </div>
-</footer>
-<!-- END: Footer-->
+    </footer>
+    <!-- END: Footer-->
 
 
 

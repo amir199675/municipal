@@ -17,6 +17,7 @@ class Presenter(models.Model):
 	national_number = models.CharField(max_length=11, unique=True, verbose_name='شماره ملی ')
 	identification_number = models.CharField(max_length=11, null=True, blank=True, verbose_name='شماره شناسنامه ')
 	phone_number = models.CharField(max_length=11, unique=True, verbose_name='شماره تماس ')
+	address = models.TextField(null=True,blank=True,verbose_name='آدرس معرف ')
 	user_id = models.ForeignKey(MyUser, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name='کاربر ')
 
 	class Meta:
