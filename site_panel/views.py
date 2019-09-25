@@ -906,7 +906,7 @@ def Edit_Deceased(request, id):
 			select_deceased.sex = sex
 			select_deceased.bio = bio
 			if presenter_national_number != '':
-				if len(presenter_national_number)!= 10:
+				if len(presenter_national_number) == 10:
 					if presenter_last_name != '' or presenter_first_name != '':
 						buyer = None
 						try:
