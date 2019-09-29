@@ -6,6 +6,7 @@ from datetime import datetime
 from jdatetime import JalaliToGregorian, GregorianToJalali
 
 
+
 def Index(request):
 	if request.user.is_authenticated and request.user.is_staff:
 
@@ -268,8 +269,7 @@ def Quick_Deceased(request):
 				license.picture = picture
 				license.license_status = 'CONFIRMED'
 				license.save()
-				place_service = Place_Service.objects.create(deceased_id=deceased, place_id=place, buyer_id=buyer,
-															 payment_status='PAID')
+
 
 			death_certificate = Death_Certificate.objects.get(deceased_id=deceased)
 
