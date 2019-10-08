@@ -83,8 +83,8 @@
                                                                   href="#"><i class="ft-menu font-large-1"></i></a></li>
             <li class="nav-item"><a class="navbar-brand" href="index.html"><img class="brand-logo"
                                                                                 alt="creaative admin logo"
-                                                                                src="{% static 'admin-panel-static/app-assets/images/logo/logo.png' %}">
-                <h3 class="brand-text">آفتاب پرست</h3></a></li>
+                                                                                src="{% static 'images/logo.png' %}">
+                <h3 class="brand-text">مدیریت آرامستان</h3></a></li>
             <li class="nav-item d-md-none"><a class="nav-link open-navbar-container" data-toggle="collapse"
                                               data-target="#navbar-mobile"><i class="la la-ellipsis-v"></i></a></li>
         </ul>
@@ -302,13 +302,10 @@
                     </li>
                     <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link"
                                                                    href="#" data-toggle="dropdown"> <span
-                            class="avatar avatar-online"><img
-                            src="{% static 'images/login.png' %}" alt="avatar"></span></a>
+                            class="nav-link nav-link-label"><i class="ficon ft-user"> </i></span></a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="arrow_box_right"><a class="dropdown-item" href="#"><span
-                                    class="avatar avatar-online"><img
-                                    src="{% static 'images/login.png' %}" alt="avatar"><span
-                                    class="user-name text-bold-700 ml-1">برات هادیان</span></span></a>
+                                    class="avatar avatar-online"><span class="user-name text-bold-700 ml-1">{{ request.user.get_full_name }}</span></span></a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="user-profile.html"><i class="ft-user"></i> ویرایش مشخصات</a><a
                                         class="dropdown-item" href="email-application.html"><i class="ft-mail"></i>
@@ -512,22 +509,7 @@
 </div>
 <!-- End: Customizer-->
 
-
-<!-- BEGIN: Footer-->
-<footer class="footer footer-static footer-light navbar-border navbar-shadow">
-    <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span
-            class="float-md-left d-block d-md-inline-block">2019  &copy; کپی رایت: تمامی حقوق این قالب محفوظ است. طراحی و توسعه توسط <a
-            class="text-bold-800 grey darken-2" href="https://www.rtl-theme.com/author/barat/" target="_blank">Barat Hadian</a></span>
-        <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
-            <li class="list-inline-item"><a class="my-1" href="https://www.rtl-theme.com/author/barat/" target="_blank">
-                قالب های بیشتر</a></li>
-            <li class="list-inline-item"><a class="my-1" href="https://www.rtl-theme.com/user-profile/barat/"
-                                            target="_blank"> پشتیبانی</a></li>
-        </ul>
-    </div>
-</footer>
-<!-- END: Footer-->
-
+{% include 'admin-panel/partial/footer.html' %}
 <!-- BEGIN: Vendor JS-->
 <script src="{% static 'admin-panel-static/app-assets/vendors/js/vendors.min.js' %}"
         type="text/javascript"></script>

@@ -1,12 +1,14 @@
+{% load static %}
 <!-- BEGIN: Main Menu-->
+
 <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true"
      data-img="../../../app-assets/images/backgrounds/04.jpg">
     <div class="navbar-header">
         <ul class="nav navbar-nav flex-row position-relative">
             <li class="nav-item mr-auto"><a class="navbar-brand" href="index.html"><img class="brand-logo"
                                                                                         alt="Chameleon admin logo"
-                                                                                        src="../../../app-assets/images/logo/logo.png"/>
-                <h3 class="brand-text">آفتاب پرست</h3></a></li>
+                                                                                        src="{% static 'images/logo.png' %}"/>
+                <h3 class="brand-text">مدیریت آرامستان</h3></a></li>
             <li class="nav-item d-none d-md-block nav-toggle"><a class="nav-link modern-nav-toggle pr-0"
                                                                  data-toggle="collapse"><i
                     class="toggle-icon ft-disc font-medium-3" data-ticon="ft-disc"></i></a></li>
@@ -16,42 +18,39 @@
     <div class="navigation-background"></div>
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class=" nav-item"><a href=""><i class="ft-home"></i><span class="menu-title" data-i18n="">اضافه کردن مرده</span></a>
+            <li class=" nav-item"><a href=""><i class="ft-more-horizontal"></i><span class="menu-title" data-i18n="">متوفی</span></a>
                 <ul class="menu-content">
-                    <li><a class="menu-item" href="{% url 'Site_Panel:quick_new_deceased' %}">اضافه کردن مرده قدیمی</a>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:quick_new_deceased' %}">اضافه کردن متوفی قدیمی</a>
                     </li>
-                    <li><a class="menu-item" href="{% url 'Site_Panel:online_new_deceased' %}">اضافه کردن مرده های
+                    <li><a class="menu-item" href="{% url 'Site_Panel:online_new_deceased' %}">اضافه کردن متوفی
                         جدید</a>
                     </li>
-                </ul>
-            </li>
-            <li class=" nav-item"><a href="{% url 'Site_Panel:deceased_list' %}"><i class="ft-layers"></i><span
+                    <li><a href="{% url 'Site_Panel:deceased_list' %}"><i></i><span
                     class="menu-title" data-i18n="">لیست مرده ها</span></a>
 
             </li>
-            <li class=" nav-item"><a href="{% url 'Site_Panel:add_place' %}"><i class="ft-zap"></i><span
-                    class="menu-title" data-i18n="">اضافه کردن قبر جدید</span></a>
-
+                </ul>
             </li>
 
-            <li class=" nav-item"><a href="{% url 'Site_Panel:places_list' %}"><i class="ft-monitor"></i><span
-                    class="menu-title" data-i18n="">لیست قبر ها</span></a>
-
+            <li class=" nav-item"><a href=""><i class="ft-layers"></i><span class="menu-title" data-i18n="">قبور</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="{% url 'Site_Panel:add_place' %}">اضافه کردن قبر جدید</a>
+                    </li>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:places_list' %}">لیست قبور</a>
+                    </li>
+                </ul>
             </li>
-            <li class=" nav-item"><a href="#"><i class="ft-layout"></i><span class="menu-title" data-i18n="">اضافه کردن خدمات</span><span
-                    class="badge badge badge-pill badge-danger float-right mr-2">5</span></a>
 
-            </li>
-            <li class=" nav-item"><a href="#"><i class="ft-zap"></i><span class="menu-title"
-                                                                          data-i18n="">امور مالی</span></a>
 
+            <li class=" nav-item"><a href=""><i class="ft-bar-chart"></i><span class="menu-title" data-i18n="">اخبار</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="{% url 'Site_Panel:add_news' %}">اضافه کردن اخبار</a>
+                    </li>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:news-list' %}">لیست اخبار</a>
+                    </li>
+                </ul>
             </li>
-            <li class=" nav-item"><a href="{% url 'Site_Panel:add_news' %}"><i class="ft-zap"></i><span class="menu-title" data-i18n="">اضافه کردن اخبار</span></a>
 
-            </li>
-            <li class=" nav-item"><a href="{% url 'Site_Panel:news-list' %}"><i class="ft-zap"></i><span class="menu-title" data-i18n="">لیست اخبار</span></a>
-
-            </li>
 
 
         </ul>

@@ -11,6 +11,7 @@ urlpatterns = [
 	path('about-us/', About_Us, name='about_us'),
 	path('search/', Search, name='search'),
 	path('all-news/', All_News, name='all_news'),
+	path('contact', Contact, name='contact'),
 
 
 	path('api/v1/chanters/', api_views.APIListMadah.as_view()),

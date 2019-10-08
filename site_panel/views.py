@@ -668,10 +668,11 @@ def Deceased_List(request):
 
 def Edit_Deceased(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
-
+		buyer = None
 		select_deceased = Deceased.objects.get(pk=id)
 		license = License.objects.get(deceased_id=select_deceased)
 		place_late = license.place_id
+		service_late = None
 		try:
 			service_late = Place_Service.objects.get(place_id=place_late)
 		except:
@@ -736,8 +737,10 @@ def Edit_Deceased(request, id):
 			presenter_address = request.POST['presenter_address']
 			try:
 				picture = request.FILES['presenter_document']
+				pic = True
 			except:
 				picture = None
+				pic = False
 
 			license_status = request.POST['license_status']
 
@@ -961,7 +964,8 @@ def Edit_Deceased(request, id):
 				license = License.objects.get(deceased_id=select_deceased)
 				license.move_status = 'SEND-OUT'
 				license.city_name = location
-				license.picture = picture
+				if pic :
+					license.picture = picture
 				license.place_id = None
 				license.license_status = license_status
 				try:
@@ -977,7 +981,8 @@ def Edit_Deceased(request, id):
 				license = License.objects.get(deceased_id=select_deceased)
 				license.move_status = 'FERDOS-REZA'
 				license.place_id = place
-				license.picture = picture
+				if pic:
+					license.picture = picture
 				license.city_name = None
 				license.license_status = license_status
 				license.save()
@@ -1344,4 +1349,42 @@ def Edit_News(request, id):
 		return render(request, 'admin-panel/edit-news-info.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/edit-news-info/')
+#
+# def  Print_Deceased_info(request,id):
+# 	from shahrdari import utils
+# 	deceased = Deceased.objects.get(id=id)
+# 	license = License.objects.get(deceased_id=deceased)
+# 	death_certificate = Death_Certificate.objects.get(deceased_id=deceased)
+# 	context = {
+# 		'death':death_certificate,
+# 		'license':license,
+# 		'deceased':deceased
+# 	}
+#
+# 	pdf = utils.render_to_pdf('admin-panel/forprint.html',context)
+# 	return HttpResponse(pdf, content_type='application/pdf')
 
+def Print_Deceased_info(request, id):
+	from io import BytesIO  # A stream implementation using an in-memory bytes buffer
+	# It inherits BufferIOBase
+
+	from django.http import HttpResponse
+	from django.template.loader import get_template
+
+	# pisa is a html2pdf converter using the ReportLab Toolkit,
+	# the HTML5lib and pyPdf.
+
+	from xhtml2pdf import pisa
+	from  io import StringIO ,BytesIO
+
+	template = get_template('admin-panel/forprint.html')
+	context = {
+
+	}
+	html = template.render(context)
+	result =  BytesIO()
+
+	pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")),result)
+	if not pdf.err:
+		return HttpResponse(result.getvalue(), content_type='application/pdf; encoding="utf-8"')
+	return HttpResponse('We had some errors<pre>%s</pre>' )

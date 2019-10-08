@@ -66,4 +66,19 @@ class Slider(models.Model):
 	def __str__(self):
 		return self.small_text[:32] + ' - ' + self.bold_text[:32]
 
+class Message(models.Model):
+	STATUS = (
+		('Read', 'خوانده شد'),
+		('UnRead', 'خوانده نشده'),
+	)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	email = models.EmailField()
+	first_name = models.CharField(max_length=128)
+	last_name = models.CharField(max_length=128)
+	subject = models.CharField(max_length=128)
+	content = models.TextField()
+	status = models.CharField(max_length=32,choices=STATUS,default='UnRead')
 
+	def __str__(self):
+		return self.email + self.subject

@@ -1,0 +1,220 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+{#    <link rel="stylesheet" href="{% static 'admin-panel-static/assets/css/forprint.css' %}">#}
+    <style>body{
+    direction: rtl;
+    padding: 100px;
+}
+.an-logo img {
+    width: 14%;
+    text-align: right;
+}
+.an-logo {
+    width: 100%;
+    text-align: right;
+}
+.an-adress-phone{
+    float: left;
+    width: 80%;
+}
+.an-first-col{
+    width: 50%;
+    float: right;
+}
+.an-all-col{
+    width: 100%;
+}
+.an-secound-col{
+    width: 50%;
+    float: left;
+    margin-top: 45px;
+}
+hr{
+    width: 100%;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+<section id="section-one">
+    <div class="an-logo">
+{#        <img src="{% static 'images/WhatsApp Image 2019-09-30 at 00.53.42.jpeg' %}" alt="">#}
+        <div class="an-adress-phone">
+        <h4>نشانی:دامغان سازمان آرامستان بهشت زهرا دامغان</h4>
+        <h5>تلفن:023-35646789</h5>
+        </div>
+
+    </div>
+</section>
+<hr>
+<section id="section-two">
+    <div class="an-all-col">
+    <div class="an-first-col">
+    <h1>مشخصات متوفی</h1>
+    <h3>نوع جنازه : <span>عادی</span></h3>
+
+        <h3>نام : <span>عادی</span></h3>
+
+        <h3>نام خانوادگی  : <span>عادی</span></h3>
+
+        <h3>نام پدر : <span>عادی</span></h3>
+
+        <h3>نام مادر : <span>عادی</span></h3>
+
+        <h3>جنسیت : <span>عادی</span></h3>
+
+        <h3>شماره شناسنامه : <span>عادی</span></h3>
+
+        <h3>تاریخ صدور : <span>عادی</span></h3>
+    </div>
+    <div class="an-secound-col">
+
+        <h3>وضعیت جنازه : <span>عادی</span></h3>
+
+        <h3>تاریخ تولد : <span>عادی</span></h3>
+
+        <h3>محل تولد  : <span>عادی</span></h3>
+
+        <h3>کد ملی : <span>عادی</span></h3>
+
+        <h3>آدرس : <span>عادی</span></h3>
+
+        <h3>معرف : <span>عادی</span></h3>
+
+        <h3>نام و نام خانوادگی معرف : <span>عادی</span></h3>
+
+    </div>
+    </div>
+</section>
+<hr>
+<section id="section-tree">
+    <div class="an-first-col">
+        <h1>مشخصات محل دفن</h1>
+        <h3>نوع قبر : <span>عادی</span></h3>
+
+        <h3>کد قبر : <span>عادی</span></h3>
+
+        <h3>بلوک  : <span>عادی</span></h3>
+
+        <h3>ردیف : <span>عادی</span></h3>
+
+        <h3>قطعه : <span>عادی</span></h3>
+
+        <h3>شماره : <span>عادی</span></h3>
+
+        <h3>طبقه : <span>عادی</span></h3>
+
+    </div>
+</section>
+<hr>
+<section id="section-four">
+    <div class="an-all-col">
+        <div class="an-first-col">
+            <h1>گواهی فوت</h1>
+            <h3>نام پزشک : <span>عادی</span></h3>
+
+            <h3>شماره نظام پزشکی : <span>عادی</span></h3>
+
+            <h3>شماره گواهی فوت  : <span>عادی</span></h3>
+
+
+        </div>
+        <div class="an-secound-col">
+
+            <h3>علت فوت : <span>عادی</span></h3>
+
+            <h3>تاریخ فوت : <span>عادی</span></h3>
+
+
+
+        </div>
+    </div>
+</section>
+<hr>
+<section id="section-five">
+    <div class="an-all-col">
+        <div class="an-first-col">
+            <h1>اطلاعات مالی</h1>
+            <h3>لیست خدمات : </h3>
+
+            <table style="width:70%">
+                <tr>
+                    <th>نام خدمات</th>
+                    <th>تاریخ</th>
+                    <th>قیمت</th>
+                </tr>
+                <tr>
+                    <td>فلان</td>
+                    <td>112321</td>
+                    <td>21313 تومان</td>
+                </tr>
+                <tr>
+                    <td>فلان</td>
+                    <td>112321</td>
+                    <td>21313 تومان</td>
+                </tr>
+            </table>
+
+
+        </div>
+        <div class="an-secound-col">
+
+            <h3>هزینه کل خدمات : <span>1232434</span></h3>
+
+
+            <h3>مبلغ قابل پرداخت : <span>....</span></h3>
+            <h3>تاریخ پرداخت : <span>....</span></h3>
+            <h3>شماره فیش : <span>45654</span></h3>
+
+
+
+        </div>
+    </div>
+</section>
+<hr>
+<section id="section-six">
+    <div class="an-all-col">
+        <div class="an-first-col">
+            <h1>جزییات</h1>
+            <h3>مسیول امور مالی : <span>عادی</span></h3>
+
+            <h3>مهر و امضای امور مالی : <span></span></h3>
+
+            <h3>تاریخ  : <span>...</span></h3>
+
+
+        </div>
+        <div class="an-secound-col">
+
+            <h3>نام کاربر : <span>عادی</span></h3>
+
+            <h3>مهر و امضای کاربر : <span></span></h3>
+            <h3>تاریخ صدور فیش : <span>19 شهریور سال 1398</span></h3>
+
+
+
+        </div>
+    </div>
+</section>
+
+</body>
+
+</html>

@@ -7,4 +7,5 @@ admin.site.register(New)
 admin.site.register(Hadith)
 admin.site.register(Slider)
 admin.site.register(MyUser)
+admin.site.register(Message)
 

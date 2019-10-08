@@ -57,3 +57,39 @@ def All_News(request):
 		'all_news':True
 	}
 	return render(request,'main-site/all_news.html',context)
+
+def Contact(request):
+
+	if request.method == 'POST':
+		first_name = request.POST['fname']
+		last_name = request.POST['lname']
+		email = request.POST['email']
+		subject = request.POST['subject']
+		message = request.POST['message']
+		if email != '' and first_name != '' and last_name != '' and subject != '' and message != '':
+			try:
+				send_message = Message.objects.get(email=email,status='UnRead')
+				context = {
+					'error':True,
+					'message':'لطفا تا خوانده شدن درخواست قبلی خود منتظر بمانید. با تشکر از انتظار شما'
+				}
+				return render(request,'main-site/contact.html',context)
+			except:
+				send_message = Message.objects.create(first_name=first_name,last_name=last_name,email=email,subject=subject,content=message)
+				context = {
+					'success': True,
+					'message': 'ارسال درخواست با موفقیت ارسال شد.',
+				}
+				return render(request, 'main-site/contact.html', context)
+		else:
+			context = {
+				'error': True,
+				'message': 'لطفا همه اطلاعات خواسته شده را تکمیل نمایید.',
+			}
+			return render(request, 'main-site/contact.html', context)
+
+	context = {
+		'warning':True,
+		'message':'اطلاعات خود را به دقت وارد نمایید.'
+	}
+	return render(request,'main-site/contact.html',context)

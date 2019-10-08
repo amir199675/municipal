@@ -13,22 +13,24 @@
     <div class="content-wrapper">
         <div class="content-wrapper-before"></div>
         <div class="content-header row">
-            <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
-                <h3 class="content-header-title mb-0 d-inline-block">صفحه ویرایش اطلاعات متوفی</h3>
-                <div class="breadcrumbs-top d-inline-block">
-                    <div class="breadcrumb-wrapper mr-1">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">خانه</a>
-                            </li>
-                            <li class="breadcrumb-item"><a href="#">عناصر فرم</a>
-                            </li>
-                            <li class="breadcrumb-item active"> ویرایش اطلاعات متوفی
-                            </li>
-                        </ol>
+                <div class="content-header-left col-md-4 col-12 mb-2">
+                    <h3 class="content-header-title">تغییر اطلاعات  {{ select_deceased }}</h3>
+                </div>
+                <div class="content-header-right col-md-8 col-12">
+                    <div class="breadcrumbs-top float-md-right">
+                        <div class="breadcrumb-wrapper mr-1">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:index' %}">ادمین</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:deceased_list' %}">لیست متوفی</a>
+                                </li>
+                                <li class="breadcrumb-item active">تغییر اطلاعات
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         <div class="content-body"><!-- Form wizard with icon tabs section start -->
             <section id="icon-tabs">
                 <div class="row">
@@ -322,17 +324,19 @@
                                                         </li>
 
                                                     </ul>
+
                                                     <div class="tab-content px-1 pt-1">
 
-                                                        <div class="tab-pane" id="dropdown1" role="tabpanel"
+                                                        <div class="tab-pane {% if license.city_name %}active{% endif %}" id="dropdown1" role="tabpanel"
                                                              aria-labelledby="dropdown1-tab" aria-expanded="false">
                                                             <div class="form-group">
                                                                 <label for="location2"> انتخاب شهر :</label>
                                                                 <input type="text" class="form-control"
-                                                                   id="firstName2" value="{{ license.city_name }}" name="location">
+                                                                   id="firstName2" value="{% if license.city_name %}{{ license.city_name }}{% endif %}" name="location">
                                                             </div>
                                                         </div>
-                                                        <div class="tab-pane active" id="dropdown2" role="tabpanel"
+
+                                                        <div class="tab-pane {% if license.place_id.code %}active{% endif %}" id="dropdown2" role="tabpanel"
                                                              aria-labelledby="dropdown2-tab" aria-expanded="false">
                                                             <div class="row">
                                                                 <div class="col-md-4">

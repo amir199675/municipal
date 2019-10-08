@@ -37,3 +37,4 @@ def Logout(request):
 		return redirect(next[1])
 
 	logout(request)
+
