@@ -52,6 +52,7 @@
                                                 <tr>
                                                     <th> نام و نام خانوادگی</th>
                                                     <th>کد ملی</th>
+                                                    <th>شهر اعزامی</th>
                                                     <th>بلوک</th>
                                                     <th>ردیف</th>
                                                     <th>شماره</th>
@@ -63,6 +64,7 @@
                                                 <tr>
                                                     <th><a href="{% url 'Site_Panel:edit-deceased-info' deceased.id %}">{{ deceased.get_full_name }}</a></th>
                                                     <td>{{ deceased.national_number }}</td>
+                                                    <td>{% for item in deceased.license.select_related %}{% if item.city_name %}{{ item.city_name }}{% endif %}{% endfor %}</td>
                                                     <td>{% for item in deceased.license.select_related %}{{ item.place_id.block }}{% endfor %}</td>
                                                     <td>{% for item in deceased.license.select_related %}{{ item.place_id.radif }}{% endfor %}</td>
                                                     <td>{% for item in deceased.license.select_related %}{{ item.place_id.number }}{% endfor %}</td>
@@ -74,6 +76,7 @@
                                                 <tr>
                                                     <th>نام و نام خانوادگی</th>
                                                     <th>کد ملی</th>
+                                                    <th>شهر اعزامی</th>
                                                     <th>بلوک</th>
                                                     <th>ردیف</th>
                                                     <th>شماره</th>
