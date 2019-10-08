@@ -711,7 +711,7 @@ def Online_Deceased(request):
 												 identification_number=presenter_identification_number,
 												 phone_number=presenter_phone_number)
 				if license_status == 'CONFIRMED':
-					place_service = Place_Service.objects.create(buyer_id=buyer, place_id=place, deceased_id=deceased,
+					place_service = Place_Service.objects.create(buyer_id=buyer, place_id=place, deceased_id=deceased,document=RandForPlaceServiceDocument(),
 																 payment_status='PAID')
 				else:
 					pass
