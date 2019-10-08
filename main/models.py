@@ -80,5 +80,8 @@ class Message(models.Model):
 	content = models.TextField()
 	status = models.CharField(max_length=32,choices=STATUS,default='UnRead')
 
+	class Meta:
+		verbose_name = 'درخواست ها'
+		verbose_name_plural = 'درخواست ها'
 	def __str__(self):
 		return self.email + self.subject

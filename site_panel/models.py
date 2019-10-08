@@ -7,6 +7,7 @@ from django.dispatch import receiver
 
 from django.shortcuts import render, HttpResponse
 
+import random
 
 # Create your models here.
 class Presenter(models.Model):
@@ -95,7 +96,7 @@ class Deceased(models.Model):
 	deceased_status = models.CharField(max_length=32, choices=STATUS_CHOICES, default='_', verbose_name='وضعیت جنازه ')
 	first_name = models.CharField(max_length=64, verbose_name='نام ')
 	last_name = models.CharField(max_length=64, verbose_name='نام خانوادگی ')
-	national_number = models.CharField(max_length=11, verbose_name='شماره ملی ')
+	national_number = models.CharField(null=True,blank=True,max_length=10, verbose_name='شماره ملی ')
 	date_of_birth = models.DateField(verbose_name='تاریخ تولد ')
 	sex = models.CharField(max_length=32, choices=SEX_CHOICES, default='UNKNOWN', verbose_name='جنسیت ')
 	fa_name = models.CharField(max_length=64, verbose_name='نام پدر ')
@@ -107,7 +108,6 @@ class Deceased(models.Model):
 	address = models.TextField(null=True, blank=True, verbose_name='آدرس ')
 	presenter_id = models.ForeignKey(Presenter, null=True, blank=True, editable=False, on_delete=models.CASCADE,
 									 verbose_name='معرف ')
-	slug = models.CharField(max_length=11, null=True, blank=True)
 
 	class Meta:
 		verbose_name = 'افراد فوت شده'
@@ -115,10 +115,6 @@ class Deceased(models.Model):
 
 	def get_full_name(self):
 		return self.first_name + ' ' + self.last_name
-
-	def save(self, *args, **kwargs):
-		self.slug = self.national_number
-		super(Deceased, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return self.get_full_name()
@@ -264,7 +260,7 @@ class Place_Service(models.Model):
 	)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
-	buyer_id = models.ForeignKey(Buyer, on_delete=models.CASCADE, verbose_name='خریدار ')
+	buyer_id = models.ForeignKey(Buyer,null=True,blank=True, on_delete=models.CASCADE, verbose_name='خریدار ')
 	place_id = models.OneToOneField(Place, related_name='place_service', on_delete=models.CASCADE, verbose_name='قبر ')
 	deceased_id = models.ForeignKey(Deceased, on_delete=models.CASCADE, null=True, blank=True,
 									verbose_name='متوفی مربوطه ')
@@ -276,15 +272,10 @@ class Place_Service(models.Model):
 		verbose_name = 'سفارش قبر'
 		verbose_name_plural = 'سفارش قبر'
 
-	def save(self, *args, **kwargs):
-		try:
-			self.document = self.deceased_id.national_number
-		except:
-			pass
-		super(Place_Service, self).save(*args, **kwargs)
+
 
 	def __str__(self):
-		return self.payment_status + ' ' + self.buyer_id.get_full_name() + ' ' + str(
+		return self.payment_status + ' ' + self.deceased_id.get_full_name() + ' ' + str(
 			self.place_id.code) + ' ' + self.place_id.status
 
 
@@ -360,7 +351,7 @@ class Bill(models.Model):
 		verbose_name_plural = 'کلیه خریدها'
 
 	def __str__(self):
-		return self.name + ' ' + self.user_id.get_full_name()
+		return self.name + ' ' + self.deceased_id.get_full_name()
 
 
 class License(models.Model):
@@ -395,6 +386,27 @@ class License(models.Model):
 		return self.deceased_id.get_full_name() + ' ' + self.license_status
 
 
+class Archive(models.Model):
+	STATUS = (
+		('Inbox','دریافتی'),
+		('Send','ارسالی')
+	)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	code = models.CharField(max_length=32,verbose_name='کد ')
+	description = models.TextField(verbose_name='توضیحات ')
+	picture = models.ImageField(null=True,blank=True,verbose_name='تصویر ')
+	status = models.CharField(max_length=32,default='Send',verbose_name='وضعیت ')
+
+	class Meta:
+		unique_together = [['code','status']]
+		verbose_name_plural = 'بایگانی'
+		verbose_name = 'بایگانی'
+
+	def __str__(self):
+		return self.code
+
+
 @receiver(post_save, sender=Additional_Service)
 def AddToBill(sender, instance, created, *args, **kwargs):
 	if created and instance.status == 'PAID':
@@ -418,37 +430,49 @@ def AddToBill(sender, instance, created, *args, **kwargs):
 				pass
 
 
+
+def RandForDocument():
+	while(True):
+		number = random.randint(100000,999999)
+
+		try:
+			license = License.objects.get(document=number)
+		except:
+			return number
+
 @receiver(post_save, sender=Deceased)
 def Add_Death_certificate(sender, instance, created, *args, **kwargs):
 	deceased = instance
 	if created:
-		user = None
-		try:
-			user = MyUser.objects.get(username=instance.national_number)
-			user.deceased_id = instance.id
-			user.save()
-		except:
-			MyUser.objects.create(first_name=instance.first_name, last_name=instance.last_name, deceased_id=instance.id,
-								  email=instance.national_number + '@gmail.com', username=instance.national_number)
-			user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.last_name,
-									  deceased_id=instance.id,
+		if  deceased.national_number:
+			user = None
+			try:
+				user = MyUser.objects.get(username=instance.national_number)
+				user.deceased_id = instance.id
+				user.save()
+			except:
+				MyUser.objects.create(first_name=instance.first_name, last_name=instance.last_name, deceased_id=instance.id,
 									  email=instance.national_number + '@gmail.com', username=instance.national_number)
-			user.set_password(instance.national_number)
-			user.save()
+				user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.last_name,
+										  deceased_id=instance.id,
+										  email=instance.national_number + '@gmail.com', username=instance.national_number)
+				user.set_password(instance.national_number)
+				user.save()
 
 		death_certificate = Death_Certificate.objects.create(deceased_id=deceased)
 
 		license = License.objects.create(deceased_id=deceased, license_status='WAITING',
-										 document=instance.national_number)
+										 document=RandForDocument())
 	else:
+		if deceased.national_number:
 
-		user = MyUser.objects.get(deceased_id=instance.id)
-		user.first_name = instance.first_name
-		user.last_name = instance.last_name
-		user.email = instance.national_number
-		user.username = instance.national_number
-		user.set_password(instance.national_number)
-		user.save()
+			user = MyUser.objects.get(deceased_id=instance.id)
+			user.first_name = instance.first_name
+			user.last_name = instance.last_name
+			user.email = instance.national_number
+			user.username = instance.national_number
+			user.set_password(instance.national_number)
+			user.save()
 
 
 @receiver(pre_delete, sender=Deceased)
@@ -562,11 +586,18 @@ def DeleteBillandChangePlaceStatus(sender, instance, *args, **kwargs):
 def AddOrderToBill(sender, instance, created, *args, **kwargs):
 	if created and instance.payment_status == 'PAID':
 		if instance.deceased_id:
-			Bill.objects.create(name='خرید قبر', price=instance.place_id.price, order_id=instance,
-								deceased_id=instance.deceased_id, user_id=instance.buyer_id)
-			place = instance.place_id
-			place.status = 'Sold'
-			place.save()
+			if instance.buyer_id:
+				Bill.objects.create(name='خرید قبر', price=instance.place_id.price, order_id=instance,
+									deceased_id=instance.deceased_id, user_id=instance.buyer_id)
+				place = instance.place_id
+				place.status = 'Sold'
+				place.save()
+			else:
+				Bill.objects.create(name='خرید قبر', price=instance.place_id.price, order_id=instance,
+									deceased_id=instance.deceased_id)
+				place = instance.place_id
+				place.status = 'Sold'
+				place.save()
 		else:
 			Bill.objects.create(name='خرید قبر', price=instance.place_id.price, order_id=instance,
 								user_id=instance.buyer_id)

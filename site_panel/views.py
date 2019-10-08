@@ -5,7 +5,16 @@ from datetime import datetime
 
 from jdatetime import JalaliToGregorian, GregorianToJalali
 
+import random
 
+def RandForPlaceServiceDocument():
+	while(True):
+		number = random.randint(100000,999999)
+
+		try:
+			services = Place_Service.objects.get(document=number)
+		except:
+			return number
 
 def Index(request):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -20,6 +29,8 @@ def Index(request):
 
 def Quick_Deceased(request):
 	if request.user.is_authenticated and request.user.is_staff:
+		deceased = None
+
 		if request.method == 'POST':
 
 			first_name = request.POST['first_name']
@@ -118,32 +129,6 @@ def Quick_Deceased(request):
 				}
 				return render(request, 'admin-panel/quick-deceased.html', context)
 
-			if len(national_number) != 10 :
-				context = {
-					'first_name': first_name,
-					'birth_day': birth_day_r,
-					'last_name': last_name,
-					'fa_name': fa_name,
-					'identification_number': identification_number,
-					'national_number': national_number,
-
-					'bio': bio,
-					'code': code,
-					'bloock': block,
-					'radif': radif,
-					'number': number,
-					'location': location,
-					'floor': floor,
-					'place_type': place_type,
-					'latitude': latitude,
-					'longitude': longitude,
-
-					'date_of_death': date_of_death_r,
-
-					'error': True,
-					'message': 'کد ملی به صورت صحیح وارد نشده است!',
-				}
-				return render(request, 'admin-panel/quick-deceased.html', context)
 			place_save = False
 			place = None
 			if location_require:
@@ -213,48 +198,81 @@ def Quick_Deceased(request):
 							'message': ' لطفا همه فیلد های مربوط به مشخصات محل دفن را پر کنید.',
 						}
 						return render(request, 'admin-panel/quick-deceased.html', context)
-			try:
-				deceased = Deceased.objects.get(national_number=national_number)
-				context = {
+			if national_number != '' :
+				try:
 
-					'first_name': first_name,
-					'birth_day': birth_day_r,
-					'last_name': last_name,
-					'fa_name': fa_name,
-					'identification_number': identification_number,
-					'national_number': national_number,
+					deceased = Deceased.objects.get(national_number=national_number)
+					context = {
 
-					'bio': bio,
-					'code': code,
-					'bloock': block,
-					'radif': radif,
-					'number': number,
-					'location': location,
-					'floor': floor,
-					'place_type': place_type,
-					'latitude': latitude,
-					'longitude': longitude,
+						'first_name': first_name,
+						'birth_day': birth_day_r,
+						'last_name': last_name,
+						'fa_name': fa_name,
+						'identification_number': identification_number,
+						'national_number': national_number,
 
-					'date_of_death': date_of_death_r,
+						'bio': bio,
+						'code': code,
+						'bloock': block,
+						'radif': radif,
+						'number': number,
+						'location': location,
+						'floor': floor,
+						'place_type': place_type,
+						'latitude': latitude,
+						'longitude': longitude,
 
-					'error': True,
-					'message': 'متوفی با این شماره ملی قبلا ثبت شده است!',
-					'info': 'اگر قصد تغییر مشخصات متوفی با این شماره ملی را دارید اینجا کلیک کنید',
-					'link': deceased
-				}
-				return render(request, 'admin-panel/quick-deceased.html', context)
-			except:
-				pass
+						'date_of_death': date_of_death_r,
 
+						'error': True,
+						'message': 'متوفی با این شماره ملی قبلا ثبت شده است!',
+						'info': 'اگر قصد تغییر مشخصات متوفی با این شماره ملی را دارید اینجا کلیک کنید',
+						'link': deceased
+					}
+					return render(request, 'admin-panel/quick-deceased.html', context)
+				except:
+					pass
+			if national_number != '':
+				if len(national_number) != 10:
+					context = {
+						'first_name': first_name,
+						'birth_day': birth_day_r,
+						'last_name': last_name,
+						'fa_name': fa_name,
+						'identification_number': identification_number,
+						'national_number': national_number,
 
-			deceased = Deceased.objects.create(national_number=national_number, first_name=first_name,
-											   last_name=last_name, fa_name=fa_name,
-											   identification_number=identification_number, bio=bio,
-											   date_of_birth=birth_day)
+						'bio': bio,
+						'code': code,
+
+						'bloock': block,
+						'radif': radif,
+						'number': number,
+						'location': location,
+						'floor': floor,
+						'place_type': place_type,
+						'latitude': latitude,
+						'longitude': longitude,
+
+						'error': True,
+						'message': 'کد ملی باید 10 رقمی باشد.',
+					}
+					return render(request, 'admin-panel/quick-deceased.html', context)
+
+				deceased = Deceased.objects.create(national_number=national_number,first_name=first_name,
+												   last_name=last_name, fa_name=fa_name,
+												   identification_number=identification_number, bio=bio,
+												   date_of_birth=birth_day)
+			else:
+				deceased = Deceased.objects.create(first_name=first_name,
+												   last_name=last_name, fa_name=fa_name,
+												   identification_number=identification_number, bio=bio,
+												   date_of_birth=birth_day)
+
 
 			if place_save:
 				place.save()
-
+			place_service = None
 			if location:
 				license = License.objects.get(deceased_id=deceased)
 				license.move_status = 'SEND-OUT'
@@ -263,6 +281,8 @@ def Quick_Deceased(request):
 				license.license_status = 'CONFIRMED'
 				license.save()
 			else:
+				place_service = Place_Service.objects.create(place_id=place,deceased_id=deceased,document=RandForPlaceServiceDocument(),payment_status='PAID')
+
 				license = License.objects.get(deceased_id=deceased)
 				license.move_status = 'FERDOS-REZA'
 				license.place_id = place
@@ -456,6 +476,44 @@ def Online_Deceased(request):
 
 			if len(national_number) != 10 or len(presenter_national_number) != 10:
 				context = {
+					'first_name': first_name,
+					'birth_day': birth_day_r,
+					'last_name': last_name,
+					'fa_name': fa_name,
+					'mo_name': mo_name,
+					'address': address,
+					'identification_number': identification_number,
+					'deceased_status': deceased_status,
+					'deceased_type': deceased_type,
+					'place_of_birth': place_of_birth,
+					'issue_date': issue_date_r,
+					'sex': sex,
+					'license_status': license_status,
+					'death_certificate_stats': death_certificate_stats,
+					'national_number': national_number,
+					'presenter_first_name': presenter_first_name,
+					'presenter_last_name': presenter_last_name,
+					'presenter_phone_number': presenter_phone_number,
+					'presenter_national_number': presenter_national_number,
+					'presenter_identification_number': presenter_identification_number,
+					'presenter_address': presenter_address,
+					'bio': bio,
+					'code': code,
+					'bloock': block,
+					'radif': radif,
+					'number': number,
+					'location': location,
+					'floor': floor,
+					'place_type': place_type,
+					'latitude': latitude,
+					'longitude': longitude,
+					'doctor_last_name': doctor_last_name,
+					'doctor_first_name': doctor_first_name,
+					'medical_system_number': medical_system_number,
+					'death_certificate_number': death_certificate_number,
+					'date_of_death': date_of_death_r,
+					'cause_death': cause_death,
+
 					'error': True,
 					'message': 'کد ملی باید 10 رقمی باشد، لطفا نسبت به تصحیح آن اقدام فرمایید!'
 				}
@@ -469,6 +527,44 @@ def Online_Deceased(request):
 			try:
 				deceased = Deceased.objects.get(national_number=national_number)
 				context = {
+					'first_name': first_name,
+					'birth_day': birth_day_r,
+					'last_name': last_name,
+					'fa_name': fa_name,
+					'mo_name': mo_name,
+					'address': address,
+					'identification_number': identification_number,
+					'deceased_status': deceased_status,
+					'deceased_type': deceased_type,
+					'place_of_birth': place_of_birth,
+					'issue_date': issue_date_r,
+					'sex': sex,
+					'license_status': license_status,
+					'death_certificate_stats': death_certificate_stats,
+					'national_number': national_number,
+					'presenter_first_name': presenter_first_name,
+					'presenter_last_name': presenter_last_name,
+					'presenter_phone_number': presenter_phone_number,
+					'presenter_national_number': presenter_national_number,
+					'presenter_identification_number': presenter_identification_number,
+					'presenter_address': presenter_address,
+					'bio': bio,
+					'code': code,
+					'bloock': block,
+					'radif': radif,
+					'number': number,
+					'location': location,
+					'floor': floor,
+					'place_type': place_type,
+					'latitude': latitude,
+					'longitude': longitude,
+					'doctor_last_name': doctor_last_name,
+					'doctor_first_name': doctor_first_name,
+					'medical_system_number': medical_system_number,
+					'death_certificate_number': death_certificate_number,
+					'date_of_death': date_of_death_r,
+					'cause_death': cause_death,
+
 					'error': True,
 					'message': 'متوفی با این شماره ملی قبلا ثبت شده است!',
 					'info': 'اگر قصد تغییر مشخصات متوفی با این شماره ملی را دارید اینجا کلیک کنید',
@@ -577,13 +673,7 @@ def Online_Deceased(request):
 				user = MyUser.objects.get(username=presenter_national_number)
 
 
-			try:
-				buyer = Buyer.objects.get(national_number=presenter_national_number)
-			except:
-				buyer = Buyer.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
-											 national_number=presenter_national_number,
-											 identification_number=presenter_identification_number,
-											 phone_number=presenter_phone_number)
+
 
 			deceased = Deceased.objects.create(national_number=national_number, first_name=first_name,
 											   last_name=last_name, fa_name=fa_name,
@@ -606,13 +696,20 @@ def Online_Deceased(request):
 				license.license_status = license_status
 				license.save()
 			else:
+
 				license = License.objects.get(deceased_id=deceased)
 				license.move_status = 'FERDOS-REZA'
 				license.place_id = place
 				license.picture = picture
 				license.license_status = license_status
 				license.save()
-
+				try:
+					buyer = Buyer.objects.get(national_number=presenter_national_number)
+				except:
+					buyer = Buyer.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
+												 national_number=presenter_national_number,
+												 identification_number=presenter_identification_number,
+												 phone_number=presenter_phone_number)
 				if license_status == 'CONFIRMED':
 					place_service = Place_Service.objects.create(buyer_id=buyer, place_id=place, deceased_id=deceased,
 																 payment_status='PAID')
