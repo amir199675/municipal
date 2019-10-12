@@ -1485,3 +1485,6 @@ def Print_Deceased_info(request, id):
 	if not pdf.err:
 		return HttpResponse(result.getvalue(), content_type='application/pdf; encoding="utf-8"')
 	return HttpResponse('We had some errors<pre>%s</pre>' )
+
+def Add_Letter(request):
+	return render(request,'admin-panel/editor.html',context={})

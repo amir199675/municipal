@@ -1,0 +1,120 @@
+﻿{% extends 'admin-panel/partial/main-panel.html' %}
+{% load static %}
+<!-- BEGIN: Main Menu-->
+{% block title %}
+    پنل ادمین|بایگانی ارسال
+{% endblock %}
+{% block body %}
+    <!-- BEGIN: Main Menu-->
+    {% include 'admin-panel/partial/sidbar.html' %}
+    <!-- END: Main Menu-->
+
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-wrapper">
+            <div class="content-wrapper-before"></div>
+            <div class="content-header row">
+                <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
+                    <h3 class="content-header-title mb-0 d-inline-block">اضافه کردن متوفی جدید</h3>
+                    <div class="breadcrumbs-top d-inline-block">
+                        <div class="breadcrumb-wrapper mr-1">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:index' %}">پنل ادمین</a>
+                                </li>
+
+                                <li class="breadcrumb-item active">اضافه کردن متوفی جدید
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-body"><!-- Basic CKEditor start -->
+                <section id="basic">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">ایجاد نامه</h4>
+                                    <a class="heading-elements-toggle"><i
+                                            class="la la-ellipsis-h font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-content collapse show">
+                                    <div class="card-body">
+                                        <p>CKEditor یک برنامه منبع باز است که به این معنی است که می توانید هر گونه
+                                            تغییری را که می خواهید تغییر دهید. این یک جامعه فعال است که دائما در حال
+                                            توسعه برنامه با افزودنیهای رایگان و یک فرایند توسعه شفاف است.</p>
+                                        <div class="form-group">
+                                            <form action="" method="post">
+                                                {% csrf_token %}
+                                            <textarea name="ckeditor" id="ckeditor" cols="30" rows="15"
+                                                      class="ckeditor">
+
+							                </textarea>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    {% include 'admin-panel/partial/customizer.html' %}
+    <!-- BEGIN: Footer-->
+    <footer class="footer footer-static footer-light navbar-border navbar-shadow">
+        <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span
+                class="float-md-left d-block d-md-inline-block">2019  &copy; کپی رایت: تمامی حقوق این قالب محفوظ است. طراحی و توسعه توسط <a
+                class="text-bold-800 grey darken-2" href="https://www.rtl-theme.com/author/barat/" target="_blank">Barat Hadian</a></span>
+            <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
+                <li class="list-inline-item"><a class="my-1" href="https://www.rtl-theme.com/author/barat/"
+                                                target="_blank"> قالب های بیشتر</a></li>
+                <li class="list-inline-item"><a class="my-1" href="https://www.rtl-theme.com/user-profile/barat/"
+                                                target="_blank"> پشتیبانی</a></li>
+            </ul>
+        </div>
+    </footer>
+    <!-- END: Footer-->
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/vendors.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/forms/toggle/switchery.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/js/scripts/forms/switch.min.js' %}"
+            type="text/javascript"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/editors/ckeditor/ckeditor.js' %}"
+            type="text/javascript"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="{% static 'admin-panel-static/app-assets/js/core/app-menu.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/js/core/app.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/js/scripts/customizer.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/jquery.sharrre.js' %}"
+            type="text/javascript"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="{% static 'admin-panel-static/app-assets/js/scripts/editors/editor-ckeditor.min.js' %}"
+            type="text/javascript"></script>
+    <!-- END: Page JS-->
+{% endblock %}

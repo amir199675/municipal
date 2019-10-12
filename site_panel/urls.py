@@ -27,6 +27,7 @@ urlpatterns = [
 	path('Admin/edit-news-info/<id>/',views.Edit_News,name = 'edit_news_info'),
 
 	path('Admin/add-service/<id>/',views.Add_Service,name = 'add_service'),
+	path('Admin/add-letter/',views.Add_Letter,name = 'add_letter'),
 
 
 
