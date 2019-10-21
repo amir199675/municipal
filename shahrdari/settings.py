@@ -51,10 +51,12 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'site_panel',
-    'Account'
+    'Account',
+    'ckeditor',
+    'ckeditor_uploader'
 
 ]
-
+CKEDITOR_UPLOAD_PATH = "uploads/"
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

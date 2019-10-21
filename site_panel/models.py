@@ -6,6 +6,8 @@ from django.db.models.signals import post_save, pre_save, m2m_changed, pre_delet
 from django.dispatch import receiver
 
 from django.shortcuts import render, HttpResponse
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 import random
 
@@ -394,7 +396,7 @@ class Archive(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	code = models.CharField(max_length=32,verbose_name='کد ')
-	description = models.TextField(verbose_name='توضیحات ')
+	description = RichTextUploadingField(verbose_name='توضیحات ')
 	picture = models.ImageField(null=True,blank=True,verbose_name='تصویر ')
 	status = models.CharField(max_length=32,default='Send',verbose_name='وضعیت ')
 

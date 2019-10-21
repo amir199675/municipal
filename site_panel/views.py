@@ -1487,4 +1487,36 @@ def Print_Deceased_info(request, id):
 	return HttpResponse('We had some errors<pre>%s</pre>' )
 
 def Add_Letter(request):
-	return render(request,'admin-panel/editor.html',context={})
+	if request.user.is_authenticated and request.user.is_staff:
+		if request.method == 'POST':
+			code = request.POST['code']
+			ckeditor = request.POST['ckeditor']
+			try:
+				letter = Archive.objects.create(code=code,description=ckeditor,status='Send')
+				message = 'نامه شما با موفقیت ایجاد گردید.'
+				context = {
+					'success': True,
+					'message': message,
+					'letter': letter
+
+				}
+				return render(request, 'admin-panel/editor.html', context=context)
+
+			except:
+				letter = Archive.objects.get(code=code)
+				message = 'نامه ای با کد وارد شده از قبل وجود دارد.'
+				context={
+
+					'error':True,
+					'message':message,
+					'letter':letter
+				}
+				return render(request,'admin-panel/editor.html',context=context)
+
+		warnings = ['لطفا از وارد کردن تصویر از طریق ckeditor تا اطلاع ثانوی خودداری کنید.']
+		context = {
+			'warnings':warnings
+		}
+		return render(request,'admin-panel/editor.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/add-letter/')

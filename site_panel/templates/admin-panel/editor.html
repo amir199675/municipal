@@ -49,16 +49,59 @@
                                 </div>
                                 <div class="card-content collapse show">
                                     <div class="card-body">
-                                        <p>CKEditor یک برنامه منبع باز است که به این معنی است که می توانید هر گونه
-                                            تغییری را که می خواهید تغییر دهید. این یک جامعه فعال است که دائما در حال
-                                            توسعه برنامه با افزودنیهای رایگان و یک فرایند توسعه شفاف است.</p>
+                                        {% for warning in warnings %}
+                                            <div class="alert round alert-secondary alert-icon-left alert-dismissible mb-2"
+                                                 role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-mic black"></i>
+                                                    </span>
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                {{ warning }}
+                                            </div>
+                                        {% endfor %}
+                                        {% if error %}
+                                            <div class="alert round bg-danger alert-icon-left alert-dismissible mb-2"
+                                                 role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-thumbs-down"></i>
+                                                    </span>
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <strong>{{ message }}</strong>
+                                                <a href="" class="alert-link"></a>
+
+                                            </div>
+                                        {% endif %}
+                                        {% if success %}
+                                            <div class="alert round bg-success alert-icon-left alert-dismissible mb-2"
+                                                 role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-thumbs-up"></i>
+                                                    </span>
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <strong>{{ message }}</strong>
+                                                <a href="#"
+                                                   class="alert-link">{{ info }}</a>
+                                            </div>
+                                        {% endif %}
+
                                         <div class="form-group">
                                             <form action="" method="post">
                                                 {% csrf_token %}
-                                            <textarea name="ckeditor" id="ckeditor" cols="30" rows="15"
-                                                      class="ckeditor">
-
-							                </textarea>
+                                                <lable>کد:</lable>
+                                                <input type="text" class='text-center' value="{{ letter.code }}"
+                                                       style="margin-bottom: 5px;border-radius: 2px;" name="code">
+                                                <textarea name="ckeditor" id="ckeditor" cols="30" rows="15"
+                                                          class="ckeditor">{{ letter.description|safe }}</textarea>
+                                                <button class="btn btn-accent-1" type="submit">ذخیره</button>
                                             </form>
                                         </div>
                                     </div>
@@ -74,21 +117,6 @@
     <!-- END: Content-->
 
     {% include 'admin-panel/partial/customizer.html' %}
-    <!-- BEGIN: Footer-->
-    <footer class="footer footer-static footer-light navbar-border navbar-shadow">
-        <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span
-                class="float-md-left d-block d-md-inline-block">2019  &copy; کپی رایت: تمامی حقوق این قالب محفوظ است. طراحی و توسعه توسط <a
-                class="text-bold-800 grey darken-2" href="https://www.rtl-theme.com/author/barat/" target="_blank">Barat Hadian</a></span>
-            <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
-                <li class="list-inline-item"><a class="my-1" href="https://www.rtl-theme.com/author/barat/"
-                                                target="_blank"> قالب های بیشتر</a></li>
-                <li class="list-inline-item"><a class="my-1" href="https://www.rtl-theme.com/user-profile/barat/"
-                                                target="_blank"> پشتیبانی</a></li>
-            </ul>
-        </div>
-    </footer>
-    <!-- END: Footer-->
-
 
     <!-- BEGIN: Vendor JS-->
     <script src="{% static 'admin-panel-static/app-assets/vendors/js/vendors.min.js' %}"
