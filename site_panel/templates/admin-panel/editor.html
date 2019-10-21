@@ -15,14 +15,24 @@
             <div class="content-wrapper-before"></div>
             <div class="content-header row">
                 <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
-                    <h3 class="content-header-title mb-0 d-inline-block">اضافه کردن متوفی جدید</h3>
+                    <h3 class="content-header-title mb-0 d-inline-block">
+                        {% if new %}
+                            ایجاد نامه نامه خروجی
+                        {% else %}
+                            ویرایش نامه
+                        {% endif %}
+                    </h3>
                     <div class="breadcrumbs-top d-inline-block">
                         <div class="breadcrumb-wrapper mr-1">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{% url 'Site_Panel:index' %}">پنل ادمین</a>
                                 </li>
-
-                                <li class="breadcrumb-item active">اضافه کردن متوفی جدید
+                                <li class="breadcrumb-item active">
+                                    {% if new %}
+                                        ایجاد نامه نامه خروجی
+                                    {% else %}
+                                        ویرایش نامه با کد {{ select_letter.code }}
+                                    {% endif %}
                                 </li>
                             </ol>
                         </div>
@@ -35,7 +45,13 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">ایجاد نامه</h4>
+                                    <h4 class="card-title">
+                                        {% if new %}
+                                        ایجاد نامه
+                                        {% else %}
+                                            ویرایش نامه
+                                        {% endif %}
+                                    </h4>
                                     <a class="heading-elements-toggle"><i
                                             class="la la-ellipsis-h font-medium-3"></i></a>
                                     <div class="heading-elements">
@@ -73,8 +89,8 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                                 <strong>{{ message }}</strong>
-                                                <a href="" class="alert-link"></a>
-
+                                                <a href="{% url 'Site_Panel:edit_send_letter' letter.code %}"
+                                                   class="alert-link">{{ info }}</a>
                                             </div>
                                         {% endif %}
                                         {% if success %}
@@ -88,7 +104,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                                 <strong>{{ message }}</strong>
-                                                <a href="#"
+                                                <a href="{% url 'Site_Panel:edit_send_letter' letter.code %}"
                                                    class="alert-link">{{ info }}</a>
                                             </div>
                                         {% endif %}
@@ -97,10 +113,10 @@
                                             <form action="" method="post">
                                                 {% csrf_token %}
                                                 <lable>کد:</lable>
-                                                <input type="text" class='text-center' value="{{ letter.code }}"
+                                                <input {% if new %}{% else %}disabled{% endif %} type="text" class='text-center' value="{{ select_letter.code }}"
                                                        style="margin-bottom: 5px;border-radius: 2px;" name="code">
                                                 <textarea name="ckeditor" id="ckeditor" cols="30" rows="15"
-                                                          class="ckeditor">{{ letter.description|safe }}</textarea>
+                                                          class="ckeditor">{{ select_letter.description|safe }}</textarea>
                                                 <button class="btn btn-accent-1" type="submit">ذخیره</button>
                                             </form>
                                         </div>

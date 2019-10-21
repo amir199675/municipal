@@ -54,7 +54,11 @@
                 <ul class="menu-content">
                     <li><a class="menu-item" href="{% url 'Site_Panel:add_letter' %}">ایجاد نامه خروجی</a>
                     </li>
-                    <li><a class="menu-item" href="">ایجاد نامه ورودی</a>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:send_list' %}">لیست نامه های خروجی</a>
+                    </li>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:wait' %}">ایجاد نامه ورودی</a>
+                    </li>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:wait' %}">لیست نامه های ورودی</a>
                     </li>
                 </ul>
             </li>

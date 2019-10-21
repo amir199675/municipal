@@ -3,6 +3,8 @@ from main.models import *
 from .models import *
 from datetime import datetime
 
+from django.shortcuts import get_object_or_404
+
 from jdatetime import JalaliToGregorian, GregorianToJalali
 
 import random
@@ -1488,6 +1490,7 @@ def Print_Deceased_info(request, id):
 
 def Add_Letter(request):
 	if request.user.is_authenticated and request.user.is_staff:
+		new = True
 		if request.method == 'POST':
 			code = request.POST['code']
 			ckeditor = request.POST['ckeditor']
@@ -1495,28 +1498,68 @@ def Add_Letter(request):
 				letter = Archive.objects.create(code=code,description=ckeditor,status='Send')
 				message = 'نامه شما با موفقیت ایجاد گردید.'
 				context = {
+					'new':True,
 					'success': True,
 					'message': message,
-					'letter': letter
+					'info': 'برای ویرایش نامه اینجا کلیک کنید.',
+					'letter':letter
 
 				}
 				return render(request, 'admin-panel/editor.html', context=context)
 
 			except:
-				letter = Archive.objects.get(code=code)
+				letter = Archive.objects.get(status='Send',code=code)
 				message = 'نامه ای با کد وارد شده از قبل وجود دارد.'
 				context={
-
+					'new':new,
 					'error':True,
 					'message':message,
-					'letter':letter
+					'info':'برای ویرایش نامه اینجا کلیک کنید.',
+					'letter':letter,
 				}
 				return render(request,'admin-panel/editor.html',context=context)
 
 		warnings = ['لطفا از وارد کردن تصویر از طریق ckeditor تا اطلاع ثانوی خودداری کنید.']
 		context = {
+			'new':new,
 			'warnings':warnings
 		}
 		return render(request,'admin-panel/editor.html',context)
 	else:
 		return redirect('/Account/login/?next=/Admin/add-letter/')
+
+def Send_List(request):
+	if request.user.is_authenticated and request.user.is_staff:
+		letters = Archive.objects.filter(status='Send')
+		context = {
+			'letters':letters
+		}
+		return render(request,'admin-panel/letter-list.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/add-letter/')
+
+
+def Edit_Send_Letter(request,code_slug):
+	if request.user.is_authenticated and request.user.is_staff:
+
+		if request.method == 'POST':
+			ckeditor = request.POST['ckeditor']
+			select_letter = Archive.objects.get(code= code_slug)
+			select_letter.description = ckeditor
+			select_letter.save()
+			context = {
+				'success':True,
+				'message':'ویرایش با موفقیت انجام شد.'
+			}
+			return render(request, 'admin-panel/editor.html', context)
+		select_letter = get_object_or_404(Archive,code=code_slug,status = 'Send')
+		context = {
+			'select_letter':select_letter,
+
+		}
+		return render(request,'admin-panel/editor.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/edit-send-letter/{}/'.format(code_slug))
+
+def Wait(request):
+	return render(request,'amir.html',context={})

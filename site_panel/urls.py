@@ -28,6 +28,11 @@ urlpatterns = [
 
 	path('Admin/add-service/<id>/',views.Add_Service,name = 'add_service'),
 	path('Admin/add-letter/',views.Add_Letter,name = 'add_letter'),
+	path('Admin/send-list/',views.Send_List,name = 'send_list'),
+	path('Admin/edit-send-letter/<code_slug>/',views.Edit_Send_Letter,name = 'edit_send_letter'),
+
+
+	path('Admin/wait/',views.Wait,name = 'wait'),
 
 
 
