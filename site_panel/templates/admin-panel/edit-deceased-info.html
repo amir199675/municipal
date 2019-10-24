@@ -476,7 +476,7 @@
 
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="location2">تاریخ فوت* :</label>
                                                         <input type="date" class="form-control" id="location2" value="{{ certificate.date_of_death|shamsi }}"
@@ -485,7 +485,7 @@
 
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="location2">تاییدیه :</label>
                                                         <select class="custom-select form-control"
@@ -498,15 +498,17 @@
 
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="location2">علت فوت :</label>
-                                                        <textarea class="form-control" name="cause_death" id=""
-                                                                  cols="30" rows="10"
-                                                                  placeholder="لطفا علت فوت را شرح دهید">{{ certificate.cause_death }}</textarea>
-                                                        <button type="submit" style="position: absolute;
-    top: 244px;
-    left: 90px; z-index: 100000;" class="btn btn-primary"> ثبت اطلاعات
+                                                <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="location2">علت فوت :</label>
+                                                            <select class="custom-select form-control" name="cause_death" id="">
+                                                                <option selected value="" >ثبت نشده</option>
+                                                                {% for cause in causes %}
+                                                                    <option {% if certificate.cause_death_id.name == cause.name %}selected{% endif %} value="{{ cause.name }}">{{ cause.name }}</option>
+                                                                {% endfor %}
+
+                                                            </select>
+                                                        <button type="submit" style="position: absolute;top:89px;left: 86px;z-index: 100000;" class="btn btn-primary"> ثبت اطلاعات
                                                         </button>
 
                                                     </div>

@@ -122,6 +122,19 @@ class Deceased(models.Model):
 		return self.get_full_name()
 
 
+class Cause_Death(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	name = models.CharField(max_length=128,unique=True,verbose_name='عنوان ')
+
+	class Meta:
+		verbose_name = 'علت فوت'
+		verbose_name_plural = 'علت فوت'
+
+	def __str__(self):
+		return self.name
+
+
 class Death_Certificate(models.Model):
 	STATUS_CHOICE = (
 		('Accepted', 'تایید شده'),
@@ -133,7 +146,7 @@ class Death_Certificate(models.Model):
 	doctor_last_name = models.CharField(max_length=64, verbose_name='نام خانوادگی پزشک ')
 	medical_system_number = models.CharField(max_length=32, verbose_name='شماره نظام پزشکی ')
 	death_certificate_number = models.CharField(max_length=32, verbose_name='شماره گواهی فوت ')
-	cause_death = models.CharField(max_length=64, verbose_name='علت فوت ')
+	cause_death_id = models.ForeignKey(Cause_Death,null=True,blank=True,on_delete=models.CASCADE,related_name='cause',verbose_name='علت فوت ')
 	date_of_death = models.DateField(null=True, blank=True, verbose_name='تاریخ فوت ')
 	deceased_id = models.ForeignKey(Deceased, on_delete=models.CASCADE, related_name='certificate', unique=True,
 									verbose_name='متوفی ')
@@ -468,14 +481,24 @@ def Add_Death_certificate(sender, instance, created, *args, **kwargs):
 	else:
 		if deceased.national_number:
 
-			user = MyUser.objects.get(deceased_id=instance.id)
-			user.first_name = instance.first_name
-			user.last_name = instance.last_name
-			user.email = instance.national_number
-			user.username = instance.national_number
-			user.set_password(instance.national_number)
-			user.save()
-
+			try:
+				user = MyUser.objects.get(deceased_id=instance.id)
+				user.first_name = instance.first_name
+				user.last_name = instance.last_name
+				user.email = instance.national_number
+				user.username = instance.national_number
+				user.set_password(instance.national_number)
+				user.save()
+			except:
+				MyUser.objects.create(first_name=instance.first_name, last_name=instance.last_name,
+									  deceased_id=instance.id,
+									  email=instance.national_number + '@gmail.com', username=instance.national_number)
+				user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.last_name,
+										  deceased_id=instance.id,
+										  email=instance.national_number + '@gmail.com',
+										  username=instance.national_number)
+				user.set_password(instance.national_number)
+				user.save()
 
 @receiver(pre_delete, sender=Deceased)
 def Edit_Place(sender, instance, *args, **kwargs):

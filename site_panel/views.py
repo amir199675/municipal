@@ -767,6 +767,7 @@ def Deceased_List(request):
 
 def Edit_Deceased(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
+		causes = Cause_Death.objects.all()
 		buyer = None
 		select_deceased = Deceased.objects.get(pk=id)
 		license = License.objects.get(deceased_id=select_deceased)
@@ -863,6 +864,10 @@ def Edit_Deceased(request, id):
 			except:
 				date_of_death = None
 			cause_death = request.POST['cause_death']
+			try:
+				cause_death = Cause_Death.objects.get(name=cause_death)
+			except:
+				cause_death = None
 			death_certificate_stats = request.POST['death_certificate_stats']
 
 			place = None
@@ -912,6 +917,7 @@ def Edit_Deceased(request, id):
 								pass
 							else:
 								context = {
+									'causes':causes,
 									'error': True,
 									'message': 'قبر انتخابی خالی نمیباشد.',
 									'info': 'برای دیدن لیست قبور شهرداری اینجا کلیک کنید!',
@@ -919,6 +925,7 @@ def Edit_Deceased(request, id):
 								return render(request, 'admin-panel/edit-deceased-info.html', context)
 						else:
 							context = {
+								'causes': causes,
 								'error': True,
 								'message': 'قبر انتخابی پیش فروش شده است.',
 								'info': 'برای دیدن لیست قبور شهرداری اینجا کلیک کنید!',
@@ -944,6 +951,7 @@ def Edit_Deceased(request, id):
 						except:
 
 							context = {
+								'causes': causes,
 								'select_deceased': select_deceased,
 								'certificate': certificate,
 								'license': license,
@@ -954,7 +962,7 @@ def Edit_Deceased(request, id):
 							return render(request, 'admin-panel/edit-deceased-info.html', context)
 					else:
 						context = {
-
+							'causes': causes,
 							'select_deceased': select_deceased,
 							'certificate': certificate,
 							'license': license,
@@ -966,6 +974,7 @@ def Edit_Deceased(request, id):
 
 			if first_name == '' or last_name == '' :
 				context = {
+					'causes': causes,
 					'select_deceased': select_deceased,
 					'certificate': certificate,
 					'license': license,
@@ -973,16 +982,55 @@ def Edit_Deceased(request, id):
 					'message': 'لطفا نام و نام خانوادگی متوفی را وارد کنید! ',
 				}
 				return render(request, 'admin-panel/edit-deceased-info.html', context)
+			if national_number != '':
 
-			if len(national_number) != 10 :
-				context = {
-					'select_deceased': select_deceased,
-					'certificate': certificate,
-					'license': license,
-					'error': True,
-					'message': 'کد ملی باید 10 رقمی باشد، لطفا نسبت به تصحیح آن اقدام فرمایید!'
-				}
-				return render(request, 'admin-panel/edit-deceased-info.html', context)
+				try:
+
+					deceased = Deceased.objects.get(national_number=national_number)
+
+					if deceased.pk == select_deceased.pk:
+						pass
+					else:
+						context = {
+
+							'first_name': first_name,
+							'birth_day': birth_day_r,
+							'last_name': last_name,
+							'fa_name': fa_name,
+							'identification_number': identification_number,
+							'national_number': national_number,
+
+							'bio': bio,
+							'code': code,
+							'bloock': block,
+							'radif': radif,
+							'number': number,
+							'location': location,
+							'floor': floor,
+							'place_type': place_type,
+							'latitude': latitude,
+							'longitude': longitude,
+
+							'date_of_death': date_of_death_r,
+
+							'error': True,
+							'message': 'متوفی با این شماره ملی قبلا ثبت شده است!',
+							'info': 'اگر قصد تغییر مشخصات متوفی با این شماره ملی را دارید اینجا کلیک کنید',
+							'link': deceased
+						}
+						return render(request, 'admin-panel/edit-deceased-info.html', context)
+				except:
+
+					if len(national_number) != 10 :
+						context = {
+							'causes': causes,
+							'select_deceased': select_deceased,
+							'certificate': certificate,
+							'license': license,
+							'error': True,
+							'message': 'کد ملی باید 10 رقمی باشد، لطفا نسبت به تصحیح آن اقدام فرمایید!'
+						}
+						return render(request, 'admin-panel/edit-deceased-info.html', context)
 
 			if place_save:
 				if place_late == place:
@@ -1042,6 +1090,7 @@ def Edit_Deceased(request, id):
 														 , phone_number=presenter_phone_number)
 					else:
 						context={
+							'causes': causes,
 							'select_deceased': select_deceased,
 							'certificate': certificate,
 							'license': license,
@@ -1051,6 +1100,7 @@ def Edit_Deceased(request, id):
 						return render(request,'admin-panel/edit-deceased-info.html',context)
 				else:
 					context = {
+						'causes': causes,
 						'select_deceased': select_deceased,
 						'certificate': certificate,
 						'license': license,
@@ -1108,12 +1158,22 @@ def Edit_Deceased(request, id):
 			certificate.deceased_id = select_deceased
 			certificate.status = death_certificate_stats
 			certificate.date_of_death = date_of_death
-			certificate.cause_death = cause_death
+			certificate.cause_death_id = cause_death
 			certificate.medical_system_number = medical_system_number
 			certificate.save()
+			context = {
+				'success': True,
+				'message': 'تغییرات با موفقیت اعمال شد.',
+				'causes': causes,
+				'certificate': certificate,
+				'license': license,
+				'select_deceased': select_deceased,
+			}
+			return render(request, 'admin-panel/edit-deceased-info.html', context)
 
 		context = {
 
+			'causes': causes,
 			'certificate': certificate,
 			'license': license,
 			'select_deceased': select_deceased,
@@ -1464,29 +1524,18 @@ def Edit_News(request, id):
 # 	return HttpResponse(pdf, content_type='application/pdf')
 
 def Print_Deceased_info(request, id):
-	from io import BytesIO  # A stream implementation using an in-memory bytes buffer
-	# It inherits BufferIOBase
-
-	from django.http import HttpResponse
-	from django.template.loader import get_template
-
-	# pisa is a html2pdf converter using the ReportLab Toolkit,
-	# the HTML5lib and pyPdf.
-
-	from xhtml2pdf import pisa
-	from  io import StringIO ,BytesIO
-
-	template = get_template('admin-panel/forprint.html')
-	context = {
-
-	}
-	html = template.render(context)
-	result =  BytesIO()
-
-	pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")),result)
-	if not pdf.err:
-		return HttpResponse(result.getvalue(), content_type='application/pdf; encoding="utf-8"')
-	return HttpResponse('We had some errors<pre>%s</pre>' )
+	select_deceased = Deceased.objects.get(pk=id)
+	if request.user.is_authenticated and request.user.is_staff:
+		select_license = License.objects.get(deceased_id=select_deceased)
+		select_death_certificate = Death_Certificate.objects.get(deceased_id=select_deceased)
+		context = {
+			'select_deceased':select_deceased,
+			'select_license':select_license,
+			'select_death_certificate':select_death_certificate,
+				   }
+		return render(request,'admin-panel/forprint.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/print/{}/'.format(select_deceased.id))
 
 def Add_Letter(request):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -1560,6 +1609,44 @@ def Edit_Send_Letter(request,code_slug):
 		return render(request,'admin-panel/editor.html',context)
 	else:
 		return redirect('/Account/login/?next=/Admin/edit-send-letter/{}/'.format(code_slug))
+
+def Add_Death_Cause(request):
+	if request.user.is_authenticated and request.user.is_staff:
+		if request.method == 'POST':
+			title = request.POST['title']
+			cause = Cause_Death.objects.create(name=title)
+			message = 'علت مرگ با عنوان "{}" به موفقیت اضافه شد.'.format(cause.name)
+			context = {
+				'success':True,
+				'message':message
+			}
+			return render(request,'admin-panel/add-cause-death.html',context)
+
+		warnings = ['از اضافه کردن دلیل های مشابه و یک معنا خودداری کنید.']
+		context = {
+			'warnings':warnings,
+		}
+		return render(request,'admin-panel/add-cause-death.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/add-death-cause/')
+
+def Death_Cause_List(request):
+	if request.user.is_authenticated and request.user.is_staff:
+		death_causes = Cause_Death.objects.all()
+		death_cers = Death_Certificate.objects.all()
+		count_causes = {}
+		for cause in death_causes:
+			count_causes[cause.name] = Death_Certificate.objects.filter(cause_death_id__name=cause.name).count()
+
+		context = {
+			'count_causes':count_causes,
+			'death_causes':death_causes,
+			'death_cers':death_cers
+		}
+		return render(request,'admin-panel/death-cause-list.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/death-cause-list/')
+
 
 def Wait(request):
 	return render(request,'amir.html',context={})
