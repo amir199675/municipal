@@ -305,7 +305,8 @@
                             class="nav-link nav-link-label"><i class="ficon ft-user"> </i></span></a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="arrow_box_right"><a class="dropdown-item" href="#"><span
-                                    class="avatar avatar-online"><span class="user-name text-bold-700 ml-1">{{ request.user.get_full_name }}</span></span></a>
+                                    class="avatar avatar-online"><span
+                                    class="user-name text-bold-700 ml-1">{{ request.user.get_full_name }}</span></span></a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="user-profile.html"><i class="ft-user"></i> ویرایش مشخصات</a><a
                                         class="dropdown-item" href="email-application.html"><i class="ft-mail"></i>
@@ -314,7 +315,8 @@
                                                                                  href="gap-application.html"><i
                                         class="ft-message-square"></i> نمودار</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/Account/logout/?next={{ request.path }}"><i class="ft-power"></i> خروج</a>
+                                <a class="dropdown-item" href="/Account/logout/?next={{ request.path }}"><i
+                                        class="ft-power"></i> خروج</a>
                             </div>
                         </div>
                     </li>
@@ -329,21 +331,26 @@
      role="navigation" data-menu="menu-wrapper">
     <div class="navbar-container main-menu-content" data-menu="menu-container">
         <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class="nav-item" ><a class="dropdown-toggle nav-link" href="{% url 'Site_Panel:deceased_list' %}"
-                                                                  ><i class="ft-home"></i><span>لیست مرده ها</span></a>
+            <li class="nav-item"><a class="dropdown-toggle nav-link" href="{% url 'Site_Panel:deceased_list' %}"
+            ><i class="ft-home"></i><span>لیست مرده ها</span></a>
 
             </li>
-            <li class="nav-item"><a class="dropdown-toggle nav-link" href="{% url 'Site_Panel:edit-deceased-info' select_deceased.id %}"
-                                                                  ><i class="ft-home"></i><span>ویرایش اطلاعات </span></a>
+            <li class="nav-item"><a class="dropdown-toggle nav-link"
+                                    href="{% url 'Site_Panel:edit-deceased-info' select_deceased.id %}"
+            ><i class="ft-home"></i><span>ویرایش اطلاعات </span></a>
 
             </li>
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"
                                                                   data-toggle="dropdown"><i class="ft-layers"></i><span>خدمات</span></a>
                 <ul class="dropdown-menu">
                     <div class="arrow_box">
-                        <li data-menu=""><a class="dropdown-item" href="{% url 'Site_Panel:add_service' select_deceased.id %}" data-toggle="dropdown">اضافه کردن خدمات</a>
+                        <li data-menu=""><a class="dropdown-item"
+                                            href="{% url 'Site_Panel:sell_service' select_deceased.id %}"
+                                            data-toggle="dropdown">اضافه کردن خدمات</a>
                         </li>
-                        <li data-menu=""><a class="dropdown-item" href="" data-toggle="dropdown">خدمات خریداری شده</a>
+                        <li data-menu=""><a class="dropdown-item"
+                                            href="{% url 'Site_Panel:reserve-service' select_deceased.id %}"
+                                            data-toggle="dropdown">خدمات خریداری شده</a>
                         </li>
 
                     </div>
@@ -510,39 +517,7 @@
 <!-- End: Customizer-->
 
 {% include 'admin-panel/partial/footer.html' %}
-<!-- BEGIN: Vendor JS-->
-<script src="{% static 'admin-panel-static/app-assets/vendors/js/vendors.min.js' %}"
-        type="text/javascript"></script>
-<script src="{% static 'admin-panel-static/app-assets/vendors/js/forms/toggle/switchery.min.js' %}"
-        type="text/javascript"></script>
-<script src="{% static 'admin-panel-static/app-assets/js/scripts/forms/switch.min.js' %}"
-        type="text/javascript"></script>
-<!-- BEGIN Vendor JS-->
 
-<!-- BEGIN: Page Vendor JS-->
-<script src="{% static 'admin-panel-static/app-assets/vendors/js/extensions/jquery.steps.min.js' %}"
-        type="text/javascript"></script>
-<script src="{% static 'admin-panel-static/app-assets/vendors/js/pickers/dateTime/moment-with-locales.min.js' %}"
-        type="text/javascript"></script>
-<script src="{% static 'admin-panel-static/app-assets/vendors/js/pickers/daterange/daterangepicker.js' %}"
-        type="text/javascript"></script>
-<script src="{% static 'admin-panel-static/app-assets/vendors/js/forms/validation/jquery.validate.min.js' %}"
-        type="text/javascript"></script>
-<!-- END: Page Vendor JS-->
-
-<!-- BEGIN: Theme JS-->
-<script src="{% static 'admin-panel-static/app-assets/js/core/app-menu.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'admin-panel-static/app-assets/js/core/app.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'admin-panel-static/app-assets/js/scripts/customizer.min.js' %}"
-        type="text/javascript"></script>
-<script src="{% static 'admin-panel-static/app-assets/vendors/js/jquery.sharrre.js' %}"
-        type="text/javascript"></script>
-<!-- END: Theme JS-->
-
-<!-- BEGIN: Page JS-->
-<script src="{% static 'admin-panel-static/app-assets/js/scripts/forms/wizard-steps.min.js' %}"
-        type="text/javascript"></script>
-<!-- END: Page JS-->
 
 </body>
 <!-- END: Body-->

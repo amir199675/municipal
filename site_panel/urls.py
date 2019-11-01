@@ -26,7 +26,11 @@ urlpatterns = [
 	path('Admin/news-list/',views.News_List,name = 'news-list'),
 	path('Admin/edit-news-info/<id>/',views.Edit_News,name = 'edit_news_info'),
 
-	path('Admin/add-service/<id>/',views.Add_Service,name = 'add_service'),
+	path('Admin/reserve-service/<id>/',views.Sell_Service,name = 'sell_service'),
+	path('Admin/add-service/',views.Add_Service,name = 'add_service'),
+	path('Admin/service-list/',views.Services,name = 'service-list'),
+	path('Admin/service-list/edit/<id>/',views.Edit_Service,name = 'edit_service'),
+	path('Admin/reserved-service-list/<id>/',views.Reserved_Services,name = 'reserve-service'),
 
 	path('Admin/add-letter/',views.Add_Letter,name = 'add_letter'),
 	path('Admin/send-list/',views.Send_List,name = 'send_list'),

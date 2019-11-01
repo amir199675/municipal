@@ -323,14 +323,29 @@ class After_Death_Service(models.Model):
 		return self.user_id.user_id.get_full_name() + ' ' + self.deceased_id.first_name + ' ' + self.deceased_id.last_name
 
 
+class Service_List(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	code = models.IntegerField(unique=True,null=True,blank=True)
+	name = models.CharField(max_length=64, verbose_name='نام خدمات ')
+	price = models.CharField(max_length=8, verbose_name='هزینه ')
+
+	class Meta:
+		verbose_name = 'لیست خدمات'
+		verbose_name_plural = 'لیست خدمات'
+
+	def __str__(self):
+		return self.name + ' ' + self.price
+
 class Additional_Service(models.Model):
 	STATUS = (
 		('PAID', 'پرداخت شده'),
 		('NOT PAID', 'پرداخت نشده'),
 	)
-	buyer_id = models.ForeignKey(Buyer, null=True, blank=True, on_delete=models.CharField, verbose_name='خریدار ')
-	name = models.CharField(max_length=64, verbose_name='نام خدمات ')
-	price = models.CharField(max_length=8, verbose_name='هزینه ')
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	service_id = models.ForeignKey(Service_List,on_delete=models.CASCADE,null=True,blank=True,verbose_name='خدمات مربوطه ')
+	buyer_id = models.ForeignKey(Buyer,related_name='additional', null=True, blank=True, on_delete=models.CharField, verbose_name='خریدار ')
 	status = models.CharField(max_length=32, choices=STATUS, default='NOT PAID', verbose_name='وضعیت پرداخت ')
 	deceased_id = models.ForeignKey(Deceased, related_name='additional_service', on_delete=models.CASCADE,
 									verbose_name='متوفی ')
@@ -340,7 +355,7 @@ class Additional_Service(models.Model):
 		verbose_name_plural = 'خدمات اضافه'
 
 	def __str__(self):
-		return self.deceased_id.get_full_name() + ' ' + self.name
+		return self.deceased_id.get_full_name() + ' ' + self.service_id.name
 
 
 class Bill(models.Model):
@@ -425,13 +440,13 @@ class Archive(models.Model):
 @receiver(post_save, sender=Additional_Service)
 def AddToBill(sender, instance, created, *args, **kwargs):
 	if created and instance.status == 'PAID':
-		bill = Bill.objects.create(name='خدمات اضافه', price=instance.price, additional_service_id=instance,
+		bill = Bill.objects.create(name='خدمات اضافه', price=instance.service_id.price, additional_service_id=instance,
 								   deceased_id=instance.deceased_id, user_id=instance.buyer_id)
 	else:
 		if instance.status == 'PAID':
 			try:
 				bill = Bill.objects.get(additional_service_id=instance, deceased_id=instance.deceased_id)
-				bill.price = instance.price
+				bill.price = instance.service_id.price
 				bill.buyer_id = instance.buyer_id
 				bill.save()
 			except:

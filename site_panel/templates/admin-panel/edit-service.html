@@ -1,7 +1,7 @@
 ﻿{% extends 'admin-panel/partial/main-panel.html' %}
 {% load static %}
 {% block title %}
-    اضافه کردن خدمات
+    ویرایش کردن خدمات
 {% endblock %}
 <!-- BEGIN: Content-->
 {% block body %}
@@ -10,7 +10,7 @@
             <div class="content-wrapper-before"></div>
             <div class="content-header row">
                 <div class="content-header-left col-md-4 col-12 mb-2">
-                    <h3 class="content-header-title">اضافه کردن خدمات جدید</h3>
+                    <h3 class="content-header-title">ویرایش خدمات</h3>
                 </div>
                 <div class="content-header-right col-md-8 col-12">
                     <div class="breadcrumbs-top float-md-right">
@@ -18,7 +18,7 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{% url 'Site_Panel:index' %}">ادمین</a>
                                 </li>
-                                <li class="breadcrumb-item active">اضافه کردن خدمات
+                                <li class="breadcrumb-item active">ویرایش خدمات
                                 </li>
                             </ol>
                         </div>
@@ -31,7 +31,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">اضافه کردن خدمات جدید</h4>
+                                    <h4 class="card-title">ویرایش خدمات {{ select_service.name }}</h4>
                                     <a class="heading-elements-toggle"><i
                                             class="la la-ellipsis-h font-medium-3"></i></a>
                                     <div class="heading-elements">
@@ -96,14 +96,14 @@
                                                         <div class="form-group">
                                                             <label for="lastName3">کد خدمات :
                                                             </label>
-                                                            <input type="text" class="form-control" id="lastName3" value="{{ code }}"
+                                                            <input type="text" class="form-control" id="lastName3" value="{{ select_service.code }}"
                                                                    name="code">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3">
                                                         <div class="form-group">
                                                             <label for="lastName2">نام خدمات :</label>
-                                                            <input type="text" class="form-control" id="lastName3" value="{{ name }}"
+                                                            <input type="text" class="form-control" id="lastName3" value="{{ select_service.name }}"
                                                                    name="name">
 
                                                         </div>
@@ -114,7 +114,7 @@
                                                         <div class="form-group">
                                                             <label for="location2">قیمت خدمات :</label>
 
-                                                            <input type="text" class="form-control" id="lastName3" value="{{ price }}"
+                                                            <input type="text" class="form-control" id="lastName3" value="{{ select_service.price }}"
                                                                    name="price">
                                                         </div>
                                                     </div>

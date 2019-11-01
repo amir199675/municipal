@@ -1368,59 +1368,208 @@ def Select_Deceased(request,id):
 	else:
 		return redirect('/Account/login/?next=/Admin/select-deceased/'+id+'/')
 
-def Add_Service(request,id):
+def Sell_Service(request,id):
 	if request.user.is_authenticated and request.user.is_staff:
 		select_deceased = Deceased.objects.get(id = id)
 		if request.method == 'POST':
+			serves = request.POST.getlist('serves')
+			str = ''
+			for serve in serves:
+				str +=serve
+			str = str.split('Amir:D')
+			last_buyer = request.POST['last_buyer']
+			if last_buyer != 'Amir:D':
+				buyer = Buyer.objects.get(pk=last_buyer)
+			else:
+				first_name = request.POST['first_name']
+				last_name = request.POST['last_name']
+				national_number = request.POST['national_number']
+				phone_number = request.POST['phone_number']
+				if first_name == '' and last_name == '' and phone_number== '':
+					services = Service_List.objects.all()
+					context = {
+						'services': services,
+						'error': True,
+						'first_name': first_name,
+						'last_name': last_name,
+						'phone_number': phone_number,
+						'national_number': national_number,
+						'message': 'لطفا همه فیلد ها را پر کنید.',
+						'select_deceased':select_deceased,
+
+					}
+					return render(request, 'admin-panel/add-service.html', context)
+
+				if len(national_number) != 10:
+					services = Service_List.objects.all()
+					context = {
+						'services': services,
+						'error': True,
+						'select_deceased':select_deceased,
+						'first_name':first_name,
+						'last_name':last_name,
+						'phone_number':phone_number,
+						'national_number':national_number,
+						'message': 'کد ملی باید 10 رقمی باشد.'
+					}
+					return render(request, 'admin-panel/add-service.html', context)
+
+				try:
+					buyer = Buyer.objects.get(national_number=national_number)
+				except:
+					buyer = Buyer.objects.create(first_name=first_name,last_name=last_name,national_number=national_number,phone_number=phone_number)
+
+			for i in str:
+				if i=='':
+					pass
+				else:
+					additional_service = Additional_Service.objects.create(status='PAID',buyer_id=buyer,service_id=Service_List.objects.get(pk=i),deceased_id=select_deceased)
+					warnings = ['لطفا صفحه را رفرش نکنید، در غیر اینورت خدمات دوباره برای شما ثبت میشود!']
+					message = 'خدمات  با موفقیت برای '+select_deceased.get_full_name()+' ثبت شد.'
+					services = Service_List.objects.all()
+					context = {
+						'services':services,
+						'warnings':warnings,
+						'success':True,
+						'message':message,
+						'select_deceased': select_deceased
+
+					}
+					return render(request,'admin-panel/select-service-list.html',context)
+
+		else:
+			warnings = ['please be careful']
+			buyers = Buyer.objects.filter(additional__deceased_id=select_deceased).distinct()
+			services = Service_List.objects.all()
+			context = {
+				'warnings':warnings,
+				'buyers':buyers,
+				'services':services,
+				'select_deceased':select_deceased
+			}
+			return render(request,'admin-panel/select-service-list.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/add-service/' + id + '/')
+
+
+def Add_Service(request):
+	if request.user.is_authenticated and request.user.is_staff:
+		if request.method == 'POST':
+			code = request.POST['code']
 			name = request.POST['name']
 			price = request.POST['price']
-			first_name = request.POST['first_name']
-			last_name = request.POST['last_name']
-			national_number = request.POST['national_number']
-			status = request.POST['status']
-			if name == '' and price == '' and first_name == '' and last_name == '' and status == '':
+			if name == '' and price == '' and code == '' :
 				context = {
 					'error': True,
 					'message': 'لطفا همه فیلد ها را پر کنید.',
-					'select_deceased':select_deceased,
 
 				}
 				return render(request, 'admin-panel/add-service.html', context)
-
-			if len(national_number) != 10:
-				context = {
-					'error': True,
-					'select_deceased':select_deceased,
-
-					'message': 'کد ملی باید 10 رقمی باشد.'
-				}
-				return render(request, 'admin-panel/add-service.html', context)
-
 			try:
-				buyer = Buyer.objects.get(national_number=national_number)
+				service_list = Service_List.objects.get(code = code)
+				context = {
+					'error':True,
+					'code':code,
+					'name':name,
+					'price':price,
+					'message' : 'خدمات با این کد وجود دارد'
+				}
+				return render (request,'admin-panel/add-service.html',context)
 			except:
-				buyer = Buyer.objects.create(first_name=first_name,last_name=last_name,national_number=national_number)
+				service_list = Service_List.objects.create(code = code,name=name,price=price)
 
-			additional_service = Additional_Service.objects.create(name=name,price=price,buyer_id=buyer,status=status,deceased_id=select_deceased)
 			warnings = ['لطفا صفحه را رفرش نکنید، در غیر اینورت خدمات دوباره برای شما ثبت میشود!']
-			message = 'خدمات '+name+' با موفقیت برای '+select_deceased.get_full_name()+' ثبت شد.'
+			message = 'خدمات "{}" با موفقیت اضافه شد'.format(service_list.name)
 			context = {
 				'warnings':warnings,
 				'success':True,
 				'message':message,
-				'select_deceased': select_deceased
 
 			}
 			return render(request,'admin-panel/add-service.html',context)
-
 		else:
-			context = {
-				'select_deceased':select_deceased
-			}
-			return render(request,'admin-panel/add-service.html',context)
-	else:
-		return redirect('/Account/login/?next=/Admin/add-service/' + id + '/')
+			return render(request,'admin-panel/add-service.html')
 
+	else:
+		return redirect('/Account/login/?next=/Admin/add-service/')
+
+def Services(request):
+	if request.user.is_authenticated and request.user.is_staff:
+
+		services = Service_List.objects.all()
+		context = {
+			'services':services
+		}
+		return render(request,'admin-panel/service-list.html',context)
+	else:
+		return redirect(request,'/Account/login/?next=/Admin/service-list/')
+
+def Edit_Service(request,id):
+	if request.user.is_authenticated and request.user.is_staff:
+		select_service = Service_List.objects.get(id = id)
+		if request.method == 'POST':
+			name = request.POST['name']
+			code = request.POST['code']
+			price = request.POST['price']
+			if name == '' and code == '' and price == '':
+				context = {
+					'error': True,
+					'message': 'لطفا همه فیلد ها را پر کنید.',
+
+				}
+				return render(request, 'admin-panel/edit-service.html', context)
+			try:
+				service = Service_List.objects.get(code=code)
+				if select_service == service:
+					service.code = code
+					service.price = price
+					service.name =name
+					service.save()
+					context = {
+						'success': True,
+						'message': 'تغییرات با موفقیت انجام شد!',
+						'select_service': service
+					}
+					return render(request, 'admin-panel/edit-service.html', context)
+				else:
+					context = {
+					'error':True,
+					'message':'کدی ک وارد کردید در لیست خدمات وجود دارد!',
+					'select_service':select_service
+
+				}
+					return render(request,'admin-panel/edit-service.html',context)
+			except:
+				select_service= Service_List.objects.get(pk=id)
+				select_service.code = code
+				select_service.price = price
+				select_service.name = name
+				select_service.save()
+				context = {
+					'success':True,
+					'message':'تغییرات با موفقیت انجام شد!',
+					'select_service':select_service
+				}
+				return render(request,'admin-panel/edit-service.html',context)
+		context = {
+			'select_service':select_service
+		}
+		return render(request,'admin-panel/edit-service.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/service-list/edit/{}/'.format(str(id)))
+
+
+def Reserved_Services(request,id):
+	if request.user.is_authenticated and request.user.is_staff:
+		services = Additional_Service.objects.filter(deceased_id_id=id)
+		select_deceased = Deceased.objects.get(pk=id)
+		context = {
+			'select_deceased':select_deceased,
+			'services':services,
+		}
+		return render(request,'admin-panel/reserve-service-list.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/reserve-service/{}/'.format(str(id)))
 
 def Add_New(request):
 	if request.user.is_authenticated and request.user.is_staff:
