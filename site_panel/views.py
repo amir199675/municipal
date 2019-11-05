@@ -41,8 +41,9 @@ def Quick_Deceased(request):
 			identification_number = request.POST['identification_number']
 			national_number = request.POST['national_number']
 			birth_day_r = request.POST['birth_day']
+
 			try:
-				birth_day_miladi = datetime.strptime(birth_day_r, '%Y-%m-%d')
+				birth_day_miladi = datetime.strptime(birth_day_r, '%Y/%m/%d')
 				day = birth_day_miladi.day
 				year = birth_day_miladi.year
 				month = birth_day_miladi.month
@@ -59,7 +60,7 @@ def Quick_Deceased(request):
 
 			date_of_death_r = request.POST['date_of_death']
 			try:
-				date_of_death_miladi = datetime.strptime(date_of_death_r, '%Y-%m-%d')
+				date_of_death_miladi = datetime.strptime(date_of_death_r, '%Y/%m/%d')
 				day = date_of_death_miladi.day
 				year = date_of_death_miladi.year
 				month = date_of_death_miladi.month
@@ -334,7 +335,7 @@ def Online_Deceased(request):
 			birth_day_r = request.POST['birth_day']
 
 			try:
-				birth_day_miladi = datetime.strptime(birth_day_r, '%Y-%m-%d')
+				birth_day_miladi = datetime.strptime(birth_day_r, '%Y/%m/%d')
 				day = birth_day_miladi.day
 				year = birth_day_miladi.year
 				month = birth_day_miladi.month
@@ -356,7 +357,7 @@ def Online_Deceased(request):
 			place_of_birth = request.POST['place_of_birth']
 			issue_date_r = request.POST['issue_date']
 			try:
-				issue_date_miladi = datetime.strptime(issue_date_r, '%Y-%m-%d')
+				issue_date_miladi = datetime.strptime(issue_date_r, '%Y/%m/%d')
 				day = issue_date_miladi.day
 				year = issue_date_miladi.year
 				month = issue_date_miladi.month
@@ -386,7 +387,7 @@ def Online_Deceased(request):
 			death_certificate_number = request.POST['death_certificate_number']
 			date_of_death_r = request.POST['date_of_death']
 			try:
-				date_of_death_miladi = datetime.strptime(date_of_death_r, '%Y-%m-%d')
+				date_of_death_miladi = datetime.strptime(date_of_death_r, '%Y/%m/%d')
 				day = date_of_death_miladi.day
 				year = date_of_death_miladi.year
 				month = date_of_death_miladi.month
@@ -740,7 +741,9 @@ def Online_Deceased(request):
 		warnings = ['لطفا همه موارد ستاره دار را با دقت پر کنید.',
 					'پس از وارد کردن متوفی لطفا جهت وارد کردن هزینه قبر آن اقدام نمایید.',
 					'اگر متوفی قبلا در سیستم ثبت شده است و قصد ویرایش اطلاعات دارید از طریق لیست متوفی اقدام کنید.']
+		causes = Cause_Death.objects.all()
 		context = {
+			'causes':causes,
 			'warnings': warnings,
 
 		}
@@ -790,7 +793,7 @@ def Edit_Deceased(request, id):
 			birth_day_r = request.POST['birth_day']
 
 			try:
-				birth_day_miladi = datetime.strptime(birth_day_r, '%Y-%m-%d')
+				birth_day_miladi = datetime.strptime(birth_day_r, '%Y/%m/%d')
 				day = birth_day_miladi.day
 				year = birth_day_miladi.year
 				month = birth_day_miladi.month
@@ -801,6 +804,7 @@ def Edit_Deceased(request, id):
 				day = birth_day[2]
 				make_format = str(year) + '-' + str(month) + '-' + str(day)
 				birth_day = datetime.strptime(make_format, '%Y-%m-%d')
+				# return HttpResponse(birth_day)
 			except:
 				birth_day = None
 			try:
@@ -812,7 +816,7 @@ def Edit_Deceased(request, id):
 			place_of_birth = request.POST['place_of_birth']
 			issue_date_r = request.POST['issue_date']
 			try:
-				issue_date_miladi = datetime.strptime(issue_date_r, '%Y-%m-%d')
+				issue_date_miladi = datetime.strptime(issue_date_r, '%Y/%m/%d')
 				day = issue_date_miladi.day
 				year = issue_date_miladi.year
 				month = issue_date_miladi.month
@@ -850,7 +854,7 @@ def Edit_Deceased(request, id):
 			death_certificate_number = request.POST['death_certificate_number']
 			date_of_death_r = request.POST['date_of_death']
 			try:
-				date_of_death_miladi = datetime.strptime(date_of_death_r, '%Y-%m-%d')
+				date_of_death_miladi = datetime.strptime(date_of_death_r, '%Y/%m/%d')
 				day = date_of_death_miladi.day
 				year = date_of_death_miladi.year
 				month = date_of_death_miladi.month

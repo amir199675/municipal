@@ -9,8 +9,11 @@ register = template.Library()
 
 @register.filter(name='shamsi')
 def shamsi(value):
-	date = jalali_date.date2jalali(value)
-	return date
+	try:
+		date = jalali_date.date2jalali(value)
+		return str(date.year)+'/'+str(date.month)+'/'+str(date.day)
+	except:
+		return 'ثبت نشده'
 
 @register.filter(name='month')
 def month(value):

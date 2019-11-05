@@ -65,7 +65,7 @@
 <body>
 <section id="section-one">
     <div class="an-logo">
-        {#        <img src="{% static 'images/WhatsApp Image 2019-09-30 at 00.53.42.jpeg' %}" alt="">#}
+                <img src="{% static 'images/WhatsApp Image 2019-09-30 at 00.53.42.jpeg' %}" alt="">
         <div class="an-adress-phone">
             <h4>نشانی:دامغان سازمان آرامستان بهشت زهرا دامغان</h4>
             <h5>تلفن:023-35646789</h5>
@@ -93,136 +93,103 @@
 
             <h3>جنسیت : <span>{{ select_deceased.sex }}</span></h3>
 
-            <h3>تاریخ صدور : <span>{{ select_deceased.issue_date|shamsi }}</span></h3>
+            <h3>تاریخ تولد : <span>{{ select_deceased.date_of_birth|shamsi }}</span></h3>
         </div>
         <div class="an-secound-col">
-            <h3>تاریخ تولد : <span>{{ select_deceased.date_of_birth|shamsi }}</span></h3>
 
-            <h3>محل تولد : <span>{{ select_deceased.place_of_birth }}</span></h3>
+            <h3>آدرس متوفی : <span>{{ select_deceased.address }}</span></h3>
 
-            <h3>نوع جنازه : <span>-</span></h3>
+            <h3>نام و نام خانوادگی معرف : <span>{{ select_deceased.presenter_id.get_full_name }}</span></h3>
 
-            <h3>وضعیت جنازه : <span>-</span></h3>
+            <h3>شماره تماس معرف : <span>{{ select_deceased.presenter_id.phone_number }}</span></h3>
 
-            <h3>آدرس : <span>{{ select_deceased.address }}</span></h3>
-
-            <h3>معرف : <span>{{ select_deceased.presenter_id }}</span></h3>
-
-            <h3>نام و نام خانوادگی معرف : <span>عادی</span></h3>
+            <h3>آدرس معرف : <span>{{ select_deceased.presenter_id.address }}</span></h3>
 
         </div>
     </div>
 </section>
 <hr>
 <section id="section-tree">
-    <div class="an-first-col">
-        <h1>مشخصات محل دفن</h1>
-        <h3>نوع قبر : <span>عادی</span></h3>
+    {% if select_license.city_name != '' %}
+        <div class="an-first-col">
+            <h1>مشخصات محل دفن</h1>
+            <h3>اعزامی : <span>{{ select_license.city_name }}</span></h3>
 
-        <h3>کد قبر : <span>عادی</span></h3>
+        </div>
+    {% else %}
+        <div class="an-first-col">
 
-        <h3>بلوک : <span>عادی</span></h3>
 
-        <h3>ردیف : <span>عادی</span></h3>
+            <h3>نوع قبر : <span>{{ select_license.place_id.type }}</span></h3>
 
-        <h3>قطعه : <span>عادی</span></h3>
+            <h3>کد قبر : <span>{{ select_license.place_id.code }}</span></h3>
 
-        <h3>شماره : <span>عادی</span></h3>
+            <h3>بلوک : <span>{{ select_license.place_id.block }}</span></h3>
 
-        <h3>طبقه : <span>عادی</span></h3>
 
-    </div>
+        </div>
+        <div class="an-first-col">
+            <h3>ردیف : <span>{{ select_license.place_id.radif }}</span></h3>
+
+            <h3>شماره : <span>{{ select_license.place_id.number }}</span></h3>
+
+            <h3>طبقه : <span>{{ select_license.place_id.floor }}</span></h3>
+
+
+        </div>
+    {% endif %}
 </section>
 <hr>
 <section id="section-four">
     <div class="an-all-col">
         <div class="an-first-col">
             <h1>گواهی فوت</h1>
-            <h3>نام پزشک : <span>عادی</span></h3>
+            <h3>نام پزشک : <span>{{ select_death_certificate.doctor_first_name }} {{ select_death_certificate.doctor_last_name }}</span></h3>
 
-            <h3>شماره نظام پزشکی : <span>عادی</span></h3>
+            <h3>شماره نظام پزشکی : <span>{{ select_death_certificate.medical_system_number }}</span></h3>
 
-            <h3>شماره گواهی فوت : <span>عادی</span></h3>
+            <h3>شماره گواهی فوت : <span>{{ select_death_certificate.death_certificate_number }}</span></h3>
 
 
         </div>
         <div class="an-secound-col">
 
-            <h3>علت فوت : <span>عادی</span></h3>
+            <h3>علت فوت : <span>{{ select_death_certificate.cause_death_id.name }}</span></h3>
 
-            <h3>تاریخ فوت : <span>عادی</span></h3>
+            <h3>تاریخ فوت : <span>{{ select_death_certificate.date_of_death|shamsi }}</span></h3>
 
 
         </div>
     </div>
 </section>
 <hr>
-<section id="section-five">
-    <div class="an-all-col">
-        <div class="an-first-col">
-            <h1>اطلاعات مالی</h1>
-            <h3>لیست خدمات : </h3>
 
-            <table style="width:70%">
-                <tr>
-                    <th>نام خدمات</th>
-                    <th>تاریخ</th>
-                    <th>قیمت</th>
-                </tr>
-                <tr>
-                    <td>فلان</td>
-                    <td>112321</td>
-                    <td>21313 تومان</td>
-                </tr>
-                <tr>
-                    <td>فلان</td>
-                    <td>112321</td>
-                    <td>21313 تومان</td>
-                </tr>
-            </table>
-
-
-        </div>
-        <div class="an-secound-col">
-
-            <h3>هزینه کل خدمات : <span>1232434</span></h3>
-
-
-            <h3>مبلغ قابل پرداخت : <span>....</span></h3>
-            <h3>تاریخ پرداخت : <span>....</span></h3>
-            <h3>شماره فیش : <span>45654</span></h3>
-
-
-        </div>
-    </div>
-</section>
-<hr>
 <section id="section-six">
     <div class="an-all-col">
         <div class="an-first-col">
             <h1>جزییات</h1>
-            <h3>مسیول امور مالی : <span>عادی</span></h3>
+            <h3>مسیول امور مالی : <span>{{ request.user.get_full_name }}</span></h3>
 
             <h3>مهر و امضای امور مالی : <span></span></h3>
-
-            <h3>تاریخ : <span>...</span></h3>
 
 
         </div>
         <div class="an-secound-col">
 
-            <h3>نام کاربر : <span>عادی</span></h3>
 
             <h3>مهر و امضای کاربر : <span></span></h3>
-            <h3>تاریخ صدور فیش : <span>19 شهریور سال 1398</span></h3>
-
 
         </div>
     </div>
 </section>
-<button onclick="">print</button>
 <script>
+// self executing function here
+(function() {
+    print()
+   // your page initialization code here
+   // the DOM will be available here
 
+})();
 </script>
 
 </body>

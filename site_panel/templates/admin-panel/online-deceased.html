@@ -169,7 +169,7 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="lastName2">تاریخ صدور :</label>
-                                                            <input type="date" class="form-control" id="lastName2"
+                                                            <input type="text" class="usage pdp-el form-control" pdp-id="pdp-4664685"
                                                                    value="{{ issue_date }}"
                                                                    name="issue_date">
                                                         </div>
@@ -228,7 +228,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="date2">تاریخ تولد* :</label>
-                                                            <input type="date" class="form-control" id="date2"
+                                                            <input type="text" class="usage pdp-el form-control" pdp-id="pdp-4664685"
                                                                    value="{{ birth_day }}"
                                                                    name="birth_day">
                                                         </div>
@@ -520,7 +520,7 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="location2">تاریخ فوت* :</label>
-                                                            <input type="date" class="form-control" id="location2"
+                                                            <input type="text" class="usage pdp-el form-control" pdp-id="pdp-4664685"
                                                                    value="{{ date_of_death }}"
                                                                    name="date_of_death">
 
@@ -547,7 +547,13 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="location2">علت فوت :</label>
-                                                            <select class="custom-select form-control" name="cause_death" id="">{{ cause_death }}</select>
+                                                            <select class="custom-select form-control" name="cause_death" id="">
+                                                                <option selected value="" >ثبت نشده</option>
+                                                                {% for cause in causes %}
+                                                                    <option value="{{ cause.name }}">{{ cause.name }}</option>
+                                                                {% endfor %}
+
+                                                            </select>
                                                             <button type="submit" style="position: absolute;top:89px;left: 86px;z-index: 100000;" class="btn btn-primary"> ثبت اطلاعات
                                                             </button>
 
