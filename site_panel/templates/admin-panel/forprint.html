@@ -92,7 +92,7 @@
 
             <h3>شماره شناسنامه : <span>{{ select_deceased.identification_number }}</span></h3>
 
-            <h3>جنسیت : <span>{{ select_deceased.sex }}</span></h3>
+            <h3>جنسیت : <span>{% if select_deceased.sex == 'MALE' %}مرد{% else %}زن{% endif %}</span></h3>
 
             <h3>تاریخ تولد : <span>{{ select_deceased.date_of_birth|shamsi }}</span></h3>
         </div>

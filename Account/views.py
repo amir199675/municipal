@@ -35,6 +35,5 @@ def Logout(request):
 		next = request.get_full_path().split('/Account/logout/?next=')
 		logout(request)
 		return redirect(next[1])
-
 	logout(request)
 
