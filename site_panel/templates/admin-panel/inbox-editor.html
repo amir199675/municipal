@@ -2,7 +2,7 @@
 {% load static %}
 <!-- BEGIN: Main Menu-->
 {% block title %}
-    پنل ادمین|بایگانی ارسال
+    پنل ادمین|بایگانی دریافت
 {% endblock %}
 {% block body %}
     <!-- BEGIN: Main Menu-->
@@ -17,7 +17,7 @@
                 <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
                     <h3 class="content-header-title mb-0 d-inline-block">
                         {% if new %}
-                            ایجاد نامه نامه خروجی
+                            ایجاد نامه ورودی
                         {% else %}
                             ویرایش نامه
                         {% endif %}
@@ -29,7 +29,7 @@
                                 </li>
                                 <li class="breadcrumb-item active">
                                     {% if new %}
-                                        ایجاد نامه نامه خروجی
+                                        ایجاد نامه ورودی
                                     {% else %}
                                         ویرایش نامه با کد {{ select_letter.code }}
                                     {% endif %}
@@ -66,6 +66,20 @@
                                 <div class="card-content collapse show">
                                     <div class="card-body">
                                         {% for warning in warnings %}
+                                            {% if new %}
+                                            {% else %}
+                                                <div class="alert round alert-secondary alert-icon-left alert-dismissible mb-2"
+                                                 role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-mic black"></i>
+                                                    </span>
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                {{ warning }}
+                                                </div>
+                                            {% endif %}
                                             <div class="alert round alert-secondary alert-icon-left alert-dismissible mb-2"
                                                  role="alert">
                                                     <span class="alert-icon">
@@ -94,6 +108,7 @@
                                             </div>
                                         {% endif %}
                                         {% if success %}
+
                                             <div class="alert round bg-success alert-icon-left alert-dismissible mb-2"
                                                  role="alert">
                                                     <span class="alert-icon">
@@ -110,11 +125,13 @@
                                         {% endif %}
 
                                         <div class="form-group">
-                                            <form action="" method="post">
+                                            <form action="" method="post" enctype="multipart/form-data">
                                                 {% csrf_token %}
                                                 <lable>کد:</lable>
                                                 <input {% if new %}{% else %}disabled{% endif %} type="text" class='text-center' value="{{ select_letter.code }}"
                                                        style="margin-bottom: 5px;border-radius: 2px;" name="code">
+                                                <lable>تصویر:</lable>
+                                                <input type="file" {% if new %}{% else %}title="درصورت انتخاب نکردن تصویر، تصویر قبلی انتخاب میشود" {% endif %} class='text-center' style="margin-bottom: 5px;border-radius: 2px;" name="picture">
                                                 <textarea name="ckeditor" id="ckeditor" cols="30" rows="15"
                                                           class="ckeditor">{{ select_letter.description|safe }}</textarea>
                                                 <button class="btn btn-accent-1" type="submit">ذخیره</button>

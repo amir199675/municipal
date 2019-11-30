@@ -426,7 +426,7 @@ class Archive(models.Model):
 	code = models.CharField(max_length=32,verbose_name='کد ')
 	description = RichTextUploadingField(verbose_name='توضیحات ')
 	picture = models.ImageField(null=True,blank=True,verbose_name='تصویر ')
-	status = models.CharField(max_length=32,default='Send',verbose_name='وضعیت ')
+	status = models.CharField(max_length=32,choices=STATUS,default='Send',verbose_name='وضعیت ')
 
 	class Meta:
 		unique_together = [['code','status']]
@@ -434,7 +434,7 @@ class Archive(models.Model):
 		verbose_name = 'بایگانی'
 
 	def __str__(self):
-		return self.code
+		return self.code + ' ' + self.status
 
 
 @receiver(post_save, sender=Additional_Service)

@@ -1730,6 +1730,57 @@ def Add_Letter(request):
 	else:
 		return redirect('/Account/login/?next=/Admin/add-letter/')
 
+def Inbox_Letter(request):
+	if request.user.is_authenticated and request.user.is_staff:
+		new = True
+		if request.method == 'POST':
+			code = request.POST['code']
+			ckeditor = request.POST['ckeditor']
+			try:
+				picture = request.FILES['picture']
+			except:
+				picture = None
+				context = {
+					'error':True,
+					'message':'هنگام وارد کردن تصویر مشکلی به وجود آمده است لطفا به پشتیبانی اعلام فرمایید.'
+				}
+				return render(request,'admin-panel/inbox-editor.html',context)
+
+			try:
+				letter = Archive.objects.create(code=code,description=ckeditor,status='Inbox',picture=picture)
+				message = 'نامه شما با موفقیت ایجاد گردید.'
+				context = {
+					'new':True,
+					'success': True,
+					'message': message,
+					'info': 'برای ویرایش نامه اینجا کلیک کنید.',
+					'letter':letter
+
+				}
+				return render(request, 'admin-panel/inbox-editor.html', context=context)
+
+			except:
+				letter = Archive.objects.get(status='Inbox',code=code)
+				message = 'نامه ای با کد وارد شده از قبل وجود دارد.'
+				context={
+					'new':new,
+					'error':True,
+					'message':message,
+					'info':'برای ویرایش نامه اینجا کلیک کنید.',
+					'letter':letter,
+				}
+				return render(request,'admin-panel/inbox-editor.html',context=context)
+
+		warnings = ['لطفا از وارد کردن تصویر از طریق ckeditor تا اطلاع ثانوی خودداری کنید.']
+		context = {
+			'new':new,
+			'warnings':warnings
+		}
+		return render(request,'admin-panel/inbox-editor.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/inbox-letter/')
+
+
 def Send_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		letters = Archive.objects.filter(status='Send')
@@ -1738,7 +1789,19 @@ def Send_List(request):
 		}
 		return render(request,'admin-panel/letter-list.html',context)
 	else:
-		return redirect('/Account/login/?next=/Admin/add-letter/')
+		return redirect('/Account/login/?next=/Admin/send-list/')
+
+def Receive_List(request):
+	if request.user.is_authenticated and request.user.is_staff:
+		letters = Archive.objects.filter(status='Inbox')
+		warnings = ['برای مشاهده تصویر و خلاصه نامه بروی کد آن کلیک کنید']
+		context = {
+			'warnings':warnings,
+			'letters':letters
+		}
+		return render(request,'admin-panel/inbox-list.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/inbox-list/')
 
 
 def Edit_Send_Letter(request,code_slug):
@@ -1747,9 +1810,11 @@ def Edit_Send_Letter(request,code_slug):
 		if request.method == 'POST':
 			ckeditor = request.POST['ckeditor']
 			select_letter = Archive.objects.get(code= code_slug)
+			# return HttpResponse(select_letter)
 			select_letter.description = ckeditor
 			select_letter.save()
 			context = {
+				'select_letter':select_letter,
 				'success':True,
 				'message':'ویرایش با موفقیت انجام شد.'
 			}
@@ -1762,6 +1827,36 @@ def Edit_Send_Letter(request,code_slug):
 		return render(request,'admin-panel/editor.html',context)
 	else:
 		return redirect('/Account/login/?next=/Admin/edit-send-letter/{}/'.format(code_slug))
+
+def Edit_Receive_Letter(request,code_slug):
+	if request.user.is_authenticated and request.user.is_staff:
+
+		if request.method == 'POST':
+			select_letter = Archive.objects.get(code= code_slug)
+			ckeditor = request.POST['ckeditor']
+			try:
+				picture = request.FILES['picture']
+				select_letter.picture = picture
+			except:
+				pass
+			select_letter.description = ckeditor
+
+			select_letter.save()
+			context = {
+				'select_letter':select_letter,
+				'success':True,
+				'message':'ویرایش با موفقیت انجام شد.'
+			}
+			return render(request, 'admin-panel/inbox-editor.html', context)
+		select_letter = get_object_or_404(Archive,code=code_slug,status = 'Inbox')
+		warnings = ['در صورت انتخاب نکردن تصویر، همان تصویر قبل ثبت میشود.']
+		context = {
+			'select_letter':select_letter,
+
+		}
+		return render(request,'admin-panel/inbox-editor.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/edit-inbox-letter/{}/'.format(code_slug))
 
 def Add_Death_Cause(request):
 	if request.user.is_authenticated and request.user.is_staff:

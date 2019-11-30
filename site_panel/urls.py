@@ -33,8 +33,11 @@ urlpatterns = [
 	path('Admin/reserved-service-list/<id>/',views.Reserved_Services,name = 'reserve-service'),
 
 	path('Admin/add-letter/',views.Add_Letter,name = 'add_letter'),
+	path('Admin/inbox-letter/',views.Inbox_Letter,name = 'inbox_letter'),
 	path('Admin/send-list/',views.Send_List,name = 'send_list'),
+	path('Admin/inbox-list/',views.Receive_List,name = 'inbox_list'),
 	path('Admin/edit-send-letter/<code_slug>/',views.Edit_Send_Letter,name = 'edit_send_letter'),
+	path('Admin/edit-receive-letter/<code_slug>/',views.Edit_Receive_Letter,name = 'edit_receive_letter'),
 
 	path('Admin/add-death-cause/',views.Add_Death_Cause,name = 'add_death_cause'),
 	path('Admin/death-cause-list/',views.Death_Cause_List,name = 'death_cause_list'),
