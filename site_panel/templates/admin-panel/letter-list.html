@@ -1,5 +1,7 @@
 {% extends 'admin-panel/partial/main-panel.html' %}
 {% load static %}
+{% load main_tags %}
+
 <!-- BEGIN: Main Menu-->
 {% block title %}
     پنل ادمین|لیست ارسال
@@ -57,6 +59,7 @@
 {#                                                                                                    <th>عکس</th>#}
                                                     <th>کد نامه</th>
                                                     <th>سرفصل</th>
+                                                    <th>تاریخ ایجاد</th>
                                                     <th>ویرایش</th>
 
                                                 </tr>
@@ -69,6 +72,7 @@
                                                         <td data-toggle="modal"
                                                             data-target="#{{ letter.status }}{{ letter.code }}">{{ letter.code }}</td>
                                                         <td>{{ letter.description|safe|truncatewords:20 }}</td>
+                                                        <td>{{ letter.created|shamsi}}</td>
                                                         <td><a href="{% url 'Site_Panel:edit_send_letter' letter.code %}"><i class="ft-edit"></i></a></td>
                                                     </tr>
                                                 {% endfor %}
@@ -79,6 +83,7 @@
 {#                                                                                                    <th>عکس</th>#}
                                                     <th>کد نامه</th>
                                                     <th>سرفصل</th>
+                                                    <th>تاریخ ایجاد</th>
                                                     <th>ویرایش</th>
                                                 </tr>
                                                 </tfoot>
