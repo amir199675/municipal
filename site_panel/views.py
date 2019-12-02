@@ -1748,13 +1748,15 @@ def Inbox_Letter(request):
 
 			try:
 				letter = Archive.objects.create(code=code,description=ckeditor,status='Inbox',picture=picture)
+
 				message = 'نامه شما با موفقیت ایجاد گردید.'
 				context = {
+					'select_letter':letter,
 					'new':True,
 					'success': True,
 					'message': message,
 					'info': 'برای ویرایش نامه اینجا کلیک کنید.',
-					'letter':letter
+					# 'letter':letter
 
 				}
 				return render(request, 'admin-panel/inbox-editor.html', context=context)

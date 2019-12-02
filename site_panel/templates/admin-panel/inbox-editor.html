@@ -103,7 +103,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                                 <strong>{{ message }}</strong>
-                                                <a href="{% url 'Site_Panel:edit_send_letter' select_letter.code %}"
+                                                <a href="{% url 'Site_Panel:edit_receive_letter' select_letter.code %}"
                                                    class="alert-link">{{ info }}</a>
                                             </div>
                                         {% endif %}
@@ -119,7 +119,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                                 <strong>{{ message }}</strong>
-                                                <a href="{% url 'Site_Panel:edit_send_letter' select_letter.code %}"
+                                                <a href="{% url 'Site_Panel:edit_receive_letter' select_letter.code %}"
                                                    class="alert-link">{{ info }}</a>
                                             </div>
                                         {% endif %}
