@@ -326,7 +326,7 @@
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
 
-                                                            <img height="100%" width="100%" id="main" src="{{ license.picture.url }}"
+                                                            <img height="100%" width="100%" id="main" src="{% if license.picture != '' %}{{ license.picture.url }}{% endif %}"
                                                                  alt="your image"/>
                                                         </div>
                                                     </div>
