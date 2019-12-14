@@ -1022,16 +1022,7 @@ def Edit_Deceased(request, id):
 						}
 						return render(request, 'admin-panel/edit-deceased-info.html', context)
 
-			if muni_code == '' :
-				context = {
-					'causes': causes,
-					'select_deceased': select_deceased,
-					'certificate': certificate,
-					'license': license,
-					'error': True,
-					'message': 'لطفا شماره ثبت آرامستان را وارد کنید! ',
-				}
-				return render(request, 'admin-panel/edit-deceased-info.html', context)
+
 			if first_name == '' or last_name == '' :
 				context = {
 					'causes': causes,
@@ -1109,7 +1100,10 @@ def Edit_Deceased(request, id):
 			select_deceased.date_of_birth = birth_day
 			select_deceased.deceased_status = deceased_status
 			select_deceased.address = address
-			select_deceased.muni_code = muni_code
+			if muni_code != '':
+				select_deceased.muni_code = muni_code
+			else:
+				select_deceased.muni_code = None
 			select_deceased.place_of_birth = place_of_birth
 			select_deceased.issue_date = issue_date
 			select_deceased.mo_name = mo_name

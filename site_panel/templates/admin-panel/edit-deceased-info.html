@@ -146,7 +146,7 @@
                                                         <div class="form-group">
                                                             <label for="lastName3">شماره ثبت آرامستان* :</label>
                                                             <input type="text" class="form-control" id="lastName3"
-                                                                   value="{{ select_deceased.muni_code }}"
+                                                                   value="{% if select_deceased.muni_code %}{{ select_deceased.muni_code }}{% endif %}"
                                                                    name="muni_code">
                                                         </div>
                                                     </div>
