@@ -283,43 +283,58 @@
                                                                    name="presenter_phone_number">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="firstName2">کد ملی معرف* :</label>
                                                             <input type="text" placeholder="کد ملی" class="form-control"
-                                                                   value="{{ select_deceased.presenter_id.national_number }}"
-                                                                   id="firstName2" name="presenter_national_number">
+                                                                   id="firstName2"
+                                                                   value="{{ presenter_national_number }}"
+                                                                   name="presenter_national_number">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="firstName2">شماره شناسنامه معرف :</label>
                                                             <input placeholder="شماره شناسنامه" type="text"
-                                                                   value="{{ select_deceased.presenter_id.identification_number }}"
                                                                    class="form-control" id="firstName2"
+                                                                   value="{{ presenter_identification_number }}"
                                                                    name="presenter_identification_number">
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="firstName2">آدرس معرف :</label>
+                                                            <input type="text" placeholder="آدرس دقیق معرف را وارد کنید"
+                                                                   class="form-control" id="firstName2"
+                                                                   value="{{ presenter_address }}"
+                                                                   name="presenter_address">
+                                                        </div>
+                                                    </div>
+
                                                     <div style="margin-top: 27px" class="col-lg-6">
                                                         <fieldset class="form-group">
                                                             <div class="custom-file">
-                                                                <input type="file" class="custom-file-input"
-                                                                       id="inputGroupFile01" name="presenter_document">
+{#                                                                <input type="file" class="custom-file-input"#}
+                                                                {#                                                                       id="inputGroupFile01" name="presenter_document">#}
+                                                                <input class="custom-file-input" id="inputGroupFile01" name="presenter_document" type='file'
+                                                                       onchange="Main(this);"/>
                                                                 <label class="custom-file-label" for="inputGroupFile01">فرم
                                                                     تاییدیه متوفی</label>
                                                             </div>
                                                         </fieldset>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-lg-6">
                                                         <div class="form-group">
-                                                            <label for="firstName2">آدرس معرف :</label>
-                                                            <input type="text" placeholder="آدرس دقیق معرف را وارد کنید"
-                                                                   class="form-control" id="firstName2"
-                                                                   value="{{ select_deceased.presenter_id.address }}"
-                                                                   name="presenter_address">
+
+                                                            <img height="100%" width="100%" id="main" src="{{ license.picture.url }}"
+                                                                 alt="your image"/>
                                                         </div>
                                                     </div>
                                                 </div>
+{#                                                <div class="row">#}
+{#                                                    #}
+{#                                                </div>#}
+
 
                                             </fieldset>
                                             <!-- Step 2 -->
@@ -639,6 +654,20 @@
     <!--for datepicker-->
     <script src="{% static 'date/js/jquery-1.10.1.min.js' %}"></script>
     <script src="{% static 'date/js/persianDatepicker.js' %}"></script>
+    <script>
+        function Main(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#main')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
     <script>
         $(function () {
             //usage
