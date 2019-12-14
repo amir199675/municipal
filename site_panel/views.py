@@ -353,7 +353,8 @@ def Online_Deceased(request):
 			except:
 				address = ''
 			deceased_status = request.POST['deceased_status']
-			deceased_type = request.POST['deceased_type']
+
+			muni_code = request.POST['muni_code']
 			place_of_birth = request.POST['place_of_birth']
 			issue_date_r = request.POST['issue_date']
 			try:
@@ -430,7 +431,51 @@ def Online_Deceased(request):
 				place_type = request.POST['place_type']
 				latitude = request.POST['latitude']
 				longitude = request.POST['longitude']
+			if muni_code == '':
+				context = {
+					'first_name': first_name,
+					'birth_day': birth_day_r,
+					'last_name': last_name,
+					'fa_name': fa_name,
+					'mo_name': mo_name,
+					'address': address,
+					'identification_number': identification_number,
+					'deceased_status': deceased_status,
+					'muni_code': muni_code,
+					'place_of_birth': place_of_birth,
+					'issue_date': issue_date_r,
+					'sex': sex,
+					'license_status': license_status,
+					'death_certificate_stats': death_certificate_stats,
+					'national_number': national_number,
+					'presenter_first_name': presenter_first_name,
+					'presenter_last_name': presenter_last_name,
+					'presenter_phone_number': presenter_phone_number,
+					'presenter_national_number': presenter_national_number,
+					'presenter_identification_number': presenter_identification_number,
+					'presenter_address': presenter_address,
+					'bio': bio,
+					'code': code,
+					'bloock': block,
+					'radif': radif,
+					'number': number,
+					'location': location,
+					'floor': floor,
+					'place_type': place_type,
+					'latitude': latitude,
+					'longitude': longitude,
+					'doctor_last_name': doctor_last_name,
+					'doctor_first_name': doctor_first_name,
+					'medical_system_number': medical_system_number,
+					'death_certificate_number': death_certificate_number,
+					'date_of_death': date_of_death_r,
+					'cause_death': cause_death,
 
+					'error': True,
+					'message': 'لطفا شماره ثبت آرامستان را وارد کنید',
+					'info': ''
+				}
+				return render(request, 'admin-panel/online-deceased.html', context)
 			if first_name == '' or last_name == '' or presenter_first_name == '' or presenter_last_name == '' or doctor_first_name == '' or doctor_last_name == '':
 				context = {
 					'first_name': first_name,
@@ -441,7 +486,7 @@ def Online_Deceased(request):
 					'address': address,
 					'identification_number': identification_number,
 					'deceased_status': deceased_status,
-					'deceased_type': deceased_type,
+					'muni_code': muni_code,
 					'place_of_birth': place_of_birth,
 					'issue_date': issue_date_r,
 					'sex': sex,
@@ -487,7 +532,7 @@ def Online_Deceased(request):
 					'address': address,
 					'identification_number': identification_number,
 					'deceased_status': deceased_status,
-					'deceased_type': deceased_type,
+					'muni_code': muni_code,
 					'place_of_birth': place_of_birth,
 					'issue_date': issue_date_r,
 					'sex': sex,
@@ -538,7 +583,7 @@ def Online_Deceased(request):
 					'address': address,
 					'identification_number': identification_number,
 					'deceased_status': deceased_status,
-					'deceased_type': deceased_type,
+					'muni_code': muni_code,
 					'place_of_birth': place_of_birth,
 					'issue_date': issue_date_r,
 					'sex': sex,
@@ -682,7 +727,7 @@ def Online_Deceased(request):
 											   last_name=last_name, fa_name=fa_name,
 											   identification_number=identification_number, bio=bio,
 											   date_of_birth=birth_day, address=address,
-											   deceased_status=deceased_status, deceased_type=deceased_type,
+											   deceased_status=deceased_status, muni_code=muni_code,
 											   place_of_birth=place_of_birth,
 											   issue_date=issue_date, mo_name=mo_name, sex=sex)
 			deceased.presenter_id = presenter
@@ -812,7 +857,8 @@ def Edit_Deceased(request, id):
 			except:
 				address = ''
 			deceased_status = request.POST['deceased_status']
-			deceased_type = request.POST['deceased_type']
+			muni_code = request.POST['muni_code']
+
 			place_of_birth = request.POST['place_of_birth']
 			issue_date_r = request.POST['issue_date']
 			try:
@@ -976,6 +1022,16 @@ def Edit_Deceased(request, id):
 						}
 						return render(request, 'admin-panel/edit-deceased-info.html', context)
 
+			if muni_code == '' :
+				context = {
+					'causes': causes,
+					'select_deceased': select_deceased,
+					'certificate': certificate,
+					'license': license,
+					'error': True,
+					'message': 'لطفا شماره ثبت آرامستان را وارد کنید! ',
+				}
+				return render(request, 'admin-panel/edit-deceased-info.html', context)
 			if first_name == '' or last_name == '' :
 				context = {
 					'causes': causes,
@@ -1053,7 +1109,7 @@ def Edit_Deceased(request, id):
 			select_deceased.date_of_birth = birth_day
 			select_deceased.deceased_status = deceased_status
 			select_deceased.address = address
-			select_deceased.deceased_type = deceased_type
+			select_deceased.muni_code = muni_code
 			select_deceased.place_of_birth = place_of_birth
 			select_deceased.issue_date = issue_date
 			select_deceased.mo_name = mo_name

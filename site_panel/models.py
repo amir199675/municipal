@@ -94,7 +94,7 @@ class Deceased(models.Model):
 
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
-	deceased_type = models.CharField(max_length=32, choices=TYPE_CHOICES, default='_', verbose_name='نوع جنازه ')
+	muni_code = models.IntegerField(null=True,blank=True, verbose_name='شماره ثبت آرامستان ')
 	deceased_status = models.CharField(max_length=32, choices=STATUS_CHOICES, default='_', verbose_name='وضعیت جنازه ')
 	first_name = models.CharField(max_length=64, verbose_name='نام ')
 	last_name = models.CharField(max_length=64, verbose_name='نام خانوادگی ')
