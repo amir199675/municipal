@@ -1747,14 +1747,14 @@ def Add_Letter(request):
 			code = request.POST['code']
 			ckeditor = request.POST['ckeditor']
 			try:
-				letter = Archive.objects.create(code=code,description=ckeditor,status='Send')
+				select_letter = Archive.objects.create(code=code,description=ckeditor,status='Send')
 				message = 'نامه شما با موفقیت ایجاد گردید.'
 				context = {
 					'new':True,
 					'success': True,
 					'message': message,
 					'info': 'برای ویرایش نامه اینجا کلیک کنید.',
-					'letter':letter
+					'select_letter':select_letter
 
 				}
 				return render(request, 'admin-panel/editor.html', context=context)

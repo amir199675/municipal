@@ -435,6 +435,16 @@ class Archive(models.Model):
 
 	def __str__(self):
 		return self.code + ' ' + self.status
+class Movement_Certificate(models.Model):
+	STATUS = (
+		('confirmation', 'تایید'),
+		('disapproval', 'عدم تایید')
+	)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	text = RichTextUploadingField(null=True,blank=True)
+	license_id = models.ForeignKey(License,on_delete=models.CASCADE)
+	status = models.CharField(max_length=32,choices=STATUS,default='disapproval',verbose_name='وضعیت ')
 
 
 @receiver(post_save, sender=Additional_Service)
@@ -469,6 +479,13 @@ def RandForDocument():
 			license = License.objects.get(document=number)
 		except:
 			return number
+
+@receiver(post_save, sender=License)
+def AddMovmentCertificate(sender, instance, created, *args, **kwargs):
+	if created:
+		if instance.move_status == 'SEND-OUT':
+			movement_cer = Movement_Certificate.objects.create(license_id=instance)
+
 
 @receiver(post_save, sender=Deceased)
 def Add_Death_certificate(sender, instance, created, *args, **kwargs):
