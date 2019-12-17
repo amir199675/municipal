@@ -367,19 +367,21 @@
                     </div>
                 </ul>
             </li>
-            {% if select_deceased.license.select_related.place_id == '' %}
+        {% for name in select_deceased.license.select_related %}
+            {% if name.city_name %}
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"
                                                                   data-toggle="dropdown"><i class="ft-layers"></i><span>جواز حمل و دفن</span></a>
                 <ul class="dropdown-menu">
                     <div class="arrow_box">
                         <li data-menu=""><a class="dropdown-item"
-                                            href="{% url 'Site_Panel:wait' %}"
+                                            href="{% url 'Site_Panel:movement_certificate' select_deceased.id %}"
                                             data-toggle="dropdown">صدور مجوز</a>
                         </li>
                     </div>
                 </ul>
             </li>
             {% endif %}
+        {% endfor %}
 
             <li class="nav-item"><a class="dropdown-toggle nav-link"
                                     href="{% url 'Site_Panel:print_deceased_info' select_deceased.id %}" target="_blank"

@@ -43,6 +43,7 @@ urlpatterns = [
 	path('Admin/death-cause-list/',views.Death_Cause_List,name = 'death_cause_list'),
 
 	path('Admin/movement_certificate/<id>/',views.Movement_Cert,name = 'movement_certificate'),
+	path('Admin/movement_certificate_print/<id>/',views.Print_Movement_Cert,name = 'movement_certificate_print'),
 
 
 

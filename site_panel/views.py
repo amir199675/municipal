@@ -403,6 +403,10 @@ def Online_Deceased(request):
 				date_of_death = None
 
 			cause_death = request.POST['cause_death']
+			try:
+				select_cause_death = Cause_Death.objects.get(id=cause_death)
+			except:
+				select_cause_death = None
 			death_certificate_stats = request.POST['death_certificate_stats']
 
 			place = None
@@ -769,7 +773,7 @@ def Online_Deceased(request):
 			death_certificate.medical_system_number = medical_system_number
 			death_certificate.death_certificate_number = death_certificate_number
 			death_certificate.date_of_death = date_of_death
-			death_certificate.cause_death = cause_death
+			death_certificate.cause_death_id = select_cause_death
 			death_certificate.date_of_death = date_of_death
 			death_certificate.status = death_certificate_stats
 			death_certificate.save()
@@ -1949,12 +1953,56 @@ def Death_Cause_List(request):
 
 def Movement_Cert(request,id):
 	if request.user.is_authenticated and request.user.is_staff:
-		select_deceased = Deceased.objects.get(id = id)
-		movement_cert = Movement_Certificate.objects.get(license_id__deceased_id = select_deceased)
+		select_deceased = Deceased.objects.get(id=id)
+		movement_cert = Movement_Certificate.objects.get(license_id__deceased_id=select_deceased)
+		if request.method == 'POST':
+			try:
+				status = request.POST['status']
+				movement_cert.status = 'confirmation'
+				movement_cert.save()
+				movement_cert = Movement_Certificate.objects.get(license_id__deceased_id=select_deceased)
+				context = {
+					'select_deceased':select_deceased,
+					'movement_cert':movement_cert,
+					'success':True,
+					'message':'با موفقیت اعمال شد.'
+				}
+				return render(request,'admin-panel/movement_license.html',context)
+			except:
+				movement_cert = Movement_Certificate.objects.get(license_id__deceased_id=select_deceased)
+				context = {
+					'select_deceased':select_deceased,
+					'movement_cert':movement_cert,
+					'error': True,
+					'message': 'مجوز تایید نشد.'
+				}
+				return render(request, 'admin-panel/movement_license.html', context)
 
+
+		context = {
+			'select_deceased':select_deceased,
+			'movement_cert':movement_cert,
+		}
+		return render(request,'admin-panel/movement_license.html',context)
 	else:
 		return redirect('/Account/login/?next=/Admin/movement_certificate/{}'.format(id))
 
+def Print_Movement_Cert(request,id):
+	if request.user.is_authenticated and request.user.is_staff:
+		select_deceased = Deceased.objects.get(id=id)
+		select_death_cert = Death_Certificate.objects.get(deceased_id=select_deceased)
+		movement_cert = Movement_Certificate.objects.get(license_id__deceased_id=select_deceased)
+		select_license = License.objects.get(deceased_id=select_deceased)
+		if movement_cert.status == 'confirmation':
+			context = {
+				'select_death_cert':select_death_cert ,
+				'select_deceased':select_deceased,
+				'select_license':select_license,
+
+			}
+			return render(request, 'admin-panel/movement_cert_print.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/movement_certificate_print/{}'.format(id))
 
 def Wait(request):
 	return render(request,'amir.html',context={})

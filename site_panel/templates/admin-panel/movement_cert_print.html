@@ -1,0 +1,90 @@
+{% load static %}
+{% load main_tags %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>جواز دفن</title>
+    <link rel="stylesheet" href="{% static 'admin-panel-static/style.css' %}">
+</head>
+<body>
+<div class="an-container">
+    <div class="an-title">
+        <h1>جواز حمل و نقل در آرامستان</h1>
+    </div>
+
+    <div class="an-right-step">
+        <div class="an-det">
+            <ul>
+
+                <li class="an-left-li"><span>{{ select_deceased.presenter_id.national_number }}</span>      :    کد ملی معرف</li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="an-left-step">
+        <div class="an-img-logo">
+            <img src="{% static 'images/logo.png' %}" alt="">
+        </div>
+        <div class="an-det">
+            <ul>
+                <li class="an-li"><span>{{ select_license.document }}</span>      :    شماره پرونده</li>
+                <li class="an-li"><span>{{ select_deceased.national_number }}</span>      :    شماره شناسایی</li>
+                <li class="an-li"><span>{{ select_deceased.created.date|shamsi }} , {{ select_deceased.created.time|time }}</span>      :    ساعت و تاریخ پذیرش</li>
+            </ul>
+        </div>
+    </div>
+    <div style="width: 100%">
+
+        <div style="width: 50%" class="an-left-step">
+            <div class="an-det">
+                <ul>
+                    <li class="an-left-li">         <b>نام و نام خانوادگی متوفی</b> <span> : {{ select_deceased.get_full_name }}  </span>  </li>
+                    <li class="an-left-li">         <b>نام پدر</b> <span> : {{ select_deceased.fa_name }}  </span>  </li>
+                    <li class="an-left-li">         <b>متصدی محترم آرامستان</b> <span> : {{ select_license.city_name }}  </span>  </li>
+
+
+                </ul>
+            </div>
+        </div>
+        <div style="width: 50%"  class="an-right-step">
+            <div class="an-det">
+                <ul>
+                    <li class="an-left-li"><span>{{ select_deceased.national_number }}</span>      :     <b>کد ملی متوفی</b>  </li>
+                    <li class="an-left-li"><span>{{ select_death_cert.date_of_death|shamsi }}</span>      :     <b>تاریخ فوت</b>  </li>
+                    <li class="an-left-li"><span>{{ select_deceased.date_of_birth|shamsi }}</span>      :     <b>تاریخ تولد</b>  </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="an-container">
+    <div style="direction: rtl;width: 100%;padding-top: 50px;text-align: right;display: inline-block">
+        <h3 >به استناد گواهی فوت شماره
+            {{ select_death_cert.death_certificate_number }}
+            مورخ
+            {{ select_death_cert.date_of_death|shamsi }}
+            صادره توسط خانم / آقا دکتر
+            {{ select_death_cert.doctor_first_name }} {{ select_death_cert.doctor_last_name }}
+            به شماره نظام پزشکی
+            {{ select_death_cert.medical_system_number }}
+            علت نهایی منجر به فوت متوفی
+            {{ select_death_cert.cause_death_id.name }}</h3>
+    </div>
+    <div style="width: 100%;margin-top: 40px;text-align: right">
+        <h4>حمل و نقل متوفی با مشخصات برگه اعزام به مقصد {{ select_license.city_name }} بلامانع است</h4>
+    </div>
+</div>
+
+
+
+
+
+</body>
+</html>
