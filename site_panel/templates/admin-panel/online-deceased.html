@@ -184,7 +184,7 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="lastName3">کد ملی* :</label>
-                                                            <input type="text" class="form-control" id="lastName3"
+                                                            <input type="text" class="form-control" id="lastName3" maxlength="10" minlength="10" required
                                                                    value="{{ national_number }}"
                                                                    name="national_number">
                                                         </div>
@@ -275,7 +275,7 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label for="firstName2">کد ملی معرف* :</label>
-                                                            <input type="text" placeholder="کد ملی" class="form-control"
+                                                            <input type="text" placeholder="کد ملی" class="form-control" required minlength="10" maxlength="10"
                                                                    id="firstName2"
                                                                    value="{{ presenter_national_number }}"
                                                                    name="presenter_national_number">

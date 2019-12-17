@@ -367,7 +367,22 @@
                     </div>
                 </ul>
             </li>
-            <li class="nav-item"><a class="dropdown-toggle nav-link" href="{% url 'Site_Panel:print_deceased_info' select_deceased.id %}" target="_blank"
+            {% if select_deceased.license.select_related.place_id == '' %}
+            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"
+                                                                  data-toggle="dropdown"><i class="ft-layers"></i><span>جواز حمل و دفن</span></a>
+                <ul class="dropdown-menu">
+                    <div class="arrow_box">
+                        <li data-menu=""><a class="dropdown-item"
+                                            href="{% url 'Site_Panel:wait' %}"
+                                            data-toggle="dropdown">صدور مجوز</a>
+                        </li>
+                    </div>
+                </ul>
+            </li>
+            {% endif %}
+
+            <li class="nav-item"><a class="dropdown-toggle nav-link"
+                                    href="{% url 'Site_Panel:print_deceased_info' select_deceased.id %}" target="_blank"
             ><i class="ft-home"></i><span>پرینت اطلاعات</span></a>
 
             </li>

@@ -57,9 +57,9 @@ class Place(models.Model):
 	latitude = models.CharField(max_length=255, verbose_name='عرض جغرافیایی ')
 	price = models.CharField(max_length=8, default=0, null=True, blank=True, verbose_name='قیمت ')
 	ghete = models.CharField(default='', null=True, blank=True, max_length=4, verbose_name='قطعه ')
-	radif = models.CharField(max_length=4, verbose_name='ردیف ')
-	block = models.CharField(max_length=4, verbose_name='بلوک ')
-	number = models.CharField(max_length=4, verbose_name='شماره ')
+	radif = models.CharField(max_length=11, verbose_name='ردیف ')
+	block = models.CharField(max_length=11, verbose_name='بلوک ')
+	number = models.CharField(max_length=11, verbose_name='شماره ')
 	floor = models.CharField(max_length=12, choices=FLOOR_CHOICES, default='OneFloor', verbose_name='طبقه ')
 	status = models.CharField(max_length=32, choices=STATUS_CHOICES, default='Municipal', verbose_name='وضعیت قبر ')
 	type = models.CharField(max_length=32, choices=TYPE_CHOICES, default='normal', verbose_name='نوع قبر ')
@@ -446,6 +446,8 @@ class Movement_Certificate(models.Model):
 	license_id = models.ForeignKey(License,on_delete=models.CASCADE)
 	status = models.CharField(max_length=32,choices=STATUS,default='disapproval',verbose_name='وضعیت ')
 
+	def __str__(self):
+		return self.status + ' ' + self.license_id.deceased_id.get_full_name()
 
 @receiver(post_save, sender=Additional_Service)
 def AddToBill(sender, instance, created, *args, **kwargs):
@@ -737,6 +739,12 @@ def EditBuyrDeceased(sender, instance, created, *args, **kwargs):
 		place = instance.place_id
 		place.status = 'Sold'
 		place.save()
+	else:
+		if created:
+			try:
+				movement_certificate = Movement_Certificate.objects.get(license_id__deceased_id=instance.deceased_id)
+			except:
+				movement_certificate = Movement_Certificate.objects.create(license_id=instance,status='disapproval')
 
 
 @receiver(post_save, sender=Place)

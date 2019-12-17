@@ -628,7 +628,6 @@ def Online_Deceased(request):
 			else:
 				try:
 					place = Place.objects.get(code=code)
-
 					if place.status == 'Pre_sell' or place.status == 'Sold':
 						context = {
 							'first_name': first_name,
@@ -1946,6 +1945,15 @@ def Death_Cause_List(request):
 		return render(request,'admin-panel/death-cause-list.html',context)
 	else:
 		return redirect('/Account/login/?next=/Admin/death-cause-list/')
+
+
+def Movement_Cert(request,id):
+	if request.user.is_authenticated and request.user.is_staff:
+		select_deceased = Deceased.objects.get(id = id)
+		movement_cert = Movement_Certificate.objects.get(license_id__deceased_id = select_deceased)
+
+	else:
+		return redirect('/Account/login/?next=/Admin/movement_certificate/{}'.format(id))
 
 
 def Wait(request):
