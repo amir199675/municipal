@@ -764,6 +764,7 @@ def Online_Deceased(request):
 				if license_status == 'CONFIRMED':
 					place_service = Place_Service.objects.create(buyer_id=buyer, place_id=place, deceased_id=deceased,document=RandForPlaceServiceDocument(),
 																 payment_status='PAID')
+					# return HttpResponse('salam')
 				else:
 					pass
 
@@ -1430,6 +1431,7 @@ def Sell_Service(request,id):
 		select_deceased = Deceased.objects.get(id = id)
 		if request.method == 'POST':
 			serves = request.POST.getlist('serves')
+			# return HttpResponse(serves[0])
 			str = ''
 			for serve in serves:
 				str +=serve
@@ -1481,18 +1483,18 @@ def Sell_Service(request,id):
 					pass
 				else:
 					additional_service = Additional_Service.objects.create(status='PAID',buyer_id=buyer,service_id=Service_List.objects.get(pk=i),deceased_id=select_deceased)
-					warnings = ['لطفا صفحه را رفرش نکنید، در غیر اینورت خدمات دوباره برای شما ثبت میشود!']
-					message = 'خدمات  با موفقیت برای '+select_deceased.get_full_name()+' ثبت شد.'
-					services = Service_List.objects.all()
-					context = {
-						'services':services,
-						'warnings':warnings,
-						'success':True,
-						'message':message,
-						'select_deceased': select_deceased
+			warnings = ['لطفا صفحه را رفرش نکنید، در غیر اینورت خدمات دوباره برای شما ثبت میشود!']
+			message = 'خدمات  با موفقیت برای '+select_deceased.get_full_name()+' ثبت شد.'
+			services = Service_List.objects.all()
+			context = {
+				'services':services,
+				'warnings':warnings,
+				'success':True,
+				'message':message,
+				'select_deceased': select_deceased
 
-					}
-					return render(request,'admin-panel/select-service-list.html',context)
+			}
+			return render(request,'admin-panel/select-service-list.html',context)
 
 		else:
 			warnings = ['please be careful']
@@ -1618,9 +1620,18 @@ def Edit_Service(request,id):
 
 def Reserved_Services(request,id):
 	if request.user.is_authenticated and request.user.is_staff:
+		warnings = ['برای مشاهده مشخصات خریدار بروی اسم خریدار کلیک کنید.']
+		total_price = 0
+
 		services = Additional_Service.objects.filter(deceased_id_id=id)
+		for service in services:
+			total_price +=int(service.service_id.price)
+
 		select_deceased = Deceased.objects.get(pk=id)
+
 		context = {
+			'warnings':warnings,
+			'total_price':total_price,
 			'select_deceased':select_deceased,
 			'services':services,
 		}

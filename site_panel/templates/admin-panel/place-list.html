@@ -7,94 +7,210 @@
 {% endblock %}
 {% block body %}
 
-<!-- BEGIN: Content-->
-<div class="app-content content">
-    <div class="content-wrapper">
-        <div class="content-wrapper-before"></div>
-        <div class="content-header row">
-            <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
-                <h3 class="content-header-title mb-0 d-inline-block">لیست قبور</h3>
-                <div class="breadcrumbs-top d-inline-block">
-                    <div class="breadcrumb-wrapper mr-1">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{% url 'Site_Panel:index' %}">پنل ادمین</a>
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-wrapper">
+            <div class="content-wrapper-before"></div>
+            <div class="content-header row">
+                <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
+                    <h3 class="content-header-title mb-0 d-inline-block">لیست قبور</h3>
+                    <div class="breadcrumbs-top d-inline-block">
+                        <div class="breadcrumb-wrapper mr-1">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:index' %}">پنل ادمین</a>
                                 </li>
 
                                 <li class="breadcrumb-item active">لیست قبور
                                 </li>
-                        </ol>
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="content-body"><!-- Base style table -->
-            <section id="base-style">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">اطلاعات</h4>
+            <div class="content-body"><!-- Base style table -->
+                <section id="base-style">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">اطلاعات</h4>
 
-                                <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
-                                <div class="heading-elements">
-                                    <ul class="list-inline mb-0">
-                                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                                        <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                                        <li><a data-action="close"><i class="ft-x"></i></a></li>
-                                    </ul>
+                                    <a class="heading-elements-toggle"><i
+                                            class="la la-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="card-content collapse show">
-                                <div class="card-body card-dashboard">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-bordered base-style">
-                                            <thead>
-                                            <tr>
-                                                <th>کد قبر</th>
-                                                <th>قیمت</th>
-                                                <th>وضعیت قبر</th>
-                                                <th>نوع قبر</th>
-                                                <th>طول جغرافیایی</th>
-                                                <th>عرض جغرافیایی</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for place in places %}
-                                            <tr>
-                                                <td><a href="{% url 'Site_Panel:edit-place-info' place.id %}">{{ place.code }}</a></td>
-                                                <td>{{ place.price }}</td>
-                                                <td>{% if place.status == 'Municipal' %}شهرداری{% elif place.status == 'Sold' %}فروخته شد{% else %}پیش فروش شده{% endif %}</td>
-                                                <td>{% if place.type == 'Celebrities' %}مشاهیر{% else %}عادی{% endif %}</td>
-                                                <td>{{ place.longitude }}</td>
-                                                <td>{{ place.latitude }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                            </tbody>
-                                            <tfoot>
-                                            <tr>
-                                                <th>کد قبر</th>
-                                                <th>قیمت</th>
-                                                <th>وضعیت قبر</th>
-                                                <th>نوع قبر</th>
-                                                <th>طول جغرافیایی</th>
-                                                <th>عرض جغرافیایی</th>
-                                            </tr>
-                                            </tfoot>
-                                        </table>
+                                <div class="card-content collapse show">
+                                    <div class="card-body card-dashboard">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered base-style">
+                                                <thead>
+                                                <tr>
+                                                    <th>کد قبر</th>
+                                                    <th>قیمت</th>
+                                                    <th>وضعیت قبر</th>
+                                                    <th>نوع قبر</th>
+                                                    <th>خریدار [ کد ملی ]</th>
+                                                    <th>متوفی [ کد ملی ]</th>
+
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for place in places %}
+                                                    <tr>
+                                                        <td>
+                                                            <a href="{% url 'Site_Panel:edit-place-info' place.id %}">{{ place.code }}</a>
+                                                        </td>
+                                                        <td>{{ place.price }}</td>
+                                                        <td data-toggle="modal" data-target="#p{{ place.id }}">
+                                                            {% if place.status == 'Municipal' %}
+                                                                شهرداری{% elif place.status == 'Sold' %}فروخته
+                                                                شد{% else %}
+                                                                پیش فروش شده{% endif %}</td>
+                                                        <td>{% if place.type == 'Celebrities' %}مشاهیر{% else %}
+                                                            عادی{% endif %}</td>
+
+                                                        <td>{% if place.place_service.buyer_id %}{{ place.place_service.buyer_id.get_full_name }} [ {{ place.place_service.buyer_id.national_number }} ]{% endif %}</td>
+                                                        <td>{% for item in place.license.select_related %}<a href="{% url 'Site_Panel:edit-deceased-info' item.deceased_id.id %}" >{{ place.place_service.deceased_id.get_full_name }} [ {{ place.place_service.deceased_id.national_number }} ]</a>{% endfor %}</td>
+
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                                <tfoot>
+                                                <tr>
+                                                    <th>کد قبر</th>
+                                                    <th>قیمت</th>
+                                                    <th>وضعیت قبر</th>
+                                                    <th>نوع قبر</th>
+                                                    <th>خریدار [ کد ملی ]</th>
+                                                    <th>متوفی [ کد ملی ]</th>
+
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
+            </div>
         </div>
     </div>
-</div>
-<!-- END: Content-->
+    <!-- END: Content-->
+    {% for place in places %}
+        <div id="p{{ place.id }}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
 
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    </div>
+                    <div class="modal-body">
+                        <hr>
+                        <div style="text-align: center" class="modal-body">مشخصات قبر</div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5 style="display: inline">کد :</h5>
+                                <p style="display:inline;">{{ place.code }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h5 style="display: inline">ردیف :</h5>
+                                <p style="display: inline">{{ place.radif }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h5 style="display: inline">بلوک :</h5>
+                                <p style="display: inline">{{ place.block }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5 style="display: inline">شماره :</h5>
+                                <p style="display:inline;">{{ place.number }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h5 style="display: inline">طبقه :</h5>
+                                <p style="display: inline">{% if place.floor == 'OneFloor' %}
+                                    اول
+                                {% else %}
+                                    دوم
+                                {% endif %}
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <h5 style="display: inline">مالک :</h5>
+                                <p style="display: inline">
+                                    {% if place.status == 'Municipal' %}
+                                        شهرداری
+                                    {% else %}
+                                        کاربر
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+
+                        <hr>
+                        {% if place.status == 'Sold' %}
+                            <div style="text-align: center" class="modal-body">مشخصات متوفی</div>
+                            <div class="an-content">
+                                <h5 style="display: inline">نام و نام خانوادگی :</h5>
+                                <p style="display:inline;">{% for item in place.license.select_related %}
+                                    {{ item.deceased_id.get_full_name }}{% endfor %}</p>
+                            </div>
+                            <div class="an-content">
+                                <h5 style="display: inline">شماره ملی :</h5>
+                                <p style="display: inline">{% for item in place.license.select_related %}
+                                    {{ item.deceased_id.national_number }}{% endfor %}</p>
+                            </div>
+                            <hr>
+                            <div style="text-align: center" class="modal-body">مشخصات خریدار</div>
+                            <div class="an-content">
+                                <h5 style="display: inline">نام و نام خانوادگی :</h5>
+                                <p style="display:inline;">{{ place.place_service.buyer_id.get_full_name }}</p>
+                            </div>
+                            <div class="an-content">
+                                <h5 style="display: inline">شماره ملی :</h5>
+                                <p style="display: inline">{{ place.place_service.buyer_id.national_number }}</p>
+                            </div>
+                            <div class="an-content">
+                                <h5 style="display: inline">شماره تماس :</h5>
+                                <p style="display: inline">{{ place.place_service.buyer_id.phone_number }}</p>
+                            </div>
+                            <hr>
+
+                        {% elif place.status == 'Pre_sell' %}
+                            <div style="text-align: center" class="modal-body">مشخصات خریدار</div>
+                            <div class="an-content">
+                                <h5 style="display: inline">نام و نام خانوادگی :</h5>
+                                <p style="display:inline;">{{ place.place_service.buyer_id.get_full_name }}</p>
+                            </div>
+                            <div class="an-content">
+                                <h5 style="display: inline">شماره ملی :</h5>
+                                <p style="display: inline">{{ place.place_service.buyer_id.national_number }}</p>
+                            </div>
+                            <div class="an-content">
+                                <h5 style="display: inline">شماره تماس :</h5>
+                                <p style="display: inline">{{ place.place_service.buyer_id.phone_number }}</p>
+                            </div>
+                            <hr>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    {% endfor %}
     {% include 'admin-panel/partial/customizer.html' %}
 
     <script src="{% static 'admin-panel-static/app-assets/vendors/js/vendors.min.js' %}"

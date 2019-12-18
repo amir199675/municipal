@@ -283,7 +283,7 @@
                                                             <label for="firstName2">کد ملی معرف* :</label>
                                                             <input type="text" placeholder="کد ملی" class="form-control"
                                                                    id="firstName2"
-                                                                   value="{{ presenter_national_number }}"
+                                                                   value="{{ select_deceased.presenter_id.national_number }}"
                                                                    name="presenter_national_number">
                                                         </div>
                                                     </div>
@@ -292,7 +292,7 @@
                                                             <label for="firstName2">شماره شناسنامه معرف :</label>
                                                             <input placeholder="شماره شناسنامه" type="text"
                                                                    class="form-control" id="firstName2"
-                                                                   value="{{ presenter_identification_number }}"
+                                                                   value="{{ select_deceased.presenter_id.identification_number}}"
                                                                    name="presenter_identification_number">
                                                         </div>
                                                     </div>
@@ -301,7 +301,7 @@
                                                             <label for="firstName2">آدرس معرف :</label>
                                                             <input type="text" placeholder="آدرس دقیق معرف را وارد کنید"
                                                                    class="form-control" id="firstName2"
-                                                                   value="{{ presenter_address }}"
+                                                                   value="{{ select_deceased.presenter_id.address }}"
                                                                    name="presenter_address">
                                                         </div>
                                                     </div>
