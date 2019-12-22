@@ -46,31 +46,40 @@
                                 </div>
                                 <div class="card-content collapse show">
                                     <div class="card-body card-dashboard">
+                                        {% for warning in warnings %}
+                                            <div class="alert round alert-secondary alert-icon-left alert-dismissible mb-2"
+                                                 role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-mic black"></i>
+                                                    </span>
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                {{ warning }}
+                                            </div>
+                                        {% endfor %}
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-bordered base-style">
+                                            <table style="text-align: center;" class="table table-striped table-bordered base-style">
                                                 <thead>
                                                 <tr>
                                                     <th> نام و نام خانوادگی</th>
                                                     <th>کد ملی</th>
                                                     <th>شهر اعزامی</th>
-                                                    <th>بلوک</th>
-                                                    <th>ردیف</th>
-                                                    <th>شماره</th>
+                                                    <th>کد قبر</th>
                                                     <th>تاریخ ایجاد</th>
                                                     <th>تاریخ فوت</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody >
                                                 {% for deceased in deceaseds %}
-                                                <tr>
-                                                    <th><a href="{% url 'Site_Panel:edit-deceased-info' deceased.id %}">{{ deceased.get_full_name }}</a></th>
-                                                    <td>{{ deceased.national_number }}</td>
-                                                    <td>{% for item in deceased.license.select_related %}{% if item.city_name %}{{ item.city_name }}{% endif %}{% endfor %}</td>
-                                                    <td>{% for item in deceased.license.select_related %}{{ item.place_id.block }}{% endfor %}</td>
-                                                    <td>{% for item in deceased.license.select_related %}{{ item.place_id.radif }}{% endfor %}</td>
-                                                    <td>{% for item in deceased.license.select_related %}{{ item.place_id.number }}{% endfor %}</td>
-                                                    <td>{{ deceased.created|shamsi }}</td>
-                                                    <td>{% for item in deceased.certificate.select_related %}{{ item.date_of_death|shamsi }}{% endfor %}</td>
+                                                <tr >
+                                                    <th style="vertical-align: middle;"><a href="{% url 'Site_Panel:edit-deceased-info' deceased.id %}">{{ deceased.get_full_name }}</a></th>
+                                                    <td style="vertical-align: middle;">{{ deceased.national_number }}</td>
+                                                    <td style="vertical-align: middle;">{% for item in deceased.license.select_related %}{% if item.city_name %}{{ item.city_name }}{% endif %}{% endfor %}</td>
+                                                    <td style="vertical-align: middle;" data-toggle="modal" data-target="#Place{% for item in deceased.license.select_related %}{{ item.place_id.id }}{% endfor %}">{% for item in deceased.license.select_related %}{{ item.place_id.code }}{% endfor %}</td>
+                                                    <td  style="font-size: 12px; padding: auto;vertical-align: middle;">{{ deceased.created.date|shamsi }}<br>{{ deceased.created.time|iran }}</td>
+                                                    <td style="vertical-align: middle;">{% for item in deceased.certificate.select_related %}{{ item.date_of_death|shamsi }}{% endfor %}</td>
                                                 </tr>
                                                 {% endfor %}
                                                 </tbody>
@@ -79,9 +88,7 @@
                                                     <th>نام و نام خانوادگی</th>
                                                     <th>کد ملی</th>
                                                     <th>شهر اعزامی</th>
-                                                    <th>بلوک</th>
-                                                    <th>ردیف</th>
-                                                    <th>شماره</th>
+                                                    <th>کد قبر</th>
                                                     <th>تاریخ ایجاد</th>
                                                     <th>تاریخ فوت</th>
                                                 </tr>
@@ -99,7 +106,71 @@
         </div>
     </div>
     <!-- END: Content-->
+    {% for deceased in deceaseds %}
+        {% for item in deceased.license.select_related %}
+            {% if item.place_id %}
+                <div style="padding: auto" id="Place{{ item.place_id.id }}"
+             class="modal fade" role="dialog">
+            <div class="modal-dialog">
 
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    </div>
+                    <div class="modal-header">
+                        مشخصات محل دفن
+                    </div>
+                    <div class="modal-body">
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5 style="display: inline">کد :</h5>
+                                <p style="display:inline;">
+                                    {{ item.place_id.code }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h5 style="display: inline">ردیف :</h5>
+                                <p style="display: inline">
+                                    {{ item.place_id.radif }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h5 style="display: inline">بلوک :</h5>
+                                <p style="display: inline">
+                                    {{ item.place_id.block }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5 style="display: inline">شماره :</h5>
+                                <p style="display:inline;">
+                                    {{ item.place_id.block }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h5 style="display: inline">طبقه :</h5>
+                                <p style="display: inline">
+                                    {% if item.place_id.floor == 'OneFloor' %}
+                                        اول
+                                    {% elif item.place_id.floor == 'TwoFloor' %}
+                                        دوم
+                                    {% endif %}
+
+
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+    {% endfor %}
 
     <!-- BEGIN: Customizer-->
     <div class="customizer border-left-blue-grey border-left-lighten-4 d-none d-xl-block"><a class="customizer-close"

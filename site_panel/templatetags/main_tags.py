@@ -1,4 +1,4 @@
-from datetime import datetime , timedelta
+from datetime import datetime , timedelta , time
 from django import template
 import jalali_date
 
@@ -111,6 +111,15 @@ def remaining(value):
 
 	return message
 
+
+
+
+@register.filter(name='iran')
+def iran(value,iran=None):
+	iran = time.strftime(value,'%H:%M %p')
+	iran = iran.replace('AM','صبح')
+	iran = iran.replace('PM','عصر')
+	return iran
 
 
 

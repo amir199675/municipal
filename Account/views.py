@@ -37,3 +37,74 @@ def Logout(request):
 		return redirect(next[1])
 	logout(request)
 
+
+def Profile(request):
+	select_user = request.user
+
+	if request.method == 'POST' and 'first_name' in request.POST:
+		first_name = request.POST['first_name']
+		last_name = request.POST['last_name']
+		email = request.POST['email']
+		try:
+			select_user.email = email
+			select_user.first_name = first_name
+			select_user.last_name = last_name
+			select_user.save()
+			context = {
+				'success': True,
+				'infor': True,
+				'message': 'مشخصات شما با موفقیت ثبت شد.',
+			}
+			return render(request, 'admin-panel/profile/profile.html', context)
+
+		except:
+			context = {
+				'error': True,
+				'infor': True,
+				'message': 'مشخصات وارد شده ایراد دارد',
+			}
+			return render(request, 'admin-panel/profile/profile.html', context)
+
+	if request.method == 'POST' and 'password' in request.POST:
+		old_pass = request.POST['old_password']
+		password = request.POST['password']
+		re_password = request.POST['re_password']
+
+		test_pass = authenticate(username=select_user.username, password=old_pass)
+
+		if test_pass:
+
+			if password == re_password:
+				select_user.set_password(password)
+				select_user.save()
+				context = {
+					'success': True,
+					'pass_change': True,
+					'message': 'تغییر رمز با موفقیت انجام شد.',
+
+				}
+				return render(request, 'admin-panel/profile/profile.html', context)
+			else:
+				context = {
+					'error': True,
+					'pass_change': True,
+					'message': 'لطفا رمز جدید را با دقت وارد کنید.',
+				}
+				return render(request, 'admin-panel/profile/profile.html', context)
+		else:
+			context = {
+				'error': True,
+				'pass_change': True,
+				'message': 'لطفا در صحیح وارد کردن رمز عبور اولیه دقت فرمایید.',
+
+			}
+			return render(request, 'admin-panel/profile/profile.html', context)
+	warnings = ['برای تعویض username به ادمین سایت گزارش دهید']
+	context = {
+		'warnings':warnings,
+		'infor':True
+	}
+	return render(request, 'admin-panel/profile/profile.html', context)
+
+
+

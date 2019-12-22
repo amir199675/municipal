@@ -673,8 +673,11 @@ def Online_Deceased(request):
 						place_save = True
 				except:
 					if code != '' and block != '' and radif != '' and number != '' and floor != '' and place_type != '':
-						place = Place.objects.create(code=code, block=block, radif=radif, number=number, floor=floor,
+						try:
+							place = Place.objects.create(code=code, block=block, radif=radif, number=number, floor=floor,
 													 type=place_type, longitude=longitude, latitude=latitude)
+						except:
+							return HttpResponse('خطا در ذخیره سازی قبر')
 					else:
 						context = {
 							'first_name': first_name,
@@ -717,22 +720,27 @@ def Online_Deceased(request):
 			try:
 				presenter = Presenter.objects.get(national_number=presenter_national_number)
 			except:
-				presenter = Presenter.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
-													 phone_number=presenter_phone_number,
-													 national_number=presenter_national_number,
-													 identification_number=presenter_identification_number,address=presenter_address)
+				try:
+					presenter = Presenter.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
+														 phone_number=presenter_phone_number,
+														 national_number=presenter_national_number,
+														 identification_number=presenter_identification_number,address=presenter_address)
+				except:
+					return HttpResponse('خطا در ذخیره اطلاعات معرف')
 				user = MyUser.objects.get(username=presenter_national_number)
 
 
 
-
-			deceased = Deceased.objects.create(national_number=national_number, first_name=first_name,
-											   last_name=last_name, fa_name=fa_name,
-											   identification_number=identification_number, bio=bio,
-											   date_of_birth=birth_day, address=address,
-											   deceased_status=deceased_status, muni_code=muni_code,
-											   place_of_birth=place_of_birth,
-											   issue_date=issue_date, mo_name=mo_name, sex=sex)
+			try:
+				deceased = Deceased.objects.create(national_number=national_number, first_name=first_name,
+												   last_name=last_name, fa_name=fa_name,
+												   identification_number=identification_number, bio=bio,
+												   date_of_birth=birth_day, address=address,
+												   deceased_status=deceased_status, muni_code=muni_code,
+												   place_of_birth=place_of_birth,
+												   issue_date=issue_date, mo_name=mo_name, sex=sex)
+			except:
+				return HttpResponse('خطا در ذخیره سازی اطلاعات متوفی')
 			deceased.presenter_id = presenter
 			deceased.save()
 
@@ -757,14 +765,20 @@ def Online_Deceased(request):
 				try:
 					buyer = Buyer.objects.get(national_number=presenter_national_number)
 				except:
-					buyer = Buyer.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
-												 national_number=presenter_national_number,
-												 identification_number=presenter_identification_number,
-												 phone_number=presenter_phone_number)
+					try:
+						buyer = Buyer.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
+													 national_number=presenter_national_number,
+													 identification_number=presenter_identification_number,
+													 phone_number=presenter_phone_number)
+					except:
+						return HttpResponse('خطا در ذخیره سازی اطلاعات خریدار')
 				if license_status == 'CONFIRMED':
-					place_service = Place_Service.objects.create(buyer_id=buyer, place_id=place, deceased_id=deceased,document=RandForPlaceServiceDocument(),
-																 payment_status='PAID')
-					# return HttpResponse('salam')
+					try:
+						place_service = Place_Service.objects.create(buyer_id=buyer, place_id=place, deceased_id=deceased,document=RandForPlaceServiceDocument(),
+																	 payment_status='PAID')
+					except:
+						
+						return HttpResponse('خطا در ذخیره سازی اطلاعات رزرو قبر')
 				else:
 					pass
 
@@ -806,9 +820,11 @@ def Deceased_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
 
 		deceaseds = Deceased.objects.all()
-
+		warnings = ['برای مشاهده جزییات محل دفن بروی کد قبر کلیک کنید.']
 		context = {
+
 			'deceaseds': deceaseds,
+			'warnings':warnings,
 		}
 
 		return render(request, 'admin-panel/deceased-list.html', context)

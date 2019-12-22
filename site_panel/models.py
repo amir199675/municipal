@@ -21,7 +21,7 @@ class Presenter(models.Model):
 	identification_number = models.CharField(max_length=11, null=True, blank=True, verbose_name='شماره شناسنامه ')
 	phone_number = models.CharField(max_length=11, unique=True, verbose_name='شماره تماس ')
 	address = models.TextField(null=True,blank=True,verbose_name='آدرس معرف ')
-	user_id = models.ForeignKey(MyUser, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name='کاربر ')
+	user_id = models.ForeignKey(MyUser, on_delete=models.CASCADE, blank=True, null=True, verbose_name='کاربر ')
 
 	class Meta:
 		verbose_name = 'معرف'
@@ -108,7 +108,7 @@ class Deceased(models.Model):
 	issue_date = models.DateField(null=True, blank=True, verbose_name='تاریخ صدور ')
 	place_of_birth = models.CharField(max_length=32, null=True, blank=True, verbose_name='محل تولد ')
 	address = models.TextField(null=True, blank=True, verbose_name='آدرس ')
-	presenter_id = models.ForeignKey(Presenter, null=True, blank=True, editable=False, on_delete=models.CASCADE,
+	presenter_id = models.ForeignKey(Presenter, null=True, blank=True, on_delete=models.CASCADE,
 									 verbose_name='معرف ')
 
 	class Meta:
@@ -168,7 +168,7 @@ class Buyer(models.Model):
 	national_number = models.CharField(max_length=11, unique=True, verbose_name='شماره ملی ')
 	identification_number = models.CharField(max_length=11, null=True, blank=True, verbose_name='شماره شناسنامه ')
 	phone_number = models.CharField(max_length=11,null=True,blank=True, unique=True, verbose_name='شماره تماس ')
-	user_id = models.ForeignKey(MyUser, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name='کاربر ')
+	user_id = models.ForeignKey(MyUser, on_delete=models.CASCADE, blank=True, null=True, verbose_name='کاربر ')
 
 	class Meta:
 		verbose_name = 'خریدار'
@@ -551,7 +551,6 @@ def DeleteDeceasedFromUser(sender, instance, *args, **kwargs):
 		user = MyUser.objects.get(username=instance.national_number)
 		user.deceased_id = None
 		user.save()
-
 	except:
 		pass
 
