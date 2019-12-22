@@ -345,7 +345,7 @@ class Additional_Service(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	service_id = models.ForeignKey(Service_List,on_delete=models.CASCADE,null=True,blank=True,verbose_name='خدمات مربوطه ')
-	buyer_id = models.ForeignKey(Buyer,related_name='additional', null=True, blank=True, on_delete=models.CharField, verbose_name='خریدار ')
+	buyer_id = models.ForeignKey(Buyer,related_name='additional', null=True, blank=True, on_delete=models.CASCADE, verbose_name='خریدار ')
 	status = models.CharField(max_length=32, choices=STATUS, default='NOT PAID', verbose_name='وضعیت پرداخت ')
 	deceased_id = models.ForeignKey(Deceased, related_name='additional_service', on_delete=models.CASCADE,
 									verbose_name='متوفی ')
