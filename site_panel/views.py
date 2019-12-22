@@ -777,7 +777,7 @@ def Online_Deceased(request):
 						place_service = Place_Service.objects.create(buyer_id=buyer, place_id=place, deceased_id=deceased,document=RandForPlaceServiceDocument(),
 																	 payment_status='PAID')
 					except:
-						
+
 						return HttpResponse('خطا در ذخیره سازی اطلاعات رزرو قبر')
 				else:
 					pass
