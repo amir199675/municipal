@@ -740,10 +740,11 @@ def EditBuyrDeceased(sender, instance, created, *args, **kwargs):
 		place.save()
 	else:
 		if created:
-			try:
-				movement_certificate = Movement_Certificate.objects.get(license_id__deceased_id=instance.deceased_id)
-			except:
-				movement_certificate = Movement_Certificate.objects.create(license_id=instance,status='disapproval')
+			if instance.move_status == 'SEND-OUT':
+				try:
+					movement_certificate = Movement_Certificate.objects.get(license_id__deceased_id=instance.deceased_id)
+				except:
+					movement_certificate = Movement_Certificate.objects.create(license_id=instance,status='disapproval')
 
 
 @receiver(post_save, sender=Place)
