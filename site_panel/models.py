@@ -481,12 +481,12 @@ def RandForDocument():
 			license = License.objects.get(document=number)
 		except:
 			return number
-
-@receiver(post_save, sender=License)
-def AddMovmentCertificate(sender, instance, created, *args, **kwargs):
-	if created:
-		if instance.move_status == 'SEND-OUT':
-			movement_cer = Movement_Certificate.objects.create(license_id=instance)
+#
+# @receiver(post_save, sender=License)
+# def AddMovmentCertificate(sender, instance, created, *args, **kwargs):
+# 	if created:
+# 		if instance.move_status == 'SEND-OUT':
+# 			movement_cer = Movement_Certificate.objects.create(license_id=instance)
 
 
 @receiver(post_save, sender=Deceased)
@@ -738,13 +738,13 @@ def EditBuyrDeceased(sender, instance, created, *args, **kwargs):
 		place = instance.place_id
 		place.status = 'Sold'
 		place.save()
-	else:
-		if created:
-			if instance.move_status == 'SEND-OUT':
-				try:
-					movement_certificate = Movement_Certificate.objects.get(license_id__deceased_id=instance.deceased_id)
-				except:
-					movement_certificate = Movement_Certificate.objects.create(license_id=instance,status='disapproval')
+
+
+	if instance.move_status == 'SEND-OUT':
+		try:
+			movement_certificate = Movement_Certificate.objects.get(license_id__deceased_id=instance.deceased_id)
+		except:
+			movement_certificate = Movement_Certificate.objects.create(license_id=instance,status='disapproval')
 
 
 @receiver(post_save, sender=Place)
