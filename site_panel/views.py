@@ -793,9 +793,12 @@ def Online_Deceased(request):
 			death_certificate.status = death_certificate_stats
 			death_certificate.save()
 			message = 'متوفی ' + deceased.get_full_name() + ' با موفقیت ثبت شد'
+			causes = Cause_Death.objects.all()
+
 			context = {
 				'success': True,
 				'message': message,
+				'causes':causes,
 				'info': 'برای ویرایش اطلاعات وارد شده اینجا کلیک کنید.',
 				'deceased': deceased,
 
