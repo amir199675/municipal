@@ -73,7 +73,7 @@
                                                     </span>
                                                 <button type="button" class="close" data-dismiss="alert"
                                                         aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
+                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                                 <strong>{{ message }}</strong>
                                                 <a href="#" class="alert-link">{{ info }}</a>
@@ -306,22 +306,58 @@
                                                         </div>
                                                     </div>
 
-                                                    <div style="margin-top: 27px" class="col-lg-6">
+                                                    <div style="margin-top: 27px" class="col-lg-2">
                                                         <fieldset class="form-group">
+                                                            <label for="location2">فرم تاییدیه متوفی :</label>
                                                             <div class="custom-file">
 {#                                                                <input type="file" class="custom-file-input"#}
                                                                 {#                                                                       id="inputGroupFile01" name="presenter_document">#}
                                                                 <input class="custom-file-input" id="inputGroupFile01" name="presenter_document" type='file'
                                                                        onchange="Main(this);"/>
-                                                                <label class="custom-file-label" for="inputGroupFile01">فرم
-                                                                    تاییدیه متوفی</label>
+                                                                <label class="custom-file-label" for="inputGroupFile01" style="font-size: 12px">تصویراول</label>
                                                             </div>
                                                         </fieldset>
                                                     </div>
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-2">
                                                         <div class="form-group">
+                                                            <img height="100%" width="100%" id="main" src="{% if license.picture != '' %}{{ license.picture.url }}{% else %}{% static 'images/No_image_available.jpg' %}{% endif %}"
+                                                                 alt="your image"/>
+                                                        </div>
+                                                    </div><div style="margin-top: 27px" class="col-lg-2">
+                                                    <fieldset class="form-group">
+                                                        <label for="location2">فرم تاییدیه متوفی :</label>
 
-                                                            <img height="100%" width="100%" id="main" src="{% if license.picture != '' %}{{ license.picture.url }}{% endif %}"
+                                                        <div class="custom-file">
+{#                                                                <input type="file" class="custom-file-input"#}
+                                                                {#                                                                       id="inputGroupFile01" name="presenter_document">#}
+                                                                <input class="custom-file-input" id="inputGroupFile01" name="presenter_document_one" type='file'
+                                                                       onchange="One(this);"/>
+                                                                <label class="custom-file-label" for="inputGroupFile01" style="font-size: 12px">تصویردوم</label>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="form-group">
+                                                            <img height="100%" width="100%" id="one" src="{% if license.picture2 != None %}{{ license.picture2.url }}{% else %}{% static 'images/No_image_available.jpg' %}{% endif %}"
+                                                                 alt="your image"/>
+                                                        </div>
+                                                    </div>
+                                                    <div style="margin-top: 27px" class="col-lg-2">
+                                                        <fieldset class="form-group">
+                                                            <label for="location2">فرم تاییدیه متوفی :</label>
+
+                                                            <div class="custom-file">
+{#                                                                <input type="file" class="custom-file-input"#}
+                                                                {#                                                                       id="inputGroupFile01" name="presenter_document">#}
+                                                                <input class="custom-file-input" id="inputGroupFile01" name="presenter_document_two" type='file'
+                                                                       onchange="Two(this);"/>
+                                                                <label class="custom-file-label" for="inputGroupFile01" style="font-size: 12px">تصویرسوم</label>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="form-group">
+                                                            <img height="100%" width="100%" id="two" src="{% if license.picture3 != None %}{{ license.picture3.url }}{% else %}{% static 'images/No_image_available.jpg' %}{% endif %}"
                                                                  alt="your image"/>
                                                         </div>
                                                     </div>
@@ -656,6 +692,35 @@
 
                 reader.onload = function (e) {
                     $('#main')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+    <script>
+        function One(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#one')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+
+        }
+    </script>
+    <script>
+        function Two(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#two')
                         .attr('src', e.target.result);
                 };
 

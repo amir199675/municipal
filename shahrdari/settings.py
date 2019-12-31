@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'site_panel',
     'Account',
     'ckeditor',
-    'ckeditor_uploader'
+    'ckeditor_uploader',
+    'django_apscheduler.apps.DjangoApschedulerConfig',
 
 ]
 CKEDITOR_UPLOAD_PATH = "uploads/"

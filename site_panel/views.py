@@ -718,6 +718,17 @@ def Online_Deceased(request):
 
 			presenter = None
 			try:
+				buyer = Buyer.objects.get(national_number=presenter_national_number)
+			except:
+				try:
+					buyer = Buyer.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
+													 national_number=presenter_national_number,
+													 identification_number=presenter_identification_number,
+													 phone_number=presenter_phone_number)
+				except:
+					return HttpResponse('خطا در ذخیره سازی اطلاعات خریدار')
+
+			try:
 				presenter = Presenter.objects.get(national_number=presenter_national_number)
 			except:
 				try:
@@ -752,7 +763,18 @@ def Online_Deceased(request):
 				license.move_status = 'SEND-OUT'
 				license.city_name = location
 				license.picture = picture
+				try:
+					presenter_document_one = request.FILES['presenter_document_one']
+					license.picture2 = presenter_document_one
+				except:
+					pass
+				try:
+					presenter_document_two = request.FILES['presenter_document_two']
+					license.picture3 = presenter_document_two
+				except:
+					pass
 				license.license_status = license_status
+
 				license.save()
 			else:
 
@@ -760,6 +782,16 @@ def Online_Deceased(request):
 				license.move_status = 'FERDOS-REZA'
 				license.place_id = place
 				license.picture = picture
+				try:
+					presenter_document_one = request.FILES['presenter_document_one']
+					license.picture2 = presenter_document_one
+				except:
+					pass
+				try:
+					presenter_document_two = request.FILES['presenter_document_two']
+					license.picture3 = presenter_document_two
+				except:
+					pass
 				license.license_status = license_status
 				license.save()
 				try:
@@ -1445,91 +1477,6 @@ def Select_Deceased(request,id):
 	else:
 		return redirect('/Account/login/?next=/Admin/select-deceased/'+id+'/')
 
-def Sell_Service(request,id):
-	if request.user.is_authenticated and request.user.is_staff:
-		select_deceased = Deceased.objects.get(id = id)
-		if request.method == 'POST':
-			serves = request.POST.getlist('serves')
-			# return HttpResponse(serves[0])
-			str = ''
-			for serve in serves:
-				str +=serve
-			str = str.split('Amir:D')
-			last_buyer = request.POST['last_buyer']
-			if last_buyer != 'Amir:D':
-				buyer = Buyer.objects.get(pk=last_buyer)
-			else:
-				first_name = request.POST['first_name']
-				last_name = request.POST['last_name']
-				national_number = request.POST['national_number']
-				phone_number = request.POST['phone_number']
-				if first_name == '' and last_name == '' and phone_number== '':
-					services = Service_List.objects.all()
-					context = {
-						'services': services,
-						'error': True,
-						'first_name': first_name,
-						'last_name': last_name,
-						'phone_number': phone_number,
-						'national_number': national_number,
-						'message': 'لطفا همه فیلد ها را پر کنید.',
-						'select_deceased':select_deceased,
-
-					}
-					return render(request, 'admin-panel/add-service.html', context)
-
-				if len(national_number) != 10:
-					services = Service_List.objects.all()
-					context = {
-						'services': services,
-						'error': True,
-						'select_deceased':select_deceased,
-						'first_name':first_name,
-						'last_name':last_name,
-						'phone_number':phone_number,
-						'national_number':national_number,
-						'message': 'کد ملی باید 10 رقمی باشد.'
-					}
-					return render(request, 'admin-panel/add-service.html', context)
-
-				try:
-					buyer = Buyer.objects.get(national_number=national_number)
-				except:
-					buyer = Buyer.objects.create(first_name=first_name,last_name=last_name,national_number=national_number,phone_number=phone_number)
-
-			for i in str:
-				if i=='':
-					pass
-				else:
-					additional_service = Additional_Service.objects.create(status='PAID',buyer_id=buyer,service_id=Service_List.objects.get(pk=i),deceased_id=select_deceased)
-			warnings = ['لطفا صفحه را رفرش نکنید، در غیر اینورت خدمات دوباره برای شما ثبت میشود!']
-			message = 'خدمات  با موفقیت برای '+select_deceased.get_full_name()+' ثبت شد.'
-			services = Service_List.objects.all()
-			context = {
-				'services':services,
-				'warnings':warnings,
-				'success':True,
-				'message':message,
-				'select_deceased': select_deceased
-
-			}
-			return render(request,'admin-panel/select-service-list.html',context)
-
-		else:
-			warnings = ['please be careful']
-			buyers = Buyer.objects.filter(additional__deceased_id=select_deceased).distinct()
-			services = Service_List.objects.all()
-			context = {
-				'warnings':warnings,
-				'buyers':buyers,
-				'services':services,
-				'select_deceased':select_deceased
-			}
-			return render(request,'admin-panel/select-service-list.html',context)
-	else:
-		return redirect('/Account/login/?next=/Admin/add-service/' + id + '/')
-
-
 def Add_Service(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		if request.method == 'POST':
@@ -1636,27 +1583,6 @@ def Edit_Service(request,id):
 	else:
 		return redirect('/Account/login/?next=/Admin/service-list/edit/{}/'.format(str(id)))
 
-
-def Reserved_Services(request,id):
-	if request.user.is_authenticated and request.user.is_staff:
-		warnings = ['برای مشاهده مشخصات خریدار بروی اسم خریدار کلیک کنید.']
-		total_price = 0
-
-		services = Additional_Service.objects.filter(deceased_id_id=id)
-		for service in services:
-			total_price +=int(service.service_id.price)
-
-		select_deceased = Deceased.objects.get(pk=id)
-
-		context = {
-			'warnings':warnings,
-			'total_price':total_price,
-			'select_deceased':select_deceased,
-			'services':services,
-		}
-		return render(request,'admin-panel/reserve-service-list.html',context)
-	else:
-		return redirect('/Account/login/?next=/Admin/reserve-service/{}/'.format(str(id)))
 
 def Add_New(request):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -2032,6 +1958,7 @@ def Print_Movement_Cert(request,id):
 			}
 			return render(request, 'admin-panel/movement_cert_print.html',context)
 	else:
+
 		return redirect('/Account/login/?next=/Admin/movement_certificate_print/{}'.format(id))
 
 def Wait(request):

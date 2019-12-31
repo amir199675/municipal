@@ -21,7 +21,7 @@ class Presenter(models.Model):
 	identification_number = models.CharField(max_length=11, null=True, blank=True, verbose_name='شماره شناسنامه ')
 	phone_number = models.CharField(max_length=11, unique=True, verbose_name='شماره تماس ')
 	address = models.TextField(null=True,blank=True,verbose_name='آدرس معرف ')
-	user_id = models.ForeignKey(MyUser, on_delete=models.CASCADE, blank=True, null=True, verbose_name='کاربر ')
+	user_id = models.ForeignKey(MyUser,related_name='presenter', on_delete=models.CASCADE, blank=True, null=True, verbose_name='کاربر ')
 
 	class Meta:
 		verbose_name = 'معرف'
@@ -168,7 +168,7 @@ class Buyer(models.Model):
 	national_number = models.CharField(max_length=11, unique=True, verbose_name='شماره ملی ')
 	identification_number = models.CharField(max_length=11, null=True, blank=True, verbose_name='شماره شناسنامه ')
 	phone_number = models.CharField(max_length=11,null=True,blank=True, unique=True, verbose_name='شماره تماس ')
-	user_id = models.ForeignKey(MyUser, on_delete=models.CASCADE, blank=True, null=True, verbose_name='کاربر ')
+	user_id = models.ForeignKey(MyUser,related_name='buyer', on_delete=models.CASCADE, blank=True, null=True, verbose_name='کاربر ')
 
 	class Meta:
 		verbose_name = 'خریدار'
@@ -357,10 +357,10 @@ class Additional_Service(models.Model):
 	def __str__(self):
 		return self.deceased_id.get_full_name() + ' ' + self.service_id.name
 
-
 class Bill(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
+	document = models.CharField(max_length=32,null=True,blank=True)
 	name = models.CharField(max_length=64, verbose_name='عنوان ')
 	price = models.CharField(max_length=8, verbose_name='هزینه ')
 	order_id = models.ForeignKey(Place_Service, on_delete=models.CASCADE, null=True, blank=True,
@@ -404,6 +404,8 @@ class License(models.Model):
 	license_status = models.CharField(max_length=32, choices=LICENSE_STATUS, default='WAITING',
 									  verbose_name='وضعیت مجوز ')
 	picture = models.ImageField(upload_to='license-pic/', null=True, blank=True)
+	picture2 = models.ImageField(upload_to='license-pic/', null=True, blank=True)
+	picture3 = models.ImageField(upload_to='license-pic/', null=True, blank=True)
 	move_status = models.CharField(max_length=32, choices=MOVE_STATUS, default='FERDOS-REZA',
 								   verbose_name='وضعیت انتقال ')
 	city_name = models.CharField(max_length=32, null=True, blank=True, verbose_name='شهر اعزامی ')
@@ -452,7 +454,7 @@ class Movement_Certificate(models.Model):
 @receiver(post_save, sender=Additional_Service)
 def AddToBill(sender, instance, created, *args, **kwargs):
 	if created and instance.status == 'PAID':
-		bill = Bill.objects.create(name='خدمات اضافه', price=instance.service_id.price, additional_service_id=instance,
+		bill = Bill.objects.create(name=instance.service_id.name, price=instance.service_id.price, additional_service_id=instance,
 								   deceased_id=instance.deceased_id, user_id=instance.buyer_id)
 	else:
 		if instance.status == 'PAID':
@@ -462,7 +464,7 @@ def AddToBill(sender, instance, created, *args, **kwargs):
 				bill.buyer_id = instance.buyer_id
 				bill.save()
 			except:
-				bill = Bill.objects.create(name='خدمات اضافه', price=instance.price, additional_service_id=instance,
+				bill = Bill.objects.create(name=instance.service_id.name, price=instance.price, additional_service_id=instance,
 										   deceased_id=instance.deceased_id, user_id=instance.buyer_id)
 		else:
 			try:
@@ -481,6 +483,7 @@ def RandForDocument():
 			license = License.objects.get(document=number)
 		except:
 			return number
+
 #
 # @receiver(post_save, sender=License)
 # def AddMovmentCertificate(sender, instance, created, *args, **kwargs):
@@ -501,7 +504,7 @@ def Add_Death_certificate(sender, instance, created, *args, **kwargs):
 				user.save()
 			except:
 				MyUser.objects.create(first_name=instance.first_name, last_name=instance.last_name, deceased_id=instance.id,
-									  email=instance.national_number + '@gmail.com', username=instance.national_number)
+									  email=instance.national_number + '@gmail.com', username=instance.national_number,national_number=instance.national_number)
 				user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.last_name,
 										  deceased_id=instance.id,
 										  email=instance.national_number + '@gmail.com', username=instance.national_number)
@@ -514,7 +517,6 @@ def Add_Death_certificate(sender, instance, created, *args, **kwargs):
 										 document=RandForDocument())
 	else:
 		if deceased.national_number:
-
 			try:
 				user = MyUser.objects.get(deceased_id=instance.id)
 				user.first_name = instance.first_name
@@ -567,7 +569,7 @@ def AddPresenterToUser(sender, instance, created, *args, **kwargs):
 			presenter.save()
 		except:
 			MyUser.objects.create(first_name=instance.first_name, last_name=instance.last_name,
-								  presenter_id=instance.id,
+								  presenter_id=instance.id,national_number=instance.national_number,
 								  email=instance.national_number + '@gmail.com', username=instance.national_number)
 			user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.last_name,
 									  presenter_id=instance.id,
@@ -698,7 +700,7 @@ def AddBuyerToUser(sender, instance, created, *args, **kwargs):
 			buyer.save()
 		except:
 			MyUser.objects.create(first_name=instance.first_name, last_name=instance.last_name,
-								  buyer_id=instance.id,
+								  buyer_id=instance.id,national_number=instance.national_number,
 								  email=instance.national_number + '@gmail.com', username=instance.national_number)
 			user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.last_name,
 									  buyer_id=instance.id,

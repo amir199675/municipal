@@ -13,10 +13,14 @@
     <meta name="keywords"
           content="admin template, Chameleon admin template, dashboard template, gradient admin template, responsive admin template, webapp, eCommerce dashboard, analytic dashboard">
     <meta name="author" content="amir derakhshanfar">
-    <title>{% block title %}{{ select_deceased.get_full_name }}{% endblock %}</title>
+    <title>{% block title %}
+        امور مالی
+        {% endblock %}
+    </title>
     <link rel="apple-touch-icon" href="{% static 'images/logo.png' %}">
     <link rel="shortcut icon" type="image/x-icon"
           href="{% static 'images/logo.png' %}">
+
     <link href="{% static 'admin-panel-static/app-assets/css-rtl/Vazir-FD.css' %}" rel='stylesheet' type='text/css'>
 
     <link href="https://fonts.googleapis.com/css?family=Muli:300,300i,400,400i,600,600i,700,700i%7CComfortaa:300,400,700"
@@ -25,44 +29,61 @@
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css"
           href="{% static 'admin-panel-static/app-assets/vendors/css/vendors-rtl.min.css' %}">
+
     <link rel="stylesheet" type="text/css"
           href="{% static 'admin-panel-static/app-assets/vendors/css/forms/toggle/switchery.min.css' %}">
+
     <link rel="stylesheet" type="text/css"
           href="{% static 'admin-panel-static/app-assets/css-rtl/plugins/forms/switch.min.css' %}">
+
     <link rel="stylesheet" type="text/css"
           href="{% static 'admin-panel-static/app-assets/css-rtl/core/colors/palette-switch.min.css' %}">
+
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
     <link rel="stylesheet" type="text/css"
           href="{% static 'admin-panel-static/app-assets/css-rtl/bootstrap.min.css' %}">
+
     <link rel="stylesheet" type="text/css"
           href="{% static 'admin-panel-static/app-assets/css-rtl/bootstrap-extended.min.css' %}">
+
     <link rel="stylesheet" type="text/css" href="{% static 'admin-panel-static/app-assets/css-rtl/colors.min.css' %}">
+
     <link rel="stylesheet" type="text/css"
           href="{% static 'admin-panel-static/app-assets/css-rtl/components.min.css' %}">
+
     <link rel="stylesheet" type="text/css"
           href="{% static 'admin-panel-static/app-assets/css-rtl/custom-rtl.min.css' %}">
+
     <!-- END: Theme CSS-->
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css"
           href="{% static 'admin-panel-static/app-assets/css-rtl/core/menu/menu-types/horizontal-menu.min.css' %}">
+
     <link rel="stylesheet" type="text/css"
           href="{% static 'admin-panel-static/app-assets/css-rtl/core/colors/palette-gradient.min.css' %}">
+
     <link rel="stylesheet" type="text/css"
           href="{% static 'admin-panel-static/app-assets/css-rtl/plugins/animate/animate.min.css' %}">
+
     <link rel="stylesheet" type="text/css"
           href="{% static 'admin-panel-static/app-assets/fonts/simple-line-icons/style.min.css' %}">
+
     <link rel="stylesheet" type="text/css"
           href="{% static 'admin-panel-static/app-assets/css-rtl/plugins/forms/wizard.min.css' %}">
 
     <!-- END: Page CSS-->
     <!--for datepicker-->
     <link href='{% static 'date/css/fontawesome/css/font-awesome.min.css' %}' rel='stylesheet'/>
+
     <link href="{% static "date/css/vertical-responsive-menu.min.css" %}" rel="stylesheet"/>
+
     <link href="{% static 'date/css/prism.css' %}" rel="stylesheet"/>
+
     <link rel="stylesheet" href="{% static 'date/css/persianDatepicker-default.css' %}"/>
+
     <link rel="stylesheet" href="{% static 'date/css/persianDatepicker-dark.css' %}"/>
     <link rel="stylesheet" href="{% static 'date/css/persianDatepicker-latoja.css' %}"/>
     <link rel="stylesheet" href="{% static 'date/css/persianDatepicker-melon.css' %}"/>
@@ -73,7 +94,7 @@
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'admin-panel-static/assets/css/style-rtl.css' %}">
     <!-- END: Custom CSS-->
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
 </head>
 <!-- END: Head-->
 
@@ -95,7 +116,7 @@
             <li class="nav-item"><a class="navbar-brand" href="index.html"><img class="brand-logo"
                                                                                 alt="creaative admin logo"
                                                                                 src="{% static 'images/logo.png' %}">
-                <h3 class="brand-text">مدیریت آرامستان</h3></a></li>
+                <h3 class="brand-text">امور مالی</h3></a></li>
             <li class="nav-item d-md-none"><a class="nav-link open-navbar-container" data-toggle="collapse"
                                               data-target="#navbar-mobile"><i class="la la-ellipsis-v"></i></a></li>
         </ul>
@@ -104,28 +125,6 @@
         <div class="navbar-container content">
             <div class="collapse navbar-collapse" id="navbar-mobile">
                 <ul class="nav navbar-nav mr-auto float-left">
-                    <li class="nav-item d-none d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs"
-                                                              href="#"><i class="ft-menu"></i></a></li>
-
-
-                    <li class="nav-item dropdown navbar-search"><a class="nav-link dropdown-toggle hide"
-                                                                   data-toggle="dropdown" href="#"><i
-                            class="ficon ft-search"></i></a>
-                        <ul class="dropdown-menu">
-                            <li class="arrow_box">
-                                <form>
-                                    <div class="input-group search-box">
-                                        <div class="position-relative has-icon-right full-width">
-                                            <input class="form-control" id="search" type="text"
-                                                   placeholder="جستجو در اینجا ...">
-                                            <div class="form-control-position navbar-search-close"><i class="ft-x"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
                 </ul>
                 <ul class="nav navbar-nav float-right">
 
@@ -342,14 +341,53 @@
      role="navigation" data-menu="menu-wrapper">
     <div class="navbar-container main-menu-content" data-menu="menu-container">
         <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class="nav-item"><a class="dropdown-toggle nav-link" href="{% url 'Site_Panel:deceased_list' %}"
-            ><i class="ft-home"></i><span>لیست مرده ها</span></a>
+            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"
+                                                                  data-toggle="dropdown"><i class="ft-layers"></i><span>میز کار</span></a>
+                <ul class="dropdown-menu">
+                    <div class="arrow_box">
+                        <li data-menu=""><a class="dropdown-item"
+                                            href=""
+                                            data-toggle="dropdown">اطلاعات اشخاص</a>
+                        </li>
+                        <li data-menu=""><a class="dropdown-item"
+                                            href=""
+                                            data-toggle="dropdown">خدمات</a>
+                        </li>
+                        <li data-menu=""><a class="dropdown-item"
+                                            href="{% url 'Site_Panel:reserve_factor' %}"
+                                            data-toggle="dropdown">فاکتور فروش</a>
+                        </li>
+                        <li data-menu=""><a class="dropdown-item"
+                                            href="{% url 'Site_Panel:factor_list' %}"
+                                            data-toggle="dropdown">لیست فاکتور های فروش</a>
+                        </li>
 
+                    </div>
+                </ul>
             </li>
-            <li class="nav-item"><a class="dropdown-toggle nav-link"
-                                    href="{% url 'Site_Panel:edit-deceased-info' select_deceased.id %}"
-            ><i class="ft-home"></i><span>ویرایش اطلاعات </span></a>
+            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"
+                                                                  data-toggle="dropdown"><i class="ft-layers"></i><span>اطلاعات پایه</span></a>
+                <ul class="dropdown-menu">
+                    <div class="arrow_box">
+                        <li data-menu=""><a class="dropdown-item"
+                                            href=""
+                                            data-toggle="dropdown">اطلاعات اشخاص</a>
+                        </li>
+                        <li data-menu=""><a class="dropdown-item"
+                                            href=""
+                                            data-toggle="dropdown">خدمات</a>
+                        </li>
+                        <li data-menu=""><a class="dropdown-item"
+                                            href=""
+                                            data-toggle="dropdown">فاکتور فروش</a>
+                        </li>
+                        <li data-menu=""><a class="dropdown-item"
+                                            href=""
+                                            data-toggle="dropdown">لیست فاکتور های فروش</a>
+                        </li>
 
+                    </div>
+                </ul>
             </li>
 {#            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"#}
 {#                                                                  data-toggle="dropdown"><i class="ft-layers"></i><span>خدمات</span></a>#}
@@ -367,27 +405,6 @@
 {#                    </div>#}
 {#                </ul>#}
 {#            </li>#}
-        {% for name in select_deceased.license.select_related %}
-            {% if name.city_name %}
-            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"
-                                                                  data-toggle="dropdown"><i class="ft-layers"></i><span>جواز حمل و دفن</span></a>
-                <ul class="dropdown-menu">
-                    <div class="arrow_box">
-                        <li data-menu=""><a class="dropdown-item"
-                                            href="{% url 'Site_Panel:movement_certificate' select_deceased.id %}"
-                                            data-toggle="dropdown">صدور مجوز</a>
-                        </li>
-                    </div>
-                </ul>
-            </li>
-            {% endif %}
-        {% endfor %}
-
-            <li class="nav-item"><a class="dropdown-toggle nav-link"
-                                    href="{% url 'Site_Panel:print_deceased_info' select_deceased.id %}" target="_blank"
-            ><i class="ft-home"></i><span>پرینت اطلاعات</span></a>
-
-            </li>
 
         </ul>
     </div>

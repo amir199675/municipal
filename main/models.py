@@ -14,7 +14,8 @@ class MyUser(AbstractUser):
 	deceased_id = models.CharField(max_length=6,null=True,blank=True,editable=False)
 	buyer_id = models.CharField(max_length=6,null=True,blank=True,editable=False)
 	presenter_id = models.CharField(max_length=6,null=True,blank=True,editable=False)
-
+	national_number = models.CharField(max_length=10,null=True,blank=True,editable=False)
+	phone_number = models.CharField(max_length=11,null=True,blank=True)
 
 
 

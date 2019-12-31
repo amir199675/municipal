@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from . import views
+from . import views , payment
 
 
 
@@ -26,11 +26,9 @@ urlpatterns = [
 	path('Admin/news-list/',views.News_List,name = 'news-list'),
 	path('Admin/edit-news-info/<id>/',views.Edit_News,name = 'edit_news_info'),
 
-	path('Admin/reserve-service/<id>/',views.Sell_Service,name = 'sell_service'),
 	path('Admin/add-service/',views.Add_Service,name = 'add_service'),
 	path('Admin/service-list/',views.Services,name = 'service-list'),
 	path('Admin/service-list/edit/<id>/',views.Edit_Service,name = 'edit_service'),
-	path('Admin/reserved-service-list/<id>/',views.Reserved_Services,name = 'reserve-service'),
 
 	path('Admin/add-letter/',views.Add_Letter,name = 'add_letter'),
 	path('Admin/inbox-letter/',views.Inbox_Letter,name = 'inbox_letter'),
@@ -44,6 +42,12 @@ urlpatterns = [
 
 	path('Admin/movement_certificate/<id>/',views.Movement_Cert,name = 'movement_certificate'),
 	path('Admin/movement_certificate_print/<id>/',views.Print_Movement_Cert,name = 'movement_certificate_print'),
+
+	path('Admin/all_user/',payment.User_list,name = 'user_list'),
+	path('Admin/edit_user/<id>/',payment.Edit_User,name = 'edit_user'),
+	path('Admin/reserve_factor/',payment.Reserve_Factor,name = 'reserve_factor'),
+	path('Admin/factor_list/',payment.Factor_List,name = 'factor_list'),
+
 
 
 
