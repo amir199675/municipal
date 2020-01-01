@@ -290,7 +290,7 @@ class Place_Service(models.Model):
 
 
 	def __str__(self):
-		return self.payment_status + ' ' + self.deceased_id.get_full_name() + ' ' + str(
+		return self.payment_status + ' ' + str(
 			self.place_id.code) + ' ' + self.place_id.status
 
 
@@ -381,7 +381,7 @@ class Bill(models.Model):
 		verbose_name_plural = 'کلیه خریدها'
 
 	def __str__(self):
-		return self.name + ' ' + self.deceased_id.get_full_name()
+		return self.name
 
 
 class License(models.Model):
@@ -569,7 +569,7 @@ def AddPresenterToUser(sender, instance, created, *args, **kwargs):
 			presenter.save()
 		except:
 			MyUser.objects.create(first_name=instance.first_name, last_name=instance.last_name,
-								  presenter_id=instance.id,national_number=instance.national_number,
+								  presenter_id=instance.id,national_number=instance.national_number,phone_number=instance.phone_number,
 								  email=instance.national_number + '@gmail.com', username=instance.national_number)
 			user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.last_name,
 									  presenter_id=instance.id,
@@ -700,7 +700,7 @@ def AddBuyerToUser(sender, instance, created, *args, **kwargs):
 			buyer.save()
 		except:
 			MyUser.objects.create(first_name=instance.first_name, last_name=instance.last_name,
-								  buyer_id=instance.id,national_number=instance.national_number,
+								  buyer_id=instance.id,national_number=instance.national_number,phone_number=instance.phone_number,
 								  email=instance.national_number + '@gmail.com', username=instance.national_number)
 			user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.last_name,
 									  buyer_id=instance.id,

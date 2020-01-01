@@ -6,8 +6,8 @@
     <div class="navbar-header">
         <ul class="nav navbar-nav flex-row position-relative">
             <li class="nav-item mr-auto"><a class="navbar-brand" href=""><img class="brand-logo"
-                                                                                        alt="Chameleon admin logo"
-                                                                                        src="{% static 'images/logo.png' %}"/>
+                                                                              alt="Chameleon admin logo"
+                                                                              src="{% static 'images/logo.png' %}"/>
                 <h3 class="brand-text">مدیریت آرامستان</h3></a></li>
             <li class="nav-item d-none d-md-block nav-toggle"><a class="nav-link modern-nav-toggle pr-0"
                                                                  data-toggle="collapse"><i
@@ -26,9 +26,9 @@
                         جدید</a>
                     </li>
                     <li><a href="{% url 'Site_Panel:deceased_list' %}"><i></i><span
-                    class="menu-title" data-i18n="">لیست مرده ها</span></a>
+                            class="menu-title" data-i18n="">لیست مرده ها</span></a>
 
-            </li>
+                    </li>
                 </ul>
             </li>
 
@@ -42,7 +42,8 @@
             </li>
 
 
-            <li class=" nav-item"><a href=""><i class="ft-bar-chart"></i><span class="menu-title" data-i18n="">اخبار</span></a>
+            <li class=" nav-item"><a href=""><i class="ft-bar-chart"></i><span class="menu-title"
+                                                                               data-i18n="">اخبار</span></a>
                 <ul class="menu-content">
                     <li><a class="menu-item" href="{% url 'Site_Panel:add_news' %}">اضافه کردن اخبار</a>
                     </li>
@@ -62,7 +63,8 @@
                     </li>
                 </ul>
             </li>
-             <li class=" nav-item"><a href=""><i class="ft-anchor"></i><span class="menu-title" data-i18n="">دلایل فوت</span></a>
+            <li class=" nav-item"><a href=""><i class="ft-anchor"></i><span class="menu-title"
+                                                                            data-i18n="">دلایل فوت</span></a>
                 <ul class="menu-content">
                     <li><a class="menu-item" href="{% url 'Site_Panel:add_death_cause' %}">اضافه کردن علت جدید</a>
                     </li>
@@ -71,34 +73,34 @@
                     </li>
                 </ul>
             </li>
-            <li class=" nav-item"><a href=""><i class="ft-server"></i><span class="menu-title" data-i18n="">خدمات</span></a>
+            <li class=" nav-item"><a href=""><i class="ft-server"></i><span class="menu-title"
+                                                                            data-i18n="">امور مالی</span></a>
                 <ul class="menu-content">
+
+                    <li><a class="menu-item" href="{% url 'Site_Panel:reserve_factor' %}">فاکتور فروش</a>
+                    </li>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:factor_list' %}">لیست فاکتور فروش</a>
+                    </li>
+
+                    <li><a class="menu-item" href="{% url 'Site_Panel:place_pre_sell' %}">پیش فروش قبر</a>
+                    </li>
                     <li><a class="menu-item" href="{% url 'Site_Panel:add_service' %}">اضافه کردن خدمات</a>
                     </li>
-
                     <li><a class="menu-item" href="{% url 'Site_Panel:service-list' %}">لیست خدمات</a>
                     </li>
-                </ul>
-            </li>
-            <li class=" nav-item"><a href=""><i class="ft-server"></i><span class="menu-title" data-i18n="">امور مالی</span></a>
-                <ul class="menu-content">
-
-                    <li><a class="menu-item" href="{% url 'Site_Panel:user_list' %}">میزکار</a>
-                    </li>
-
-                    <li><a class="menu-item" href="{% url 'Site_Panel:user_list' %}">اطلاعات پایه</a>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:user_list' %}">اطلاعات اشخاص</a>
                     </li>
 
                 </ul>
             </li>
 
-            <li class=" nav-item"><a href=""><i class="ft-server"></i><span class="menu-title" data-i18n="">پروفایل</span></a>
+            <li class=" nav-item"><a href=""><i class="ft-server"></i><span class="menu-title"
+                                                                            data-i18n="">پروفایل</span></a>
                 <ul class="menu-content">
                     <li><a class="menu-item" href="{% url 'Account:edit_profile' %}">ویرایش مشخصات</a>
                     </li>
                 </ul>
             </li>
-
 
 
         </ul>

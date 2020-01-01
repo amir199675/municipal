@@ -15,7 +15,7 @@
     <meta name="author" content="amir derakhshanfar">
     <title>{% block title %}
         امور مالی
-        {% endblock %}
+    {% endblock %}
     </title>
     <link rel="apple-touch-icon" href="{% static 'images/logo.png' %}">
     <link rel="shortcut icon" type="image/x-icon"
@@ -341,18 +341,14 @@
      role="navigation" data-menu="menu-wrapper">
     <div class="navbar-container main-menu-content" data-menu="menu-container">
         <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
+            <li class="nav-item"><a class="nav-link" href="{% url 'Site_Panel:index' %}"
+                                              ><i class="ft-home"></i><span>پنل ادمین</span></a>
+            </li>
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"
-                                                                  data-toggle="dropdown"><i class="ft-layers"></i><span>میز کار</span></a>
+                                                                  data-toggle="dropdown"><i class="ft-server"></i><span>میز کار</span></a>
                 <ul class="dropdown-menu">
                     <div class="arrow_box">
-                        <li data-menu=""><a class="dropdown-item"
-                                            href=""
-                                            data-toggle="dropdown">اطلاعات اشخاص</a>
-                        </li>
-                        <li data-menu=""><a class="dropdown-item"
-                                            href=""
-                                            data-toggle="dropdown">خدمات</a>
-                        </li>
+
                         <li data-menu=""><a class="dropdown-item"
                                             href="{% url 'Site_Panel:reserve_factor' %}"
                                             data-toggle="dropdown">فاکتور فروش</a>
@@ -360,6 +356,18 @@
                         <li data-menu=""><a class="dropdown-item"
                                             href="{% url 'Site_Panel:factor_list' %}"
                                             data-toggle="dropdown">لیست فاکتور های فروش</a>
+                        </li>
+                        <li data-menu=""><a class="dropdown-item"
+                                            href="{% url 'Site_Panel:place_pre_sell' %}"
+                                            data-toggle="dropdown">پیش فروش قبور</a>
+                        </li>
+                        <li data-menu=""><a class="dropdown-item"
+                                            href="{% url 'Site_Panel:add_service' %}"
+                                            data-toggle="dropdown">اضافه کردن خدمات</a>
+                        </li>
+                        <li data-menu=""><a class="dropdown-item"
+                                            href="{% url 'Site_Panel:service-list' %}"
+                                            data-toggle="dropdown">لیست خدمات</a>
                         </li>
 
                     </div>
@@ -370,41 +378,29 @@
                 <ul class="dropdown-menu">
                     <div class="arrow_box">
                         <li data-menu=""><a class="dropdown-item"
-                                            href=""
+                                            href="{% url 'Site_Panel:user_list' %}"
                                             data-toggle="dropdown">اطلاعات اشخاص</a>
-                        </li>
-                        <li data-menu=""><a class="dropdown-item"
-                                            href=""
-                                            data-toggle="dropdown">خدمات</a>
-                        </li>
-                        <li data-menu=""><a class="dropdown-item"
-                                            href=""
-                                            data-toggle="dropdown">فاکتور فروش</a>
-                        </li>
-                        <li data-menu=""><a class="dropdown-item"
-                                            href=""
-                                            data-toggle="dropdown">لیست فاکتور های فروش</a>
                         </li>
 
                     </div>
                 </ul>
             </li>
-{#            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"#}
-{#                                                                  data-toggle="dropdown"><i class="ft-layers"></i><span>خدمات</span></a>#}
-{#                <ul class="dropdown-menu">#}
-{#                    <div class="arrow_box">#}
-{#                        <li data-menu=""><a class="dropdown-item"#}
-{#                                            href="{% url 'Site_Panel:sell_service' select_deceased.id %}"#}
-{#                                            data-toggle="dropdown">خرید خدمات</a>#}
-{#                        </li>#}
-{#                        <li data-menu=""><a class="dropdown-item"#}
-{#                                            href="{% url 'Site_Panel:reserve-service' select_deceased.id %}"#}
-{#                                            data-toggle="dropdown">خدمات خریداری شده</a>#}
-{#                        </li>#}
-{##}
-{#                    </div>#}
-{#                </ul>#}
-{#            </li>#}
+            {#            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"#}
+            {#                                                                  data-toggle="dropdown"><i class="ft-layers"></i><span>خدمات</span></a>#}
+            {#                <ul class="dropdown-menu">#}
+            {#                    <div class="arrow_box">#}
+            {#                        <li data-menu=""><a class="dropdown-item"#}
+            {#                                            href="{% url 'Site_Panel:sell_service' select_deceased.id %}"#}
+            {#                                            data-toggle="dropdown">خرید خدمات</a>#}
+            {#                        </li>#}
+            {#                        <li data-menu=""><a class="dropdown-item"#}
+            {#                                            href="{% url 'Site_Panel:reserve-service' select_deceased.id %}"#}
+            {#                                            data-toggle="dropdown">خدمات خریداری شده</a>#}
+            {#                        </li>#}
+            {##}
+            {#                    </div>#}
+            {#                </ul>#}
+            {#            </li>#}
 
         </ul>
     </div>

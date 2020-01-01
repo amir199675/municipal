@@ -26,9 +26,9 @@ urlpatterns = [
 	path('Admin/news-list/',views.News_List,name = 'news-list'),
 	path('Admin/edit-news-info/<id>/',views.Edit_News,name = 'edit_news_info'),
 
-	path('Admin/add-service/',views.Add_Service,name = 'add_service'),
-	path('Admin/service-list/',views.Services,name = 'service-list'),
-	path('Admin/service-list/edit/<id>/',views.Edit_Service,name = 'edit_service'),
+	path('Admin/add-service/',payment.Add_Service,name = 'add_service'),
+	path('Admin/service-list/',payment.Services,name = 'service-list'),
+	path('Admin/service-list/edit/<id>/',payment.Edit_Service,name = 'edit_service'),
 
 	path('Admin/add-letter/',views.Add_Letter,name = 'add_letter'),
 	path('Admin/inbox-letter/',views.Inbox_Letter,name = 'inbox_letter'),
@@ -47,6 +47,8 @@ urlpatterns = [
 	path('Admin/edit_user/<id>/',payment.Edit_User,name = 'edit_user'),
 	path('Admin/reserve_factor/',payment.Reserve_Factor,name = 'reserve_factor'),
 	path('Admin/factor_list/',payment.Factor_List,name = 'factor_list'),
+	path('Admin/factor_details/<document>/',payment.Factor_Details,name = 'factor_details'),
+	path('Admin/place_pre_sell/',payment.Place_Pre_Sell,name = 'place_pre_sell'),
 
 
 

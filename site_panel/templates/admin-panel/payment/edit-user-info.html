@@ -22,10 +22,13 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{% url 'Site_Panel:index' %}">ادمین</a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:deceased_list' %}">لیست
-                                    متوفی</a>
+
+                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:reserve_factor' %}">امور مالی</a>
                                 </li>
-                                <li class="breadcrumb-item active">تغییر اطلاعات
+                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:user_list' %}">لیست
+                                    اشخاص</a>
+                                </li>
+                                <li class="breadcrumb-item active">تغییر اطلاعات {{ select_user }}
                                 </li>
                             </ol>
                         </div>

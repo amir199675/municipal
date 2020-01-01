@@ -36,7 +36,7 @@ CORS_ORIGIN_WHITELIST = [
     'http://ferdosreza.ir',
 ]
 
-
+LOGIN_URL = '/Account/login/'
 # Application definition
 
 INSTALLED_APPS = [

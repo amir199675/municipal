@@ -1,10 +1,10 @@
-﻿{% extends 'admin-panel/partial/main-panel.html' %}
+﻿{% extends 'admin-panel/partial/payment_base.html' %}
 {% load static %}
 {% block title %}
-    ویرایش کردن خدمات
+    امور مالی|ویرایش خدمات
 {% endblock %}
 <!-- BEGIN: Content-->
-{% block body %}
+{% block content %}
     <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-wrapper-before"></div>
@@ -17,6 +17,10 @@
                         <div class="breadcrumb-wrapper mr-1">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{% url 'Site_Panel:index' %}">ادمین</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:reserve_factor' %}">امور مالی</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:service-list' %}">لیست خدمات</a>
                                 </li>
                                 <li class="breadcrumb-item active">ویرایش خدمات
                                 </li>

@@ -192,3 +192,175 @@ def Factor_List(request):
 		'factors':factors
 	}
 	return render(request,'admin-panel/payment/factor-list.html',context)
+
+def Factor_Details(request,document):
+	bills = Bill.objects.filter(document=document)
+	total_price = 0
+	for bill in bills :
+		total_price = total_price + int(bill.price)
+	context = {
+		'total_price':total_price,
+		'bills':bills
+
+	}
+	return render(request,'admin-panel/payment/reserve-service-list.html',context)
+
+
+def Add_Service(request):
+	if request.user.is_authenticated and request.user.is_staff:
+		if request.method == 'POST':
+			code = request.POST['code']
+			name = request.POST['name']
+			price = request.POST['price']
+			if name == '' and price == '' and code == '' :
+				context = {
+					'error': True,
+					'message': 'لطفا همه فیلد ها را پر کنید.',
+
+				}
+				return render(request, 'admin-panel/add-service.html', context)
+			try:
+				service_list = Service_List.objects.get(code = code)
+				context = {
+					'error':True,
+					'code':code,
+					'name':name,
+					'price':price,
+					'message' : 'خدمات با این کد وجود دارد'
+				}
+				return render (request,'admin-panel/add-service.html',context)
+			except:
+				service_list = Service_List.objects.create(code = code,name=name,price=price)
+
+			warnings = ['لطفا صفحه را رفرش نکنید، در غیر اینورت خدمات دوباره برای شما ثبت میشود!']
+			message = 'خدمات "{}" با موفقیت اضافه شد'.format(service_list.name)
+			context = {
+				'warnings':warnings,
+				'success':True,
+				'message':message,
+
+			}
+			return render(request,'admin-panel/add-service.html',context)
+		else:
+			return render(request,'admin-panel/add-service.html')
+
+	else:
+		return redirect('/Account/login/?next=/Admin/add-service/')
+
+def Services(request):
+	if request.user.is_authenticated and request.user.is_staff:
+
+		services = Service_List.objects.all()
+		context = {
+			'services':services
+		}
+		return render(request,'admin-panel/service-list.html',context)
+	else:
+		return redirect(request,'/Account/login/?next=/Admin/service-list/')
+
+def Edit_Service(request,id):
+	if request.user.is_authenticated and request.user.is_staff:
+		select_service = Service_List.objects.get(id = id)
+		if request.method == 'POST':
+			name = request.POST['name']
+			code = request.POST['code']
+			price = request.POST['price']
+			if name == '' and code == '' and price == '':
+				context = {
+					'error': True,
+					'message': 'لطفا همه فیلد ها را پر کنید.',
+
+				}
+				return render(request, 'admin-panel/edit-service.html', context)
+			try:
+				service = Service_List.objects.get(code=code)
+				if select_service == service:
+					service.code = code
+					service.price = price
+					service.name =name
+					service.save()
+					context = {
+						'success': True,
+						'message': 'تغییرات با موفقیت انجام شد!',
+						'select_service': service
+					}
+					return render(request, 'admin-panel/edit-service.html', context)
+				else:
+					context = {
+					'error':True,
+					'message':'کدی ک وارد کردید در لیست خدمات وجود دارد!',
+					'select_service':select_service
+
+				}
+					return render(request,'admin-panel/edit-service.html',context)
+			except:
+				select_service= Service_List.objects.get(pk=id)
+				select_service.code = code
+				select_service.price = price
+				select_service.name = name
+				select_service.save()
+				context = {
+					'success':True,
+					'message':'تغییرات با موفقیت انجام شد!',
+					'select_service':select_service
+				}
+				return render(request,'admin-panel/edit-service.html',context)
+		context = {
+			'select_service':select_service
+		}
+		return render(request,'admin-panel/edit-service.html',context)
+	else:
+		return redirect('/Account/login/?next=/Admin/service-list/edit/{}/'.format(str(id)))
+
+@user_passes_test(check_staff)
+def Place_Pre_Sell(request):
+	places = Place.objects.filter(status='Municipal')
+	buyers = Buyer.objects.all()
+	if request.method == 'POST':
+		buyer = request.POST['buyer']
+		request_places = request.POST.getlist('places')
+		str = ''
+		if buyer != '':
+			buyer = Buyer.objects.get(id=buyer)
+			for place in request_places:
+				str += place
+			str = str.split('Amir:D')
+			for s in str:
+				if s != '':
+					place_service = Place_Service.objects.create(place_id_id=int(s),buyer_id=buyer,payment_status='PAID')
+
+		else:
+			name = request.POST['first_name']
+			last_name = request.POST['last_name']
+			phone_number = request.POST['phone_number']
+			national_number = request.POST['national_number']
+			try:
+				buyer = Buyer.objects.get(national_number=national_number)
+				context = {
+					'error':True,
+					'message':'شماره ملی وارد شده در بین خریداران وجود دارد، لطفا خریدار را از بین خریداران قبلی انتخاب کنید'
+				}
+				return render(request,'admin-panel/payment/place_pre_sell.html',context)
+			except:
+				buyer = Buyer.objects.create(first_name=name,last_name=last_name,national_number=national_number,phone_number=phone_number)
+				for place in request_places:
+					str += place
+				str = str.split('Amir:D')
+				for s in str:
+					if s != '':
+						place_service = Place_Service.objects.create(place_id_id=int(s), buyer_id=buyer,payment_status='PAID')
+		places = Place.objects.filter(status='Municipal')
+		buyers = Buyer.objects.all()
+		message = 'پیش فروش قبر {} با موفقیت انجام شد.'.format(buyer.get_full_name())
+		context = {
+			'buyers':buyers,
+			'places':places,
+			'success':True,
+			'message':message
+		}
+		return render(request,'admin-panel/payment/place_pre_sell.html',context)
+	context = {
+		'buyers':buyers,
+		'places':places
+	}
+	return render(request,'admin-panel/payment/place_pre_sell.html',context)
