@@ -49,6 +49,7 @@ urlpatterns = [
 	path('Admin/factor_list/',payment.Factor_List,name = 'factor_list'),
 	path('Admin/factor_details/<document>/',payment.Factor_Details,name = 'factor_details'),
 	path('Admin/place_pre_sell/',payment.Place_Pre_Sell,name = 'place_pre_sell'),
+	path('Admin/add_user/',payment.Add_User,name = 'add_user'),
 
 
 

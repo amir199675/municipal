@@ -21,5 +21,7 @@ admin.site.register(Archive)
 admin.site.register(Cause_Death)
 admin.site.register(Service_List)
 admin.site.register(Movement_Certificate)
+admin.site.register(Driver)
+admin.site.register(Driver_Movement)
 
 

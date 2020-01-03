@@ -364,3 +364,40 @@ def Place_Pre_Sell(request):
 		'places':places
 	}
 	return render(request,'admin-panel/payment/place_pre_sell.html',context)
+
+@user_passes_test(check_staff)
+def Add_User(request):
+	if request.method == 'POST':
+		name = request.POST['first_name']
+		last_name = request.POST['last_name']
+		national_number = request.POST['national_number']
+		phone_number = request.POST['phone_number']
+		try:
+			buyer = Buyer.objects.get(national_number=national_number)
+			message = 'خریدار با شماره ملی {} در سیستم وجود دارد.'.format(national_number)
+			info = 'برای ویرایش اطلاعات اینجا کلیک کنید!'
+			user = MyUser.objects.get(buyer_id=buyer.id)
+			context = {
+				'info':info,
+				'message':message,
+				'user':user,
+				'error':True,
+			}
+			return render(request,'admin-panel/payment/add_user.html',context)
+		except:
+			buyer = Buyer.objects.create(first_name=name,last_name=last_name,national_number=national_number,phone_number=phone_number)
+			message = 'خریدار {} با موفقیت به لیست اشخاص اضافه شد.'.format(buyer.get_full_name())
+			user = MyUser.objects.get(buyer_id=buyer.id)
+			info = 'برای ویرایش اطلاعات اینجا کلیک کنید'
+			context = {
+				'info':info,
+				'success':True,
+				'message':message,
+				'user':user
+			}
+			return render(request,'admin-panel/payment/add_user.html',context)
+
+	context = {
+
+	}
+	return render(request,'admin-panel/payment/add_user.html',context)

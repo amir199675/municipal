@@ -63,21 +63,35 @@
                                                 </thead>
                                                 <tbody>
                                                 {% for place in places %}
-                                                    <tr>
+                                                    <tr {% if place.status == 'Municipal' %}style="background-color: rgba(50%,100%,50%,.2)" {% elif place.status == 'Sold' %}style="background-color: rgba(100%,50%,50%,.2)" {% else %} style="background-color: rgba(100%,100%,0%,.2)" {% endif %}>
                                                         <td>
                                                             <a href="{% url 'Site_Panel:edit-place-info' place.id %}">{{ place.code }}</a>
                                                         </td>
                                                         <td>{{ place.price }}</td>
-                                                        <td data-toggle="modal" data-target="#p{{ place.id }}">
-                                                            {% if place.status == 'Municipal' %}
-                                                                شهرداری{% elif place.status == 'Sold' %}فروخته
-                                                                شد{% else %}
-                                                                پیش فروش شده{% endif %}</td>
+                                                        {% if place.status == 'Municipal' %}
+                                                            <td data-toggle="modal" data-target="#p{{ place.id }}">
+
+                                                                شهرداری
+                                                            </td>{% elif place.status == 'Sold' %}
+                                                            <td data-toggle="modal" data-target="#p{{ place.id }}">
+                                                                فروخته شد
+                                                            </td>
+                                                        {% else %}
+                                                            <td data-toggle="modal" data-target="#p{{ place.id }}">
+                                                                پیش فروش شده
+                                                            </td>
+                                                        {% endif %}
                                                         <td>{% if place.type == 'Celebrities' %}مشاهیر{% else %}
                                                             عادی{% endif %}</td>
 
-                                                        <td>{% if place.place_service.buyer_id %}{{ place.place_service.buyer_id.get_full_name }} [ {{ place.place_service.buyer_id.national_number }} ]{% endif %}</td>
-                                                        <td>{% for item in place.license.select_related %}<a href="{% url 'Site_Panel:edit-deceased-info' item.deceased_id.id %}" >{{ place.place_service.deceased_id.get_full_name }} [ {{ place.place_service.deceased_id.national_number }} ]</a>{% endfor %}</td>
+                                                        <td>{% if place.place_service.buyer_id %}
+                                                            {{ place.place_service.buyer_id.get_full_name }} [
+                                                            {{ place.place_service.buyer_id.national_number }}
+                                                            ]{% endif %}</td>
+                                                        <td>{% for item in place.license.select_related %}
+                                                            <a href="{% url 'Site_Panel:edit-deceased-info' item.deceased_id.id %}">{{ place.place_service.deceased_id.get_full_name }}
+                                                                [ {{ place.place_service.deceased_id.national_number }}
+                                                                ]</a>{% endfor %}</td>
 
                                                     </tr>
                                                 {% endfor %}

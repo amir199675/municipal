@@ -2,7 +2,7 @@
 {% load main_tags %}
 {% load static %}
 {% block title %}
-    پنل ادمین|ویرایش اطلاعات کاربر
+    امور مالی|اضافه کردن خریدار
 {% endblock %}
 <!-- BEGIN: Content-->
 {% block content %}
@@ -14,7 +14,7 @@
             <div class="content-wrapper-before"></div>
             <div class="content-header row">
                 <div class="content-header-left col-md-4 col-12 mb-2">
-                    <h3 class="content-header-title">تغییر اطلاعات {{ select_user }}</h3>
+                    <h3 class="content-header-title">اضافه کردن خریدار</h3>
                 </div>
                 <div class="content-header-right col-md-8 col-12">
                     <div class="breadcrumbs-top float-md-right">
@@ -25,10 +25,9 @@
 
                                 <li class="breadcrumb-item"><a href="{% url 'Site_Panel:reserve_factor' %}">امور مالی</a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:user_list' %}">لیست
-                                    اشخاص</a>
+                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:user_list' %}">لیست اشخاص</a>
                                 </li>
-                                <li class="breadcrumb-item active">تغییر اطلاعات {{ select_user }}
+                                <li class="breadcrumb-item active">اضافه کردن خریدار
                                 </li>
                             </ol>
                         </div>
@@ -41,7 +40,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">لطفا تمام موارد را پر کنید</h4>
+                                    <h4 class="card-title">لطفا اطلاعات را با دقت وارد کنید.</h4>
                                     <a class="heading-elements-toggle"><i
                                             class="la la-ellipsis-h font-medium-3"></i></a>
                                     <div class="heading-elements">
@@ -79,7 +78,7 @@
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                     <strong>{{ message }}</strong>
-                                                    <a href="#" class="alert-link">{{ info }}</a>
+                                                    <a href="{% url 'Site_Panel:edit_user' user.id %}" class="alert-link">{{ info }}</a>
 
                                                 </div>
                                             {% endif %}
@@ -94,7 +93,7 @@
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                     <strong>{{ message }}</strong>
-                                                    <a href="#" class="alert-link">{{ info }}</a>
+                                                    <a href="{% url 'Site_Panel:edit_user' user.id %}" class="alert-link">{{ info }}</a>
                                                 </div>
                                             {% endif %}
                                             <form action="" method="post" enctype="multipart/form-data">
@@ -104,14 +103,14 @@
                                                         <div class="form-group">
                                                             <label for="lastName3">نام :
                                                             </label>
-                                                            <input type="text" class="form-control" required id="lastName3" value="{{ select_user.first_name }}"
+                                                            <input type="text" class="form-control" required id="lastName3"
                                                                    name="first_name">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3">
                                                         <div class="form-group">
                                                             <label for="lastName2">نام خانوادگی :</label>
-                                                            <input type="text" class="form-control" required id="lastName3" value="{{ select_user.last_name }}"
+                                                            <input type="text" class="form-control" required id="lastName3"
                                                                    name="last_name">
 
                                                         </div>
@@ -122,7 +121,7 @@
                                                         <div class="form-group">
                                                             <label for="location2">شماره ملی :</label>
 
-                                                            <input type="number" class="form-control" required maxlength="10" minlength="10" id="lastName3" value="{{ select_user.national_number }}"
+                                                            <input type="number" class="form-control" maxlength="10" minlength="10" required id="lastName3"
                                                                    name="national_number">
                                                         </div>
                                                     </div>
@@ -130,7 +129,7 @@
                                                         <div class="form-group">
                                                             <label for="location2">شماره تماس :</label>
 
-                                                            <input type="number" class="form-control" required maxlength="11" minlength="11" id="lastName3" value="{{ select_user.phone_number }}"
+                                                            <input type="number" class="form-control" minlength="11" maxlength="11" required id="lastName3"
                                                                    name="phone_number">
                                                         </div>
                                                     </div>
@@ -140,7 +139,8 @@
                                                     </div>
                                                 </div>
                                             </form>
-                                    </div>
+
+                                        </div>
                                 </div>
                             </div>
                         </div>

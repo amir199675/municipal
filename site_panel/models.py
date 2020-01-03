@@ -448,8 +448,85 @@ class Movement_Certificate(models.Model):
 	license_id = models.ForeignKey(License,on_delete=models.CASCADE)
 	status = models.CharField(max_length=32,choices=STATUS,default='disapproval',verbose_name='وضعیت ')
 
+	class Meta:
+		verbose_name = 'مجوز حمل'
+		verbose_name_plural = 'مجوز حمل'
+
 	def __str__(self):
 		return self.status + ' ' + self.license_id.deceased_id.get_full_name()
+
+class Driver(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	user_id = models.ForeignKey(MyUser,on_delete=models.CASCADE,verbose_name='کاربر مربوطه ')
+	first_name = models.CharField(max_length=255,null=True,blank=True,verbose_name='نام ')
+	last_name = models.CharField(max_length=255,null=True,blank=True,verbose_name='نام خانوادگی ')
+	national_number = models.CharField(max_length=10,null=True,blank=True,verbose_name='شماره ملی ')
+	phone_number = models.CharField(max_length=11,null=True,blank=True,verbose_name='شماره تماس ')
+
+
+	class Meta:
+		verbose_name = 'راننده'
+		verbose_name_plural = 'راننده'
+
+	def __str__(self):
+		return self.user_id.get_full_name()
+
+class Driver_Movement(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	start_date = models.DateField(null=True,blank=True,verbose_name='تاریخ شروع ')
+	start_time = models.TimeField(null=True,blank=True,verbose_name='زمان شروع ')
+	driver_id = models.ForeignKey(Driver,on_delete=models.CASCADE,verbose_name='راننده مربوطه ')
+	price = models.CharField(max_length=10,null=True,blank=True,verbose_name='هزینه ')
+	user_id = models.ForeignKey(MyUser,on_delete=models.CASCADE,null=True,blank=True,verbose_name='معرف ')
+	city = models.CharField(max_length=255,null=True,blank=True,verbose_name='شهر مقصد ')
+	deceased_id = models.ForeignKey(Deceased,blank=True,null=True,on_delete=models.CASCADE,verbose_name='متوفی مربوطه ')
+	description = models.TextField(null=True,blank=True,verbose_name='توضیحات ')
+
+	class Meta:
+		verbose_name = 'انتقال متوفی'
+		verbose_name_plural = 'انتقال متوفی'
+
+
+	def __str__(self):
+		return self.driver_id.user_id.get_full_name() + ' ' + self.city
+
+
+@receiver(post_save,sender=Driver)
+def AddToUser(sender, instance, created, *args, **kwargs):
+	if created:
+		try:
+			user = MyUser.objects.get(username=instance.national_number)
+			user.driver_id = instance.id
+			user.save()
+			driver = instance
+			driver.user_id = user
+			driver.save()
+		except:
+			MyUser.objects.create(first_name=instance.first_name, last_name=instance.last_name,
+								  driver_id=instance.id,national_number=instance.national_number,phone_number=instance.phone_number,
+								  email=instance.national_number + '@gmail.com', username=instance.national_number)
+			user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.last_name,
+									  driver_id=instance.id,
+									  email=instance.national_number + '@gmail.com', username=instance.national_number)
+
+			user.set_password(instance.national_number)
+			user.save()
+			driver = instance
+			driver.user_id = user
+			driver.save()
+	else:
+		user = MyUser.objects.get(driver_id=instance.id)
+		user.first_name = instance.first_name
+		user.last_name = instance.last_name
+		user.email = instance.national_number
+		user.username = instance.national_number
+		user.set_password(instance.national_number)
+		user.save()
+
+
+
 
 @receiver(post_save, sender=Additional_Service)
 def AddToBill(sender, instance, created, *args, **kwargs):
