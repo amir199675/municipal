@@ -458,7 +458,7 @@ class Movement_Certificate(models.Model):
 class Driver(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
-	user_id = models.ForeignKey(MyUser,on_delete=models.CASCADE,verbose_name='کاربر مربوطه ')
+	user_id = models.ForeignKey(MyUser,on_delete=models.CASCADE,null=True,blank=True,verbose_name='کاربر مربوطه ')
 	first_name = models.CharField(max_length=255,null=True,blank=True,verbose_name='نام ')
 	last_name = models.CharField(max_length=255,null=True,blank=True,verbose_name='نام خانوادگی ')
 	national_number = models.CharField(max_length=10,null=True,blank=True,verbose_name='شماره ملی ')

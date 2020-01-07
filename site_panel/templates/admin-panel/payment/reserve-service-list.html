@@ -20,9 +20,11 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{% url 'Site_Panel:index' %}">پنل ادمین</a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:reserve_factor' %}">امور مالی</a>
+                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:reserve_factor' %}">امور
+                                    مالی</a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:factor_list' %}">لیست فاکتورها</a>
+                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:factor_list' %}">لیست
+                                    فاکتورها</a>
                                 </li>
 
                                 <li class="breadcrumb-item active">فاکتور شماره {{ bills.first.document }}
@@ -34,84 +36,88 @@
             </div>
             <div class="content-body"><!-- Base style table -->
                 <section id="base-style">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <h4 class="col-md-6 card-title">خدمات خریداری شده</h4>
-                                            <h4 class="col-md-6 card-title">خریدار : {{ bills.first.additional_service_id.buyer_id.get_full_name }}</h4>
-                                        </div>
-
-                                        <a class="heading-elements-toggle"><i
-                                                class="la la-ellipsis-v font-medium-3"></i></a>
-                                        <div class="heading-elements">
-                                            <ul class="list-inline mb-0">
-                                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                                                <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                                                <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                                                <li><a data-action="close"><i class="ft-x"></i></a></li>
-                                            </ul>
-                                        </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <h4 class="col-md-6 card-title">خدمات خریداری شده</h4>
+                                        <h4 class="col-md-6 card-title">خریدار
+                                            : {{ bills.first.additional_service_id.buyer_id.get_full_name }}</h4>
                                     </div>
-                                    <div class="card-content collapse show">
-                                        <div class="card-body card-dashboard">
-                                            {% for warning in warnings %}
-                                                <div class="alert round alert-secondary alert-icon-left alert-dismissible mb-2"
-                                                     role="alert">
+
+                                    <a class="heading-elements-toggle"><i
+                                            class="la la-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-content collapse show">
+                                    <div class="card-body card-dashboard">
+                                        {% for warning in warnings %}
+                                            <div class="alert round alert-secondary alert-icon-left alert-dismissible mb-2"
+                                                 role="alert">
                                                     <span class="alert-icon">
                                                         <i class="ft-mic black"></i>
                                                     </span>
-                                                    <button type="button" class="close" data-dismiss="alert"
-                                                            aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                    {{ warning }}
-                                                </div>
-                                            {% endfor %}
-                                            <div class="table-responsive">
-                                                <table style="text-align: center" class="table table-striped table-bordered base-style">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>کد</th>
-                                                        <th>نام</th>
-                                                        <th>قیمت</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    {% for bill in bills %}
-                                                        <tr>
-                                                            <td style="vertical-align: middle;">{{ bill.additional_service_id.service_id.code }}</td>
-                                                            <td style="vertical-align: middle;">{{ bill.name }}</td>
-                                                            <td style="vertical-align: middle;">{{ bill.price }}</td>
-                                                        </tr>
-                                                    {% endfor %}
-                                                    </tbody>
-                                                    <tfoot>
-                                                    <tr>
-                                                        <th>کد</th>
-                                                        <th>نام</th>
-                                                        <th>قیمت</th>
-                                                    </tr>
-                                                    </tfoot>
-                                                </table>
-
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                {{ warning }}
                                             </div>
-                                            <div class="text text-success">جمع کل: {{ total_price }}T</div>
+                                        {% endfor %}
+                                        <div class="table-responsive">
+                                            <table style="text-align: center"
+                                                   class="table table-striped table-bordered base-style">
+                                                <thead>
+                                                <tr>
+                                                    <th>کد</th>
+                                                    <th>نام</th>
+                                                    <th>قیمت</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for bill in bills %}
+                                                    <tr>
+                                                        <td style="vertical-align: middle;">{{ bill.additional_service_id.service_id.code }}</td>
+                                                        <td style="vertical-align: middle;">{{ bill.name }}</td>
+                                                        <td style="vertical-align: middle;">{{ bill.price }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                                <tfoot>
+                                                <tr>
+                                                    <th>کد</th>
+                                                    <th>نام</th>
+                                                    <th>قیمت</th>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
 
-                                            <div class="col-lg-6" style="text-align: left">
-                                                <button type="button" class="btn btn-secondary">چاپ فاکتور</button>
-                                            </div>
                                         </div>
+                                        <div class="text text-success">جمع کل: {{ total_price }}T</div>
 
+                                        <div class="col-lg-6" style="text-align: left">
+                                                <a class="btn btn-secondary" href="{% url 'Site_Panel:print_factor' bills.first.document %}">
+                                                    چاپ فاکتور
+                                                </a>
+                                        </div>
                                     </div>
 
                                 </div>
 
-
                             </div>
 
+
                         </div>
+
+                    </div>
 
 
                 </section>

@@ -401,3 +401,64 @@ def Add_User(request):
 
 	}
 	return render(request,'admin-panel/payment/add_user.html',context)
+
+@user_passes_test(check_staff)
+def Print_Factor(request,document):
+	bills = Bill.objects.filter(document=document)
+	total_price = 0
+	for bill in bills:
+		total_price = total_price + int(bill.price)
+	context = {
+		'total_price': total_price,
+		'bills': bills
+
+	}
+
+	return render(request, 'admin-panel/payment/print_factor.html', context)
+
+@user_passes_test(check_staff)
+def Add_Driver(request):
+	if request.method == 'POST':
+		name = request.POST['first_name']
+		last_name = request.POST['last_name']
+		national_number = request.POST['national_number']
+		phone_number = request.POST['phone_number']
+		try:
+			return HttpResponse('asa')
+			driver = Driver.objects.get(national_number=national_number)
+			message = 'راننده با شماره ملی {} در سیستم وجود دارد.'.format(national_number)
+			info = 'برای ویرایش اطلاعات اینجا کلیک کنید!'
+			user = MyUser.objects.get(driver_id=driver.id)
+			context = {
+				'info':info,
+				'message':message,
+				'user':user,
+				'error':True,
+			}
+			return render(request,'admin-panel/payment/add_driver.html',context)
+		except:
+			driver = Driver.objects.create(first_name=name,last_name=last_name,national_number=national_number,phone_number=phone_number)
+			message = 'راننده {} با موفقیت به لیست اشخاص اضافه شد.'.format(driver.user_id.get_full_name())
+			user = MyUser.objects.get(driver_id=driver.id)
+			info = 'برای ویرایش اطلاعات اینجا کلیک کنید'
+			context = {
+				'info':info,
+				'success':True,
+				'message':message,
+				'user':user
+			}
+			return render(request,'admin-panel/payment/add_driver.html',context)
+
+	context = {
+
+	}
+	return render(request,'admin-panel/payment/add_driver.html',context)
+
+@user_passes_test(check_staff)
+def Driver_List(request):
+	drivers = Driver.objects.all()
+	context = {
+		'drivers':drivers,
+
+	}
+	return render(request,'admin-panel/payment/dirvers_list.html',context)

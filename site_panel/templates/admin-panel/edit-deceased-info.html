@@ -320,7 +320,7 @@
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <div class="form-group">
-                                                            <img height="100%" width="100%" id="main" src="{% if license.picture != '' %}{{ license.picture.url }}{% else %}{% static 'images/No_image_available.jpg' %}{% endif %}"
+                                                            <img height="100%" width="100%" id="main" src="{% if license.picture.url != '' %}{{ license.picture.url }}{% else %}{% static 'images/No_image_available.jpg' %}{% endif %}"
                                                                  alt="your image"/>
                                                         </div>
                                                     </div><div style="margin-top: 27px" class="col-lg-2">
@@ -338,7 +338,7 @@
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <div class="form-group">
-                                                            <img height="100%" width="100%" id="one" src="{% if license.picture2 != '' %}{{ license.picture2.url }}{% else %}{% static 'images/No_image_available.jpg' %}{% endif %}"
+                                                            <img height="100%" width="100%" id="one" src="{% if license.picture2.url != '' %}{{ license.picture2.url }}{% else %}{% static 'images/No_image_available.jpg' %}{% endif %}"
                                                                  alt="your image"/>
                                                         </div>
                                                     </div>
@@ -357,7 +357,7 @@
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <div class="form-group">
-                                                            <img height="100%" width="100%" id="two" src="{% if license.picture3 != '' %}{{ license.picture3.url }}{% else %}{% static 'images/No_image_available.jpg' %}{% endif %}"
+                                                            <img height="100%" width="100%" id="two" src="{% if license.picture3.url != '' %}{{ license.picture3.url }}{% else %}{% static 'images/No_image_available.jpg' %}{% endif %}"
                                                                  alt="your image"/>
                                                         </div>
                                                     </div>

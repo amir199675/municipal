@@ -1855,5 +1855,7 @@ def Print_Movement_Cert(request,id):
 
 		return redirect('/Account/login/?next=/Admin/movement_certificate_print/{}'.format(id))
 
+
+
 def Wait(request):
 	return render(request,'amir.html',context={})
