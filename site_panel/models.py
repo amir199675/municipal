@@ -437,23 +437,14 @@ class Archive(models.Model):
 
 	def __str__(self):
 		return self.code + ' ' + self.status
-class Movement_Certificate(models.Model):
-	STATUS = (
-		('confirmation', 'تایید'),
-		('disapproval', 'عدم تایید')
-	)
+
+class Target(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
-	text = RichTextUploadingField(null=True,blank=True)
-	license_id = models.ForeignKey(License,on_delete=models.CASCADE)
-	status = models.CharField(max_length=32,choices=STATUS,default='disapproval',verbose_name='وضعیت ')
+	code = models.CharField(max_length=8,unique=True, null=True, blank=True)
+	name = models.CharField(max_length=64, verbose_name='مقصد ')
+	price = models.CharField(max_length=8, verbose_name='هزینه ')
 
-	class Meta:
-		verbose_name = 'مجوز حمل'
-		verbose_name_plural = 'مجوز حمل'
-
-	def __str__(self):
-		return self.status + ' ' + self.license_id.deceased_id.get_full_name()
 
 class Driver(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
@@ -464,7 +455,6 @@ class Driver(models.Model):
 	national_number = models.CharField(max_length=10,null=True,blank=True,verbose_name='شماره ملی ')
 	phone_number = models.CharField(max_length=11,null=True,blank=True,verbose_name='شماره تماس ')
 
-
 	class Meta:
 		verbose_name = 'راننده'
 		verbose_name_plural = 'راننده'
@@ -472,25 +462,64 @@ class Driver(models.Model):
 	def __str__(self):
 		return self.user_id.get_full_name()
 
-class Driver_Movement(models.Model):
+class Car(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
-	start_date = models.DateField(null=True,blank=True,verbose_name='تاریخ شروع ')
-	start_time = models.TimeField(null=True,blank=True,verbose_name='زمان شروع ')
-	driver_id = models.ForeignKey(Driver,on_delete=models.CASCADE,verbose_name='راننده مربوطه ')
-	price = models.CharField(max_length=10,null=True,blank=True,verbose_name='هزینه ')
-	user_id = models.ForeignKey(MyUser,on_delete=models.CASCADE,null=True,blank=True,verbose_name='معرف ')
-	city = models.CharField(max_length=255,null=True,blank=True,verbose_name='شهر مقصد ')
-	deceased_id = models.ForeignKey(Deceased,blank=True,null=True,on_delete=models.CASCADE,verbose_name='متوفی مربوطه ')
-	description = models.TextField(null=True,blank=True,verbose_name='توضیحات ')
+	code = models.CharField(max_length=32,null=True,blank=True,verbose_name='کد ماشین ')
 
 	class Meta:
-		verbose_name = 'انتقال متوفی'
-		verbose_name_plural = 'انتقال متوفی'
-
+		verbose_name = 'ماشین ها'
+		verbose_name_plural = 'ماشین ها'
 
 	def __str__(self):
-		return self.driver_id.user_id.get_full_name() + ' ' + self.city
+		return self.code
+
+class Movement_Service(models.Model):
+	STATUS = (
+		('PAID', 'پرداخت شده'),
+		('NOT PAID', 'پرداخت نشده'),
+	)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	start_date = models.DateField(null=True, blank=True, verbose_name='تاریخ شروع ')
+	start_time = models.TimeField(null=True, blank=True, verbose_name='زمان شروع ')
+	target_id = models.ForeignKey(Target, on_delete=models.CASCADE, null=True, blank=True,verbose_name='مقصد مربوطه ')
+	price = models.CharField(max_length=32,null=True,blank=True,verbose_name='قیمت ')
+	car_id = models.ForeignKey(Car, related_name='movement_service', null=True, blank=True, on_delete=models.CASCADE,verbose_name='ماشین مربوطه ')
+	status = models.CharField(max_length=32, choices=STATUS, default='NOT PAID', verbose_name='وضعیت پرداخت ')
+	driver_id = models.ForeignKey(Driver,on_delete=models.CASCADE,null=True,blank=True, verbose_name='راننده ')
+	deceased_id = models.ForeignKey(Deceased, on_delete=models.CASCADE,verbose_name='متوفی ')
+
+	class Meta:
+		verbose_name = 'حمل متوفی'
+		verbose_name_plural = 'حمل متوفی'
+
+	def __str__(self):
+		return self.deceased_id.get_full_name()
+
+
+class Movement_Certificate(models.Model):
+	STATUS = (
+		('confirmation', 'تایید'),
+		('disapproval', 'عدم تایید')
+	)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	license_id = models.ForeignKey(License,on_delete=models.CASCADE)
+	status = models.CharField(max_length=32,choices=STATUS,default='disapproval',verbose_name='وضعیت ')
+	start_date = models.DateField(null=True, blank=True, verbose_name='تاریخ شروع ')
+	start_time = models.TimeField(null=True, blank=True, verbose_name='زمان شروع ')
+	driver_id = models.ForeignKey(Driver,null=True,blank=True, on_delete=models.CASCADE, verbose_name='راننده مربوطه ')
+	car_id = models.ForeignKey(Car,on_delete=models.CASCADE,null=True,blank=True,verbose_name='ماشین مورد نظر ')
+	description = models.TextField(null=True, blank=True, verbose_name='توضیحات ')
+
+	class Meta:
+		verbose_name = 'مجوز حمل'
+		verbose_name_plural = 'مجوز حمل'
+
+	def __str__(self):
+		return self.status + ' ' + self.license_id.deceased_id.get_full_name()
+
 
 
 @receiver(post_save,sender=Driver)
@@ -666,6 +695,15 @@ def AddPresenterToUser(sender, instance, created, *args, **kwargs):
 		user.save()
 
 
+@receiver(post_delete, sender=Driver )
+def DeleteDriverFromUser(sender, instance, *args, **kwargs):
+	try:
+		user = MyUser.objects.get(username=instance.national_number)
+		user.driver_id = None
+		user.save()
+	except:
+		pass
+
 @receiver(post_delete, sender=Presenter)
 def DeletePresenterFromUser(sender, instance, *args, **kwargs):
 	try:
@@ -818,12 +856,11 @@ def EditBuyrDeceased(sender, instance, created, *args, **kwargs):
 		place.status = 'Sold'
 		place.save()
 
-
 	if instance.move_status == 'SEND-OUT':
 		try:
-			movement_certificate = Movement_Certificate.objects.get(license_id__deceased_id=instance.deceased_id)
+			movement_certificate = Movement_Certificate.objects.get(license_id=instance)
 		except:
-			movement_certificate = Movement_Certificate.objects.create(license_id=instance,status='disapproval')
+			movement_certificate = Movement_Certificate.objects.create(license_id=instance, status='disapproval')
 
 
 @receiver(post_save, sender=Place)

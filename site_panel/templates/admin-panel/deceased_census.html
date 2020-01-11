@@ -1,0 +1,476 @@
+{% extends 'admin-panel/partial/main-panel.html' %}
+{% load static %}
+{% load main_tags %}
+<!-- BEGIN: Main Menu-->
+{% block title %}
+    پنل ادمین|آمارگیری متوفی
+{% endblock %}
+{% block body %}
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-wrapper">
+            <div class="content-wrapper-before"></div>
+            <div class="content-header row">
+                <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
+                    <h3 class="content-header-title mb-0 d-inline-block">لیست متوفی</h3>
+                    <div class="breadcrumbs-top d-inline-block">
+                        <div class="breadcrumb-wrapper mr-1">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:index' %}">پنل ادمین</a>
+                                </li>
+                                <li class="breadcrumb-item active">لیست متوفی
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-body"><!-- Base style table -->
+                <section id="base-style">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">جستجو متوفی</h4>
+                                    <a class="heading-elements-toggle"><i
+                                            class="la la-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <li><a data-action="collapse"><i class="{% if deceaseds %}ft-plus{% else %}ft-minus{% endif %}"></i></a></li>
+                                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div {% if deceaseds %} class="card-content collapsing" {% else %} class="card-content collapse show" {% endif %}>
+                                    <div class="card-body card-dashboard">
+                                        <form action="" method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <div class="row">
+
+                                                <div class="col-md-3">
+
+                                                    <div class="form-group">
+                                                        <label for="location2">شروع از تاریخ :</label>
+                                                        <input type="text" class="usage pdp-el form-control"
+                                                               autocomplete="off"
+                                                               value="{% if select_start|shamsi == 'ثبت نشده' %}{% else %}{{ select_start|shamsi }}{% endif %}"
+                                                               pdp-id="pdp-4664685"
+                                                               name="start_date">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="location2">پایان تا تاریخ :</label>
+                                                        <input type="text" class="usage pdp-el form-control"
+                                                               value="{% if select_end|shamsi == 'ثبت نشده' %}{% else %}{{ select_end|shamsi }}{% endif %}"
+                                                               autocomplete="off"
+                                                               pdp-id="pdp-4664685"
+                                                               name="end_date">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="location2">شهر اعزامی :</label>
+                                                        <select id="single2"
+                                                                class="js-states form-control" name="city">
+                                                            <option value="all">همه شهرها</option>
+                                                            {% for license in licenses %}
+                                                                <option {% if license.city_name == select_city %}selected {% endif %} value="{{ license.id }}">{{ license.city_name }}</option>
+                                                            {% endfor %}
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="location2">علت فوت :</label>
+                                                        <select id="single"
+                                                                class="js-states form-control" name="cause_death">
+                                                            <option value="all">همه موارد</option>
+                                                            {% for cause in causes %}
+                                                                <option {% if cause.name == select_cause %}selected{% endif %} value="{{ cause.id }}">{{ cause.name}}</option>
+                                                            {% endfor %}
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div style="text-align: center" class="col-lg-12">
+                                                    <button type="submit" class="btn btn-primary">جستجو</button>
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {#                    <div class="row">#}
+                    {#                        <div class="col-md-12">#}
+                    {#                            <div class="card">#}
+                    {#                                <div class="card-header">#}
+                    {#                                    <h4 class="card-title">جستجو بر</h4>#}
+                    {#                                    <a class="heading-elements-toggle"><i#}
+                    {#                                            class="la la-ellipsis-v font-medium-3"></i></a>#}
+                    {#                                    <div class="heading-elements">#}
+                    {#                                        <ul class="list-inline mb-0">#}
+                    {#                                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>#}
+                    {#                                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>#}
+                    {#                                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>#}
+                    {#                                            <li><a data-action="close"><i class="ft-x"></i></a></li>#}
+                    {#                                        </ul>#}
+                    {#                                    </div>#}
+                    {#                                </div>#}
+                    {#                                <div class="card-content collapse show">#}
+                    {#                                    <div class="card-body card-dashboard">#}
+                    {#                                        <div class="row">#}
+                    {#                                            <div class="col-md-6">#}
+                    {#                                                <div class="form-group">#}
+                    {#                                                    <label for="location2">شروع از تاریخ :</label>#}
+                    {#                                                    <input type="text" class="usage pdp-el form-control"#}
+                    {#                                                           autocomplete="off"#}
+                    {#                                                           pdp-id="pdp-4664685"#}
+                    {#                                                           name="start_date">#}
+                    {#                                                </div>#}
+                    {#                                            </div>#}
+                    {#                                            <div class="col-md-6">#}
+                    {#                                                <div class="form-group">#}
+                    {#                                                    <label for="location2">پایان تا تاریخ :</label>#}
+                    {#                                                    <input type="text" class="usage pdp-el form-control"#}
+                    {#                                                           autocomplete="off"#}
+                    {#                                                           pdp-id="pdp-4664685"#}
+                    {#                                                           value="{{ date_of_death }}"#}
+                    {#                                                           name="end_date">#}
+                    {#                                                </div>#}
+                    {#                                            </div>#}
+                    {#                                            <div style="text-align: center" class="col-lg-12">#}
+                    {#                                                <button type="submit" class="btn btn-primary">جستجو</button>#}
+                    {#                                            </div>#}
+                    {##}
+                    {#                                        </div>#}
+                    {#                                    </div>#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">لیست متوفی مورد نظر</h4>
+
+                                    <a class="heading-elements-toggle"><i
+                                            class="la la-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <li><a data-action="collapse"><i class="{% if deceaseds %}ft-minus{% else %}ft-plus{% endif %}"></i></a></li>
+                                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div {% if deceaseds %} class="card-content collapse show" {% else %} class="card-content collapsing" {% endif %}>
+                                    <div class="card-body card-dashboard">
+                                        {% if error %}
+                                            <div class="alert round alert-secondary alert-icon-left alert-dismissible mb-2"
+                                                 role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-mic black"></i>
+                                                    </span>
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                متوفی با این فیلترینگ وجود ندارد!
+                                            </div>
+                                        {% endif %}
+                                        <div class="table-responsive">
+                                            <table style=" text-align: center; "
+                                                   class="table table-striped table-bordered base-style">
+                                                <thead>
+                                                <tr>
+                                                    <th> نام و نام خانوادگی</th>
+                                                    <th>کد ملی</th>
+                                                    <th>شهر اعزامی</th>
+                                                    <th>کد قبر</th>
+                                                    <th>علت فوت</th>
+                                                    <th>تاریخ فوت</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for deceased in deceaseds %}
+                                                    <tr>
+                                                        <th style="vertical-align: middle;"><a
+                                                                href="{% url 'Site_Panel:edit-deceased-info' deceased.id %}">{{ deceased.get_full_name }}</a>
+                                                        </th>
+                                                        <td style="vertical-align: middle;">{{ deceased.national_number }}</td>
+                                                        <td style="vertical-align: middle;">
+                                                            {% for item in deceased.license.select_related %}
+                                                                {% if item.city_name %}{{ item.city_name }}
+                                                                {% endif %}{% endfor %}</td>
+                                                        <td style="vertical-align: middle;" data-toggle="modal"
+                                                            data-target="#Place
+
+
+
+
+
+
+
+
+
+                                                                    {% for item in deceased.license.select_related %}{{ item.place_id.id }}{% endfor %}">
+                                                            {% for item in deceased.license.select_related %}
+                                                                {{ item.place_id.code }}{% endfor %}</td>
+                                                        <td style="font-size: 12px; padding: auto;vertical-align: middle;">{% for item in deceased.certificate.select_related %}
+                                                                {{ item.cause_death_id.name}}{% endfor %}</td>
+                                                        <td style="vertical-align: middle;">
+                                                            {% for item in deceased.certificate.select_related %}
+                                                                {{ item.date_of_death|shamsi }}{% endfor %}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                                <tfoot>
+                                                <tr>
+                                                    <th> نام و نام خانوادگی</th>
+                                                    <th>کد ملی</th>
+                                                    <th>شهر اعزامی</th>
+                                                    <th>کد قبر</th>
+                                                    <th>علت فوت</th>
+                                                    <th>تاریخ فوت</th>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+    {% for deceased in deceaseds %}
+        {% for item in deceased.license.select_related %}
+            {% if item.place_id %}
+                <div style="padding: auto" id="Place{{ item.place_id.id }}"
+                     class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                            </div>
+                            <div class="modal-header">
+                                مشخصات محل دفن
+                            </div>
+                            <div class="modal-body">
+                                <hr>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h5 style="display: inline">کد :</h5>
+                                        <p style="display:inline;">
+                                            {{ item.place_id.code }}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h5 style="display: inline">ردیف :</h5>
+                                        <p style="display: inline">
+                                            {{ item.place_id.radif }}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h5 style="display: inline">بلوک :</h5>
+                                        <p style="display: inline">
+                                            {{ item.place_id.block }}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h5 style="display: inline">شماره :</h5>
+                                        <p style="display:inline;">
+                                            {{ item.place_id.block }}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h5 style="display: inline">طبقه :</h5>
+                                        <p style="display: inline">
+                                            {% if item.place_id.floor == 'OneFloor' %}
+                                                اول
+                                            {% elif item.place_id.floor == 'TwoFloor' %}
+                                                دوم
+                                            {% endif %}
+
+
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    <!-- BEGIN: Customizer-->
+{% include 'admin-panel/partial/customizer.html' %}
+    <!-- End: Customizer-->
+
+
+
+
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/vendors.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/forms/toggle/switchery.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/js/scripts/forms/switch.min.js' %}"
+            type="text/javascript"></script>
+    <!-- BEGIN Vendor JS-->
+
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/tables/datatable/datatables.min.js' %}"
+            type="text/javascript"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- END: Page Vendor JS-->
+    <script src="{% static 'admin-panel-static/app-assets/js/scripts/tables/datatables/datatable-styling.min.js' %}"
+            type="text/javascript"></script>
+
+    <!-- BEGIN: Theme JS-->
+    <script src="{% static 'admin-panel-static/app-assets/js/core/app-menu.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/js/core/app.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/js/scripts/customizer.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/jquery.sharrre.js' %}"
+            type="text/javascript"></script>
+    <!-- END: Theme JS-->
+    <script src="{% static 'date/js/persianDatepicker.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script>
+        $("#single").select2({
+            placeholder: "علت فوت مورد نظر",
+            allowClear: true
+        });
+        $("#single2").select2({
+            placeholder: "شهر مورد نظر",
+            allowClear: true
+        });
+        $("#multiple").select2({
+            placeholder: "Select a programming language",
+            allowClear: true
+        });
+    </script>
+    <script>
+        $(function () {
+            //usage
+            $(".usage").persianDatepicker();
+
+            //themes
+            $("#pdpDefault").persianDatepicker({alwaysShow: true,});
+            $("#pdpLatoja").persianDatepicker({theme: "latoja", alwaysShow: true,});
+            $("#pdpLightorang").persianDatepicker({theme: "lightorang", alwaysShow: true,});
+            $("#pdpMelon").persianDatepicker({theme: "melon", alwaysShow: true,});
+            $("#pdpDark").persianDatepicker({theme: "dark", alwaysShow: true,});
+
+            //size
+            $("#pdpSmall").persianDatepicker({cellWidth: 14, cellHeight: 12, fontSize: 8});
+            $("#pdpBig").persianDatepicker({cellWidth: 78, cellHeight: 60, fontSize: 18});
+
+            //formatting
+            $("#pdpF1").persianDatepicker({formatDate: "YYYY/MM/DD hh:mm:ss:ms"});
+            $("#pdpF2").persianDatepicker({formatDate: "YYYY-0M-0D"});
+            $("#pdpF3").persianDatepicker({formatDate: "YYYY-NM-DW|ND", isRTL: !0});
+
+            //startDate & endDate
+            $("#pdpStartEnd").persianDatepicker({startDate: "1394/11/12", endDate: "1395/5/5"});
+            $("#pdpStartToday").persianDatepicker({startDate: "today", endDate: "1410/11/5"});
+            $("#pdpEndToday").persianDatepicker({startDate: "1397/11/12", endDate: "today"});
+
+            //selectedBefor & selectedDate
+            $("#pdpSelectedDate").persianDatepicker({selectedDate: "1404/1/1", alwaysShow: !0});
+            $("#pdpSelectedBefore").persianDatepicker({selectedBefore: !0});
+            $("#pdpSelectedBoth").persianDatepicker({selectedBefore: !0, selectedDate: "1395/5/5"});
+
+            //jdate & gdate attributes
+            $("#pdp-data-jdate").persianDatepicker({
+                onSelect: function () {
+                    alert($("#pdp-data-jdate").attr("data-gdate"));
+                }
+            });
+            $("#pdp-data-gdate").persianDatepicker({
+                showGregorianDate: true,
+                onSelect: function () {
+                    alert($("#pdp-data-gdate").attr("data-jdate"));
+                }
+            });
+
+
+            //Gregorian date
+            $("#pdpGregorian").persianDatepicker({showGregorianDate: true});
+
+            // jDateFuctions
+            // var jdf = new jDateFunctions();
+            // var pd = new persianDate();
+            // $("#pdpjdf-1").persianDatepicker({
+            //     onSelect: function () {
+            //         $("#pdpjdf-1").val(jdf.getJulianDayFromPersian(pd.parse($("#pdpjdf-1").val())));
+            //         $("#pdpjdf-2").val(jdf.getLastDayOfPersianMonth(pd.parse($("#pdpjdf-1").val())));
+            //         $("#pdpjdf-3").val(jdf.getPCalendarDate($("#pdpjdf-1").val()));
+            //     }
+            // });
+
+
+            // //convert jalali date to miladi
+            // $("#year, #month, #day").on("change", function () {
+            //     $("#month").val() > 6 ? $("#day-31").hide() : $("#day-31").show();;
+            //     showConverted();
+            // });
+
+            // $("#year").keyup(showConverted);
+            //
+            // function showConverted() {
+            //     try{
+            //         var pd = new persianDate();
+            //         pd.year = parseInt($("#year").val());
+            //         pd.month = parseInt($("#month").val());
+            //         pd.date = parseInt($("#day").val());
+            //
+            //         var jdf = new jDateFunctions();
+            //         $("#converted").html("Gregorian :  " + jdf.getGDate(pd)._toString("YYYY/MM/DD") + "     [" + jdf.getGDate(pd) + "]<br />Julian:  " + jdf.getJulianDayFromPersian(pd));
+            //
+            //     } catch (e) {
+            //         $("#converted").html("Enter the year correctly!");
+            //     }
+            // }
+
+
+            //startDate is tomarrow
+            var p = new persianDate();
+            $("#pdpStartDateTomarrow").persianDatepicker({
+                startDate: p.now().addDay(1).toString("YYYY/MM/DD"),
+                endDate: p.now().addDay(4).toString("YYYY/MM/DD")
+            });
+
+
+        });
+    </script>
+
+{% endblock %}
+<!-- END: Body-->

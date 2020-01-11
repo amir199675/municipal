@@ -20,9 +20,9 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="">
                                     {% if request.user.is_active %}
-                                                پنل ادمین
+                                        پنل ادمین
                                     {% else %}
-                                    پنل کاربری
+                                        پنل کاربری
                                     {% endif %}
                                 </a>
                                 </li>
@@ -37,11 +37,99 @@
             <div class="content-body"><!-- Form wizard with icon tabs section start -->
                 <section id="icon-tabs">
 
+                    <div class="row">
+                        <div style="margin: 5px" class="col-md-12 card">
 
+                            <div class="card-header">
+
+                                <h4 class="card-title">تغییر رمز عبور</h4>
+                                <a class="heading-elements-toggle"><i
+                                        class="la la-ellipsis-h font-medium-3"></i></a>
+                                <div class="heading-elements">
+                                    <ul class="list-inline mb-0">
+                                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                        <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                        <li><a data-action="close"><i class="ft-x"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    {% if error and pass_change %}
+                                        <div class="alert round bg-danger alert-icon-left alert-dismissible mb-2"
+                                             role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-thumbs-down"></i>
+                                                    </span>
+                                            <button type="button" class="close" data-dismiss="alert"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <strong>{{ message }}</strong>
+                                            <a href="#" class="alert-link">{{ info }}</a>
+
+                                        </div>
+                                    {% endif %}
+                                    {% if success and pass_change %}
+                                        <div class="alert round bg-success alert-icon-left alert-dismissible mb-2"
+                                             role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-thumbs-up"></i>
+                                                    </span>
+                                            <button type="button" class="close" data-dismiss="alert"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <strong>{{ message }}</strong>
+                                            <a href="#" class="alert-link">{{ info }}</a>
+                                        </div>
+                                    {% endif %}
+                                    <form action="" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="lastName3">رمز عبور قبلی :</label>
+                                                    <input required type="password" class="form-control" id="lastName3"
+                                                           aria-required="true"
+                                                           name="old_password">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="lastName3">رمز عبور جدید :</label>
+                                                    <input type="password" class="form-control" id="lastName3" required
+                                                           name="password">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="lastName3">باز نویس رمز عبور جدید :</label>
+                                                    <input required type="password" class="form-control" id="lastName3"
+                                                           aria-required="true"
+                                                           name="re_password">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12">
+
+                                            <div class="col-lg-6" style=" text-align: left">
+                                                <button type="submit" class="btn btn-danger">ثبت کردن</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
 
 
-                        <div style="margin: 5px" class="col-md-5 card">
+                        <div style="margin: 5px" class="col-md-12 card">
 
                             <div class="card-header">
 
@@ -107,15 +195,15 @@
                                     {% endif %}
                                     <form action="" method="post" enctype="multipart/form-data">
                                         {% csrf_token %}
-
-                                            <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="lastName3">نام :</label>
                                                     <input required type="text" class="form-control" id="lastName3"
                                                            name="first_name" value="{{ request.user.first_name }}">
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12">
+                                            <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="lastName3">نام خانوادگی :</label>
                                                     <input type="text" class="form-control" id="lastName3"
@@ -123,20 +211,64 @@
                                                 </div>
                                             </div>
 
+                                            <div class="col-md-4">
 
-                                            <div class="col-sm-12">
-
-                                            <div class="form-group">
-                                                <label for="lastName3">ایمیل :</label>
-                                                <input type="email" class="form-control" id="lastName3"
-                                                       name="email" value="{{ request.user.email }}">
+                                                <div class="form-group">
+                                                    <label for="lastName3">ایمیل :</label>
+                                                    <input type="email" class="form-control" id="lastName3"
+                                                           name="email" value="{{ request.user.email }}">
+                                                </div>
                                             </div>
                                         </div>
+                                            <div class="row">
 
+
+                                            <div class="col-md-6">
+
+                                                <div class="form-group">
+                                                    <label for="lastName3">شماره ملی :</label>
+                                                    <input type="text" maxlength="10" minlength="10"
+                                                           class="form-control" id="lastName3"
+                                                           name="email" value="{{ request.user.national_number }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div class="form-group">
+                                                    <label for="lastName3">شماره تماس :</label>
+                                                    <input type="tel" maxlength="11" minlength="11" class="form-control"
+                                                           id="lastName3"
+                                                           name="email" value="{{ request.user.phone_number }}">
+                                                </div>
+                                            </div>
+
+                                            </div>
+
+                                            <div class="col-md-6">
+
+                                                    <div class="form-group">
+                                                        <input class="custom-file-input" id="inputGroupFile01"
+                                                               name="picture"
+                                                               type='file'
+                                                               onchange="Main(this);"/>
+                                                        <label class="btn btn-primary" for="inputGroupFile01"
+                                                               style="font-size: 12px">انتخاب تصویر</label>
+
+                                                    </div>
+                                                    <div class="col-md-6">
+
+                                                        <div class="form-group">
+                                                            <img height="100%" width="100%" id="main"
+                                                                 src="
+                                                                         {% if request.user.picture.url != '' %}{{ request.user.picture.url }}{% else %}{% static 'images/login.png' %}{% endif %}"
+                                                                 alt="your image"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                         <div class="col-lg-12">
 
-                                            <div class="col-lg-8" style=" text-align: left">
+                                            <div class="col-lg-6" style=" text-align: left">
                                                 <button type="submit" class="btn btn-danger">ثبت کردن</button>
                                             </div>
                                         </div>
@@ -146,92 +278,10 @@
 
                             </div>
                         </div>
-                        <div style="margin: 5px" class="col-md-5 card">
 
-                            <div class="card-header">
-
-                                <h4 class="card-title">تغییر رمز عبور</h4>
-                                <a class="heading-elements-toggle"><i
-                                        class="la la-ellipsis-h font-medium-3"></i></a>
-                                <div class="heading-elements">
-                                    <ul class="list-inline mb-0">
-                                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                                        <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                                        <li><a data-action="close"><i class="ft-x"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card-content collapse show">
-                                <div class="card-body">
-                                    {% if error and pass_change %}
-                                        <div class="alert round bg-danger alert-icon-left alert-dismissible mb-2"
-                                             role="alert">
-                                                    <span class="alert-icon">
-                                                        <i class="ft-thumbs-down"></i>
-                                                    </span>
-                                            <button type="button" class="close" data-dismiss="alert"
-                                                    aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <strong>{{ message }}</strong>
-                                            <a href="#" class="alert-link">{{ info }}</a>
-
-                                        </div>
-                                    {% endif %}
-                                    {% if success and pass_change %}
-                                        <div class="alert round bg-success alert-icon-left alert-dismissible mb-2"
-                                             role="alert">
-                                                    <span class="alert-icon">
-                                                        <i class="ft-thumbs-up"></i>
-                                                    </span>
-                                            <button type="button" class="close" data-dismiss="alert"
-                                                    aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <strong>{{ message }}</strong>
-                                            <a href="#" class="alert-link">{{ info }}</a>
-                                        </div>
-                                    {% endif %}
-                                    <form action="" method="post" enctype="multipart/form-data">
-                                        {% csrf_token %}
-
-                                        <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <label for="lastName3">رمز عبور قبلی :</label>
-                                                <input required type="password" class="form-control" id="lastName3" aria-required="true"
-                                                       name="old_password">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <label for="lastName3">رمز عبور جدید :</label>
-                                                <input type="password" class="form-control" id="lastName3" required
-                                                       name="password">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <label for="lastName3">باز نویس رمز عبور جدید :</label>
-                                                <input required type="password" class="form-control" id="lastName3" aria-required="true"
-                                                       name="re_password">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-12">
-
-                                            <div class="col-lg-8" style=" text-align: left">
-                                                <button type="submit" class="btn btn-danger">ثبت کردن</button>
-                                            </div>
-                                        </div>
-                                    </form>
-
-                                </div>
-
-                            </div>
-                        </div>
 
                     </div>
+
                 </section>
 
             </div>
@@ -273,4 +323,18 @@
     <!-- BEGIN: Page JS-->
     <script src="{% static 'admin-panel-static/app-assets/js/scripts/forms/wizard-steps.min.js' %}"
             type="text/javascript"></script>
+    <script>
+        function Main(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#main')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 {% endblock %}

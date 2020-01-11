@@ -101,6 +101,13 @@ def Edit_User(request,id):
 			presenter.phone_number = phone_number
 			presenter.national_number = national_number
 			presenter.save()
+		if select_user.driver_id != None:
+			driver = Driver.objects.get(id=select_user.driver_id)
+			driver.first_name = first_name
+			driver.last_name = last_name
+			driver.phone_number = phone_number
+			driver.national_number = national_number
+			driver.save()
 		select_user = MyUser.objects.get(id=id)
 		context = {
 			'select_user':select_user,
@@ -424,7 +431,6 @@ def Add_Driver(request):
 		national_number = request.POST['national_number']
 		phone_number = request.POST['phone_number']
 		try:
-			return HttpResponse('asa')
 			driver = Driver.objects.get(national_number=national_number)
 			message = 'راننده با شماره ملی {} در سیستم وجود دارد.'.format(national_number)
 			info = 'برای ویرایش اطلاعات اینجا کلیک کنید!'
@@ -456,9 +462,10 @@ def Add_Driver(request):
 
 @user_passes_test(check_staff)
 def Driver_List(request):
-	drivers = Driver.objects.all()
+
+	users = MyUser.objects.filter(driver_id__isnull=False)
 	context = {
-		'drivers':drivers,
+		'users':users,
 
 	}
 	return render(request,'admin-panel/payment/dirvers_list.html',context)

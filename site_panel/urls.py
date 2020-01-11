@@ -53,7 +53,10 @@ urlpatterns = [
 	path('Admin/place_pre_sell/',payment.Place_Pre_Sell,name = 'place_pre_sell'),
 	path('Admin/add_user/',payment.Add_User,name = 'add_user'),
 
+	path('Admin/driver_list/',payment.Driver_List,name = 'driver_list'),
 	path('Admin/add_driver/',payment.Add_Driver,name = 'add_driver'),
+
+	path('Admin/census_deceased/',views.Census_Deceased,name = 'census_deceased'),
 
 
 

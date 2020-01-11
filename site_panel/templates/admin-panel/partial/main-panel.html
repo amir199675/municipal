@@ -73,6 +73,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'admin-panel-static/assets/css/style-rtl.css' %}">
     <!-- END: Custom CSS-->
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
 
 </head>
 <!-- END: Head-->
@@ -291,13 +292,16 @@
                             </div>
                         </ul>
                     </li>
-                    <li class="dropdown dropdown-user nav-item"><a class="nav-link nav-link-label"
-                                                                   href="#" data-toggle="dropdown"><i
-                            class="ficon ft-user"> </i></a>
+                    <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link"
+                                                                   href="#" data-toggle="dropdown"> <span
+                            class="avatar avatar-online"><img
+                            src="{% if request.user.picture.url != '' %}{{ request.user.picture.url }}{% else %}{% static 'images/login.png' %}{% endif %}" alt="{{ request.user.get_full_name }}"></span></a>
 
                         <div class="dropdown-menu dropdown-menu-right">
-                            <div class="arrow_box_right"><a class="dropdown-item" href="#"><span
-                                    class="avatar avatar-online"><span
+                            <div class="arrow_box_right">
+                                <a style="padding: 10px" class="dropdown-item" href="#"><span
+                                    class="avatar avatar-online"><img
+                                    src="{% if request.user.picture.url != '' %}{{ request.user.picture.url }}{% else %}{% static 'images/login.png' %}{% endif %}" alt="{{ request.user.get_full_name }}"><span
                                     class="user-name text-bold-700 ml-1">{{ request.user.get_full_name }}</span></span></a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="user-profile.html"><i class="ft-user"></i> ویرایش مشخصات</a><a

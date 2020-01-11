@@ -27,6 +27,9 @@
                     </li>
                     <li><a href="{% url 'Site_Panel:deceased_list' %}"><i></i><span
                             class="menu-title" data-i18n="">لیست مرده ها</span></a>
+                    </li>
+                    <li><a href="{% url 'Site_Panel:census_deceased' %}"><i></i><span
+                            class="menu-title" data-i18n="">آمارگیری</span></a>
 
                     </li>
                 </ul>
@@ -63,6 +66,7 @@
                     </li>
                 </ul>
             </li>
+
             <li class=" nav-item"><a href=""><i class="ft-anchor"></i><span class="menu-title"
                                                                             data-i18n="">دلایل فوت</span></a>
                 <ul class="menu-content">
@@ -70,6 +74,15 @@
                     </li>
 
                     <li><a class="menu-item" href="{% url 'Site_Panel:death_cause_list' %}">لیست همه علت ها</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href=""><i class="ft-move"></i><span class="menu-title"
+                                                                            data-i18n="">رانندگان</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="{% url 'Site_Panel:add_driver' %}">اضافه کردن راننده</a>
+                    </li>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:driver_list' %}">لیست راننده ها</a>
                     </li>
                 </ul>
             </li>
@@ -91,9 +104,6 @@
                     </li>
                     <li><a class="menu-item" href="{% url 'Site_Panel:add_user' %}">اضافه کردن خریدار</a>
                     </li>
-                    <li><a class="menu-item" href="{% url 'Site_Panel:add_driver' %}">اضافه کردن راننده آمبولانس</a>
-                    </li>
-
                 </ul>
             </li>
 

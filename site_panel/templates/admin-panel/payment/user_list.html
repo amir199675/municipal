@@ -76,7 +76,7 @@
                                                 {% for user in users %}
                                                 <tr >
                                                     <th style="vertical-align: middle;"><a href="{% if user.deceased_id != None %}{% url 'Site_Panel:edit-deceased-info' user.deceased_id %}{% else %}{% url 'Site_Panel:edit_user' user.id %}{% endif %}">{{ user.get_full_name }}</a></th>
-                                                    <th style="vertical-align: middle;">{% if user.deceased_id != '' %}متوفی{% endif %} {% if user.buyer_id != '' %}خریدار{% endif %} {% if user.presenter_id != '' %}معرف{% endif %} {% if user.driver_id != '' %}راننده{% endif %}</th>
+                                                    <th style="vertical-align: middle;">{% if user.deceased_id != None %}متوفی{% endif %} {% if user.buyer_id != None %}خریدار{% endif %} {% if user.presenter_id != None %}معرف{% endif %} {% if user.driver_id != None %}راننده{% endif %}</th>
                                                     <td style="vertical-align: middle;">{% if user.national_number %}{{ user.national_number }}{% else %}ثبت نشده{% endif %}</td>
                                                     <td style="vertical-align: middle;">{% if user.phone_number %}{{ user.phone_number }}{% else %}ثبت نشده{% endif %}</td>
 

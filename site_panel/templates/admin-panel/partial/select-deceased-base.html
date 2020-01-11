@@ -73,7 +73,7 @@
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'admin-panel-static/assets/css/style-rtl.css' %}">
     <!-- END: Custom CSS-->
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
 </head>
 <!-- END: Head-->
 
@@ -351,37 +351,54 @@
             ><i class="ft-home"></i><span>ویرایش اطلاعات </span></a>
 
             </li>
-{#            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"#}
-{#                                                                  data-toggle="dropdown"><i class="ft-layers"></i><span>خدمات</span></a>#}
-{#                <ul class="dropdown-menu">#}
-{#                    <div class="arrow_box">#}
-{#                        <li data-menu=""><a class="dropdown-item"#}
-{#                                            href="{% url 'Site_Panel:sell_service' select_deceased.id %}"#}
-{#                                            data-toggle="dropdown">خرید خدمات</a>#}
-{#                        </li>#}
-{#                        <li data-menu=""><a class="dropdown-item"#}
-{#                                            href="{% url 'Site_Panel:reserve-service' select_deceased.id %}"#}
-{#                                            data-toggle="dropdown">خدمات خریداری شده</a>#}
-{#                        </li>#}
-{##}
-{#                    </div>#}
-{#                </ul>#}
-{#            </li>#}
-        {% for name in select_deceased.license.select_related %}
-            {% if name.city_name %}
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"
-                                                                  data-toggle="dropdown"><i class="ft-layers"></i><span>جواز حمل و دفن</span></a>
+                                                                  data-toggle="dropdown"><i class="ft-layers"></i><span>حمل متوفی</span></a>
                 <ul class="dropdown-menu">
                     <div class="arrow_box">
                         <li data-menu=""><a class="dropdown-item"
                                             href="{% url 'Site_Panel:movement_certificate' select_deceased.id %}"
-                                            data-toggle="dropdown">صدور مجوز</a>
+                                            data-toggle="dropdown">ایجاد حمل</a>
+                        </li>
+                        <li data-menu=""><a class="dropdown-item"
+                                            href="{% url 'Site_Panel:movement_certificate' select_deceased.id %}"
+                                            data-toggle="dropdown">لیست حمل متوفی</a>
                         </li>
                     </div>
                 </ul>
             </li>
-            {% endif %}
-        {% endfor %}
+
+            {#            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"#}
+            {#                                                                  data-toggle="dropdown"><i class="ft-layers"></i><span>خدمات</span></a>#}
+            {#                <ul class="dropdown-menu">#}
+            {#                    <div class="arrow_box">#}
+            {#                        <li data-menu=""><a class="dropdown-item"#}
+            {#                                            href="{% url 'Site_Panel:sell_service' select_deceased.id %}"#}
+            {#                                            data-toggle="dropdown">خرید خدمات</a>#}
+            {#                        </li>#}
+            {#                        <li data-menu=""><a class="dropdown-item"#}
+            {#                                            href="{% url 'Site_Panel:reserve-service' select_deceased.id %}"#}
+            {#                                            data-toggle="dropdown">خدمات خریداری شده</a>#}
+            {#                        </li>#}
+            {##}
+            {#                    </div>#}
+            {#                </ul>#}
+            {#            </li>#}
+            {% for item in select_deceased.license.select_related %}
+                {% if item.move_status == 'SEND-OUT' %}
+                    <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"
+                                                                          data-toggle="dropdown"><i
+                            class="ft-layers"></i><span>جواز حمل و دفن</span></a>
+                        <ul class="dropdown-menu">
+                            <div class="arrow_box">
+                                <li data-menu=""><a class="dropdown-item"
+                                                    href="{% url 'Site_Panel:movement_certificate' select_deceased.id %}"
+                                                    data-toggle="dropdown">صدور مجوز</a>
+                                </li>
+                            </div>
+                        </ul>
+                    </li>
+                {% endif %}
+            {% endfor %}
 
             <li class="nav-item"><a class="dropdown-toggle nav-link"
                                     href="{% url 'Site_Panel:print_deceased_info' select_deceased.id %}" target="_blank"

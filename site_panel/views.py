@@ -8,15 +8,24 @@ from django.shortcuts import get_object_or_404
 from jdatetime import JalaliToGregorian, GregorianToJalali
 
 import random
+from django.contrib.auth.decorators import user_passes_test
+
+from django.db.models import Q
+
+
+def check_staff(user):
+	return user.is_staff
+
 
 def RandForPlaceServiceDocument():
-	while(True):
-		number = random.randint(100000,999999)
+	while (True):
+		number = random.randint(100000, 999999)
 
 		try:
 			services = Place_Service.objects.get(document=number)
 		except:
 			return number
+
 
 def Index(request):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -24,7 +33,7 @@ def Index(request):
 		context = {
 
 		}
-		return render(request,'admin-panel/index.html',context)
+		return render(request, 'admin-panel/index.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/')
 
@@ -106,7 +115,7 @@ def Quick_Deceased(request):
 				latitude = request.POST['latitude']
 				longitude = request.POST['longitude']
 
-			if first_name == '' or last_name == '' :
+			if first_name == '' or last_name == '':
 				context = {
 					'first_name': first_name,
 					'birth_day': birth_day_r,
@@ -201,7 +210,7 @@ def Quick_Deceased(request):
 							'message': ' لطفا همه فیلد های مربوط به مشخصات محل دفن را پر کنید.',
 						}
 						return render(request, 'admin-panel/quick-deceased.html', context)
-			if national_number != '' :
+			if national_number != '':
 				try:
 
 					deceased = Deceased.objects.get(national_number=national_number)
@@ -262,7 +271,7 @@ def Quick_Deceased(request):
 					}
 					return render(request, 'admin-panel/quick-deceased.html', context)
 
-				deceased = Deceased.objects.create(national_number=national_number,first_name=first_name,
+				deceased = Deceased.objects.create(national_number=national_number, first_name=first_name,
 												   last_name=last_name, fa_name=fa_name,
 												   identification_number=identification_number, bio=bio,
 												   date_of_birth=birth_day)
@@ -271,7 +280,6 @@ def Quick_Deceased(request):
 												   last_name=last_name, fa_name=fa_name,
 												   identification_number=identification_number, bio=bio,
 												   date_of_birth=birth_day)
-
 
 			if place_save:
 				place.save()
@@ -284,7 +292,9 @@ def Quick_Deceased(request):
 				license.license_status = 'CONFIRMED'
 				license.save()
 			else:
-				place_service = Place_Service.objects.create(place_id=place,deceased_id=deceased,document=RandForPlaceServiceDocument(),payment_status='PAID')
+				place_service = Place_Service.objects.create(place_id=place, deceased_id=deceased,
+															 document=RandForPlaceServiceDocument(),
+															 payment_status='PAID')
 
 				license = License.objects.get(deceased_id=deceased)
 				license.move_status = 'FERDOS-REZA'
@@ -292,7 +302,6 @@ def Quick_Deceased(request):
 				license.picture = picture
 				license.license_status = 'CONFIRMED'
 				license.save()
-
 
 			death_certificate = Death_Certificate.objects.get(deceased_id=deceased)
 
@@ -674,8 +683,9 @@ def Online_Deceased(request):
 				except:
 					if code != '' and block != '' and radif != '' and number != '' and floor != '' and place_type != '':
 						try:
-							place = Place.objects.create(code=code, block=block, radif=radif, number=number, floor=floor,
-													 type=place_type, longitude=longitude, latitude=latitude)
+							place = Place.objects.create(code=code, block=block, radif=radif, number=number,
+														 floor=floor,
+														 type=place_type, longitude=longitude, latitude=latitude)
 						except:
 							return HttpResponse('خطا در ذخیره سازی قبر')
 					else:
@@ -691,10 +701,9 @@ def Online_Deceased(request):
 							'presenter_phone_number': presenter_phone_number,
 							'presenter_national_number': presenter_national_number,
 							'presenter_identification_number': presenter_identification_number,
-							'presenter_address':presenter_address,
+							'presenter_address': presenter_address,
 							'bio': bio,
 							'code': code,
-
 
 							'bloock': block,
 							'radif': radif,
@@ -722,9 +731,9 @@ def Online_Deceased(request):
 			except:
 				try:
 					buyer = Buyer.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
-													 national_number=presenter_national_number,
-													 identification_number=presenter_identification_number,
-													 phone_number=presenter_phone_number)
+												 national_number=presenter_national_number,
+												 identification_number=presenter_identification_number,
+												 phone_number=presenter_phone_number)
 				except:
 					return HttpResponse('خطا در ذخیره سازی اطلاعات خریدار')
 
@@ -735,12 +744,11 @@ def Online_Deceased(request):
 					presenter = Presenter.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
 														 phone_number=presenter_phone_number,
 														 national_number=presenter_national_number,
-														 identification_number=presenter_identification_number,address=presenter_address)
+														 identification_number=presenter_identification_number,
+														 address=presenter_address)
 				except:
 					return HttpResponse('خطا در ذخیره اطلاعات معرف')
 				user = MyUser.objects.get(username=presenter_national_number)
-
-
 
 			try:
 				deceased = Deceased.objects.create(national_number=national_number, first_name=first_name,
@@ -806,7 +814,9 @@ def Online_Deceased(request):
 						return HttpResponse('خطا در ذخیره سازی اطلاعات خریدار')
 				if license_status == 'CONFIRMED':
 					try:
-						place_service = Place_Service.objects.create(buyer_id=buyer, place_id=place, deceased_id=deceased,document=RandForPlaceServiceDocument(),
+						place_service = Place_Service.objects.create(buyer_id=buyer, place_id=place,
+																	 deceased_id=deceased,
+																	 document=RandForPlaceServiceDocument(),
 																	 payment_status='PAID')
 					except:
 
@@ -830,7 +840,7 @@ def Online_Deceased(request):
 			context = {
 				'success': True,
 				'message': message,
-				'causes':causes,
+				'causes': causes,
 				'info': 'برای ویرایش اطلاعات وارد شده اینجا کلیک کنید.',
 				'deceased': deceased,
 
@@ -841,7 +851,7 @@ def Online_Deceased(request):
 					'اگر متوفی قبلا در سیستم ثبت شده است و قصد ویرایش اطلاعات دارید از طریق لیست متوفی اقدام کنید.']
 		causes = Cause_Death.objects.all()
 		context = {
-			'causes':causes,
+			'causes': causes,
 			'warnings': warnings,
 
 		}
@@ -859,13 +869,12 @@ def Deceased_List(request):
 		context = {
 
 			'deceaseds': deceaseds,
-			'warnings':warnings,
+			'warnings': warnings,
 		}
 
 		return render(request, 'admin-panel/deceased-list.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/deceased-list/')
-
 
 
 def Edit_Deceased(request, id):
@@ -904,7 +913,7 @@ def Edit_Deceased(request, id):
 				day = birth_day[2]
 				make_format = str(year) + '-' + str(month) + '-' + str(day)
 				birth_day = datetime.strptime(make_format, '%Y-%m-%d')
-				# return HttpResponse(birth_day)
+			# return HttpResponse(birth_day)
 			except:
 				birth_day = None
 			try:
@@ -1022,7 +1031,7 @@ def Edit_Deceased(request, id):
 								pass
 							else:
 								context = {
-									'causes':causes,
+									'causes': causes,
 									'error': True,
 									'message': 'قبر انتخابی خالی نمیباشد.',
 									'info': 'برای دیدن لیست قبور شهرداری اینجا کلیک کنید!',
@@ -1077,8 +1086,7 @@ def Edit_Deceased(request, id):
 						}
 						return render(request, 'admin-panel/edit-deceased-info.html', context)
 
-
-			if first_name == '' or last_name == '' :
+			if first_name == '' or last_name == '':
 				context = {
 					'causes': causes,
 					'select_deceased': select_deceased,
@@ -1127,7 +1135,7 @@ def Edit_Deceased(request, id):
 						return render(request, 'admin-panel/edit-deceased-info.html', context)
 				except:
 
-					if len(national_number) != 10 :
+					if len(national_number) != 10:
 						context = {
 							'causes': causes,
 							'select_deceased': select_deceased,
@@ -1144,8 +1152,6 @@ def Edit_Deceased(request, id):
 				else:
 					service_late.delete()
 					place.save()
-
-
 
 			select_deceased.first_name = first_name
 			select_deceased.last_name = last_name
@@ -1178,10 +1184,12 @@ def Edit_Deceased(request, id):
 							presenter.address = presenter_address
 							presenter.save()
 						except:
-							presenter = Presenter.objects.create(first_name=presenter_first_name, last_name=presenter_last_name,
+							presenter = Presenter.objects.create(first_name=presenter_first_name,
+																 last_name=presenter_last_name,
 																 national_number=presenter_national_number,
 																 identification_number=presenter_identification_number
-																 , phone_number=presenter_phone_number,address=presenter_address)
+																 , phone_number=presenter_phone_number,
+																 address=presenter_address)
 
 						select_deceased.presenter_id = presenter
 						try:
@@ -1198,15 +1206,15 @@ def Edit_Deceased(request, id):
 														 identification_number=presenter_identification_number
 														 , phone_number=presenter_phone_number)
 					else:
-						context={
+						context = {
 							'causes': causes,
 							'select_deceased': select_deceased,
 							'certificate': certificate,
 							'license': license,
-							'error':True,
-							'message':'لطفا همه اطلاعات مربوط به متوفی را وارد کنید!'
+							'error': True,
+							'message': 'لطفا همه اطلاعات مربوط به متوفی را وارد کنید!'
 						}
-						return render(request,'admin-panel/edit-deceased-info.html',context)
+						return render(request, 'admin-panel/edit-deceased-info.html', context)
 				else:
 					context = {
 						'causes': causes,
@@ -1222,7 +1230,7 @@ def Edit_Deceased(request, id):
 				license = License.objects.get(deceased_id=select_deceased)
 				license.move_status = 'SEND-OUT'
 				license.city_name = location
-				if pic :
+				if pic:
 					license.picture = picture
 				license.place_id = None
 				license.license_status = license_status
@@ -1290,7 +1298,7 @@ def Edit_Deceased(request, id):
 		return render(request, 'admin-panel/edit-deceased-info.html', context)
 
 	else:
-		return redirect('/Account/login/?next=/Admin/edit-deceased-info/'+id)
+		return redirect('/Account/login/?next=/Admin/edit-deceased-info/' + id)
 
 
 def Add_Place(request):
@@ -1467,15 +1475,15 @@ def Edit_Place(request, id):
 		return redirect('/Account/login/?next=/Admin/edit-place-info/')
 
 
-def Select_Deceased(request,id):
+def Select_Deceased(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
 		select_deceased = Deceased.objects.get(id=id)
 		context = {
-			'select_deceased':select_deceased
+			'select_deceased': select_deceased
 		}
-		return render(request,'admin-panel/partial/select-deceased-base.html',context)
+		return render(request, 'admin-panel/partial/select-deceased-base.html', context)
 	else:
-		return redirect('/Account/login/?next=/Admin/select-deceased/'+id+'/')
+		return redirect('/Account/login/?next=/Admin/select-deceased/' + id + '/')
 
 
 def Add_New(request):
@@ -1564,6 +1572,8 @@ def Edit_News(request, id):
 		return render(request, 'admin-panel/edit-news-info.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/edit-news-info/')
+
+
 #
 # def  Print_Deceased_info(request,id):
 # 	from shahrdari import utils
@@ -1585,13 +1595,14 @@ def Print_Deceased_info(request, id):
 		select_license = License.objects.get(deceased_id=select_deceased)
 		select_death_certificate = Death_Certificate.objects.get(deceased_id=select_deceased)
 		context = {
-			'select_deceased':select_deceased,
-			'select_license':select_license,
-			'select_death_certificate':select_death_certificate,
-				   }
-		return render(request,'admin-panel/forprint.html',context)
+			'select_deceased': select_deceased,
+			'select_license': select_license,
+			'select_death_certificate': select_death_certificate,
+		}
+		return render(request, 'admin-panel/forprint.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/print/{}/'.format(select_deceased.id))
+
 
 def Add_Letter(request):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -1600,38 +1611,39 @@ def Add_Letter(request):
 			code = request.POST['code']
 			ckeditor = request.POST['ckeditor']
 			try:
-				select_letter = Archive.objects.create(code=code,description=ckeditor,status='Send')
+				select_letter = Archive.objects.create(code=code, description=ckeditor, status='Send')
 				message = 'نامه شما با موفقیت ایجاد گردید.'
 				context = {
-					'new':True,
+					'new': True,
 					'success': True,
 					'message': message,
 					'info': 'برای ویرایش نامه اینجا کلیک کنید.',
-					'select_letter':select_letter
+					'select_letter': select_letter
 
 				}
 				return render(request, 'admin-panel/editor.html', context=context)
 
 			except:
-				letter = Archive.objects.get(status='Send',code=code)
+				letter = Archive.objects.get(status='Send', code=code)
 				message = 'نامه ای با کد وارد شده از قبل وجود دارد.'
-				context={
-					'new':new,
-					'error':True,
-					'message':message,
-					'info':'برای ویرایش نامه اینجا کلیک کنید.',
-					'letter':letter,
+				context = {
+					'new': new,
+					'error': True,
+					'message': message,
+					'info': 'برای ویرایش نامه اینجا کلیک کنید.',
+					'letter': letter,
 				}
-				return render(request,'admin-panel/editor.html',context=context)
+				return render(request, 'admin-panel/editor.html', context=context)
 
 		warnings = ['لطفا از وارد کردن تصویر از طریق ckeditor تا اطلاع ثانوی خودداری کنید.']
 		context = {
-			'new':new,
-			'warnings':warnings
+			'new': new,
+			'warnings': warnings
 		}
-		return render(request,'admin-panel/editor.html',context)
+		return render(request, 'admin-panel/editor.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/add-letter/')
+
 
 def Inbox_Letter(request):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -1644,18 +1656,18 @@ def Inbox_Letter(request):
 			except:
 				picture = None
 				context = {
-					'error':True,
-					'message':'هنگام وارد کردن تصویر مشکلی به وجود آمده است لطفا به پشتیبانی اعلام فرمایید.'
+					'error': True,
+					'message': 'هنگام وارد کردن تصویر مشکلی به وجود آمده است لطفا به پشتیبانی اعلام فرمایید.'
 				}
-				return render(request,'admin-panel/inbox-editor.html',context)
+				return render(request, 'admin-panel/inbox-editor.html', context)
 
 			try:
-				letter = Archive.objects.create(code=code,description=ckeditor,status='Inbox',picture=picture)
+				letter = Archive.objects.create(code=code, description=ckeditor, status='Inbox', picture=picture)
 
 				message = 'نامه شما با موفقیت ایجاد گردید.'
 				context = {
-					'select_letter':letter,
-					'new':True,
+					'select_letter': letter,
+					'new': True,
 					'success': True,
 					'message': message,
 					'info': 'برای ویرایش نامه اینجا کلیک کنید.',
@@ -1665,23 +1677,23 @@ def Inbox_Letter(request):
 				return render(request, 'admin-panel/inbox-editor.html', context=context)
 
 			except:
-				letter = Archive.objects.get(status='Inbox',code=code)
+				letter = Archive.objects.get(status='Inbox', code=code)
 				message = 'نامه ای با کد وارد شده از قبل وجود دارد.'
-				context={
-					'new':new,
-					'error':True,
-					'message':message,
-					'info':'برای ویرایش نامه اینجا کلیک کنید.',
-					'letter':letter,
+				context = {
+					'new': new,
+					'error': True,
+					'message': message,
+					'info': 'برای ویرایش نامه اینجا کلیک کنید.',
+					'letter': letter,
 				}
-				return render(request,'admin-panel/inbox-editor.html',context=context)
+				return render(request, 'admin-panel/inbox-editor.html', context=context)
 
 		warnings = ['لطفا از وارد کردن تصویر از طریق ckeditor تا اطلاع ثانوی خودداری کنید.']
 		context = {
-			'new':new,
-			'warnings':warnings
+			'new': new,
+			'warnings': warnings
 		}
-		return render(request,'admin-panel/inbox-editor.html',context)
+		return render(request, 'admin-panel/inbox-editor.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/inbox-letter/')
 
@@ -1690,54 +1702,56 @@ def Send_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		letters = Archive.objects.filter(status='Send')
 		context = {
-			'letters':letters
+			'letters': letters
 		}
-		return render(request,'admin-panel/letter-list.html',context)
+		return render(request, 'admin-panel/letter-list.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/send-list/')
+
 
 def Receive_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		letters = Archive.objects.filter(status='Inbox')
 		warnings = ['برای مشاهده تصویر و خلاصه نامه بروی کد آن کلیک کنید']
 		context = {
-			'warnings':warnings,
-			'letters':letters
+			'warnings': warnings,
+			'letters': letters
 		}
-		return render(request,'admin-panel/inbox-list.html',context)
+		return render(request, 'admin-panel/inbox-list.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/inbox-list/')
 
 
-def Edit_Send_Letter(request,code_slug):
+def Edit_Send_Letter(request, code_slug):
 	if request.user.is_authenticated and request.user.is_staff:
 
 		if request.method == 'POST':
 			ckeditor = request.POST['ckeditor']
-			select_letter = Archive.objects.get(code= code_slug)
+			select_letter = Archive.objects.get(code=code_slug)
 			# return HttpResponse(select_letter)
 			select_letter.description = ckeditor
 			select_letter.save()
 			context = {
-				'select_letter':select_letter,
-				'success':True,
-				'message':'ویرایش با موفقیت انجام شد.'
+				'select_letter': select_letter,
+				'success': True,
+				'message': 'ویرایش با موفقیت انجام شد.'
 			}
 			return render(request, 'admin-panel/editor.html', context)
-		select_letter = get_object_or_404(Archive,code=code_slug,status = 'Send')
+		select_letter = get_object_or_404(Archive, code=code_slug, status='Send')
 		context = {
-			'select_letter':select_letter,
+			'select_letter': select_letter,
 
 		}
-		return render(request,'admin-panel/editor.html',context)
+		return render(request, 'admin-panel/editor.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/edit-send-letter/{}/'.format(code_slug))
 
-def Edit_Receive_Letter(request,code_slug):
+
+def Edit_Receive_Letter(request, code_slug):
 	if request.user.is_authenticated and request.user.is_staff:
 
 		if request.method == 'POST':
-			select_letter = Archive.objects.get(code= code_slug)
+			select_letter = Archive.objects.get(code=code_slug)
 			ckeditor = request.POST['ckeditor']
 			try:
 				picture = request.FILES['picture']
@@ -1748,20 +1762,21 @@ def Edit_Receive_Letter(request,code_slug):
 
 			select_letter.save()
 			context = {
-				'select_letter':select_letter,
-				'success':True,
-				'message':'ویرایش با موفقیت انجام شد.'
+				'select_letter': select_letter,
+				'success': True,
+				'message': 'ویرایش با موفقیت انجام شد.'
 			}
 			return render(request, 'admin-panel/inbox-editor.html', context)
-		select_letter = get_object_or_404(Archive,code=code_slug,status = 'Inbox')
+		select_letter = get_object_or_404(Archive, code=code_slug, status='Inbox')
 		warnings = ['در صورت انتخاب نکردن تصویر، همان تصویر قبل ثبت میشود.']
 		context = {
-			'select_letter':select_letter,
+			'select_letter': select_letter,
 
 		}
-		return render(request,'admin-panel/inbox-editor.html',context)
+		return render(request, 'admin-panel/inbox-editor.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/edit-inbox-letter/{}/'.format(code_slug))
+
 
 def Add_Death_Cause(request):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -1770,18 +1785,19 @@ def Add_Death_Cause(request):
 			cause = Cause_Death.objects.create(name=title)
 			message = 'علت مرگ با عنوان "{}" به موفقیت اضافه شد.'.format(cause.name)
 			context = {
-				'success':True,
-				'message':message
+				'success': True,
+				'message': message
 			}
-			return render(request,'admin-panel/add-cause-death.html',context)
+			return render(request, 'admin-panel/add-cause-death.html', context)
 
 		warnings = ['از اضافه کردن دلیل های مشابه و یک معنا خودداری کنید.']
 		context = {
-			'warnings':warnings,
+			'warnings': warnings,
 		}
-		return render(request,'admin-panel/add-cause-death.html',context)
+		return render(request, 'admin-panel/add-cause-death.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/add-death-cause/')
+
 
 def Death_Cause_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -1792,52 +1808,58 @@ def Death_Cause_List(request):
 			count_causes[cause.name] = Death_Certificate.objects.filter(cause_death_id__name=cause.name).count()
 
 		context = {
-			'count_causes':count_causes,
-			'death_causes':death_causes,
-			'death_cers':death_cers
+			'count_causes': count_causes,
+			'death_causes': death_causes,
+			'death_cers': death_cers
 		}
-		return render(request,'admin-panel/death-cause-list.html',context)
+		return render(request, 'admin-panel/death-cause-list.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/death-cause-list/')
 
 
-def Movement_Cert(request,id):
+def Movement_Cert(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
 		select_deceased = Deceased.objects.get(id=id)
-		movement_cert = Movement_Certificate.objects.get(license_id__deceased_id=select_deceased)
+		drivers = Driver.objects.all()
+		cars = Car.objects.all()
 		if request.method == 'POST':
+			driver = request.POST['driver']
+			driver = Driver.objects.get(id=driver)
+			service_id = request.POST['service_id']
+			service_id = Service_List.objects.get(id=service_id)
+			start_date = request.POST['start_date']
 			try:
-				status = request.POST['status']
-				movement_cert.status = 'confirmation'
-				movement_cert.save()
-				movement_cert = Movement_Certificate.objects.get(license_id__deceased_id=select_deceased)
-				context = {
-					'select_deceased':select_deceased,
-					'movement_cert':movement_cert,
-					'success':True,
-					'message':'با موفقیت اعمال شد.'
-				}
-				return render(request,'admin-panel/movement_license.html',context)
+				start_date_miladi = datetime.strptime(start_date, '%Y/%m/%d')
+				day = start_date_miladi.day
+				year = start_date_miladi.year
+				month = start_date_miladi.month
+				date = JalaliToGregorian(year, month, day)
+				date = date.getGregorianList()
+				year = date[0]
+				month = date[1]
+				day = date[2]
+				make_format = str(year) + '-' + str(month) + '-' + str(day)
+				date = datetime.strptime(make_format, '%Y-%m-%d')
 			except:
-				movement_cert = Movement_Certificate.objects.get(license_id__deceased_id=select_deceased)
-				context = {
-					'select_deceased':select_deceased,
-					'movement_cert':movement_cert,
-					'error': True,
-					'message': 'مجوز تایید نشد.'
-				}
-				return render(request, 'admin-panel/movement_license.html', context)
+				date = None
+			start_time = request.POST['start_time']
+			status = request.POST['status']
 
+		services = Service_List.objects.filter(name__contains='اعزام')
 
 		context = {
-			'select_deceased':select_deceased,
-			'movement_cert':movement_cert,
+			'cars': cars,
+			'services': services,
+			'select_deceased': select_deceased,
+			'drivers': drivers
+
 		}
-		return render(request,'admin-panel/movement_license.html',context)
+		return render(request, 'admin-panel/movement_license.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/movement_certificate/{}'.format(id))
 
-def Print_Movement_Cert(request,id):
+
+def Print_Movement_Cert(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
 		select_deceased = Deceased.objects.get(id=id)
 		select_death_cert = Death_Certificate.objects.get(deceased_id=select_deceased)
@@ -1845,17 +1867,160 @@ def Print_Movement_Cert(request,id):
 		select_license = License.objects.get(deceased_id=select_deceased)
 		if movement_cert.status == 'confirmation':
 			context = {
-				'select_death_cert':select_death_cert ,
-				'select_deceased':select_deceased,
-				'select_license':select_license,
+				'select_death_cert': select_death_cert,
+				'select_deceased': select_deceased,
+				'select_license': select_license,
 
 			}
-			return render(request, 'admin-panel/movement_cert_print.html',context)
+			return render(request, 'admin-panel/movement_cert_print.html', context)
 	else:
 
 		return redirect('/Account/login/?next=/Admin/movement_certificate_print/{}'.format(id))
 
 
+@user_passes_test(check_staff)
+def Census_Deceased(request):
+	if request.method == 'POST':
+
+		start_date = request.POST['start_date']
+		if start_date != '':
+			try:
+				start_date_miladi = datetime.strptime(start_date, '%Y/%m/%d')
+				day = start_date_miladi.day
+				year = start_date_miladi.year
+				month = start_date_miladi.month
+				date = JalaliToGregorian(year, month, day)
+				date = date.getGregorianList()
+				year = date[0]
+				month = date[1]
+				day = date[2]
+				make_format = str(year) + '-' + str(month) + '-' + str(day)
+				start_date = datetime.strptime(make_format, '%Y-%m-%d')
+			except:
+				start_date = None
+		else:
+			start_date = '1900-01-01'
+			start_date = datetime.strptime(start_date, '%Y-%m-%d')
+
+		end_date = request.POST['end_date']
+		if end_date != '':
+			try:
+				end_date_miladi = datetime.strptime(end_date, '%Y/%m/%d')
+				day = end_date_miladi.day
+				year = end_date_miladi.year
+				month = end_date_miladi.month
+				date = JalaliToGregorian(year, month, day)
+				date = date.getGregorianList()
+				year = date[0]
+				month = date[1]
+				day = date[2]
+				make_format = str(year) + '-' + str(month) + '-' + str(day)
+				end_date = datetime.strptime(make_format, '%Y-%m-%d')
+			except:
+				end_date = None
+		else:
+			end_date = datetime.now().date()
+
+		# return HttpResponse(str(start_date )+' ' +str(end_date))
+		try:
+			license_id = request.POST['city']
+		except:
+			license_id = 'all'
+		if license_id != 'all':
+			try:
+				license = License.objects.get(id=license_id)
+				city = license.city_name
+				status = 'SEND-OUT'
+			except:
+				city = ''
+				status = ''
+		else:
+			city = ''
+			status = ''
+
+		try:
+			cause_death_id = request.POST['cause_death']
+		except:
+			cause_death_id = 'all'
+		if cause_death_id != 'all' :
+			try:
+				cause_death = Cause_Death.objects.get(id = cause_death_id)
+				cause_death = cause_death.name
+			except:
+				cause_death = ''
+		else:
+			cause_death = ''
+		if status == 'SEND-OUT':
+			deceaseds = Deceased.objects.filter(license__city_name__contains=city,certificate__cause_death_id__name__contains=cause_death,certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
+		else:
+			deceaseds = Deceased.objects.filter(certificate__cause_death_id__name__contains=cause_death,certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
+
+		causes = Cause_Death.objects.all()
+		licenses = License.objects.filter(city_name__isnull=False).distinct('city_name')
+		select_cause = cause_death
+		select_city = city
+		start_date = request.POST['start_date']
+		if start_date != '':
+			try:
+				start_date_miladi = datetime.strptime(start_date, '%Y/%m/%d')
+				day = start_date_miladi.day
+				year = start_date_miladi.year
+				month = start_date_miladi.month
+				date = JalaliToGregorian(year, month, day)
+				date = date.getGregorianList()
+				year = date[0]
+				month = date[1]
+				day = date[2]
+				make_format = str(year) + '-' + str(month) + '-' + str(day)
+				select_start = datetime.strptime(make_format, '%Y-%m-%d')
+			except:
+				select_start = None
+		else:
+			select_start= ''
+
+		end_date = request.POST['end_date']
+		if end_date != '':
+			try:
+				end_date_miladi = datetime.strptime(end_date, '%Y/%m/%d')
+				day = end_date_miladi.day
+				year = end_date_miladi.year
+				month = end_date_miladi.month
+				date = JalaliToGregorian(year, month, day)
+				date = date.getGregorianList()
+				year = date[0]
+				month = date[1]
+				day = date[2]
+				make_format = str(year) + '-' + str(month) + '-' + str(day)
+				select_end = datetime.strptime(make_format, '%Y-%m-%d')
+			except:
+				select_end = None
+		else:
+			select_end = ''
+
+		error = False
+		if deceaseds.count() == 0 :
+			error = True
+		context = {
+			'error':error,
+			'select_start':select_start,
+			'select_end':select_end,
+			'select_cause':select_cause,
+			'select_city':select_city,
+			'causes': causes,
+			'licenses': licenses,
+			'deceaseds':deceaseds
+		}
+		return render(request,'admin-panel/deceased_census.html',context)
+
+	causes = Cause_Death.objects.all()
+	licenses = License.objects.filter(city_name__isnull=False).distinct('city_name')
+	context = {
+		'causes':causes,
+		'licenses':licenses,
+
+	}
+	return render(request, 'admin-panel/deceased_census.html', context)
+
 
 def Wait(request):
-	return render(request,'amir.html',context={})
+	return render(request, 'amir.html', context={})

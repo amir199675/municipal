@@ -45,10 +45,17 @@ def Profile(request):
 		first_name = request.POST['first_name']
 		last_name = request.POST['last_name']
 		email = request.POST['email']
+
 		try:
 			select_user.email = email
 			select_user.first_name = first_name
 			select_user.last_name = last_name
+			try:
+				picture = request.FILES['picture']
+				select_user.picture = picture
+				select_user.save()
+			except:
+				pass
 			select_user.save()
 			context = {
 				'success': True,
