@@ -50,7 +50,7 @@
                                             {% csrf_token %}
                                             <div class="row">
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
 
                                                     <div class="form-group">
                                                         <label for="location2">شروع از تاریخ :</label>
@@ -61,7 +61,7 @@
                                                                name="start_date">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label for="location2">پایان تا تاریخ :</label>
                                                         <input type="text" class="usage pdp-el form-control"
@@ -72,7 +72,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label for="location2">شهر اعزامی :</label>
                                                         <select id="single2"
@@ -85,7 +85,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label for="location2">علت فوت :</label>
                                                         <select id="single"
@@ -95,6 +95,16 @@
                                                                 <option {% if cause.name == select_cause %}selected{% endif %} value="{{ cause.id }}">{{ cause.name}}</option>
                                                             {% endfor %}
 
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label for="location2">جنسیت :</label>
+                                                        <select class="form-control" name="sex">
+                                                            <option {% if sex == 'UNKNOWN' %}selected{% endif %} value="UNKNOWN">ناشناخته</option>
+                                                            <option {% if sex == 'FEMALE' %}selected{% endif %} value="FEMALE" >زن</option>
+                                                            <option {% if sex == 'MALE' %}selected{% endif %} value="MALE" >مرد</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -250,10 +260,26 @@
                                                 </tfoot>
                                             </table>
                                         </div>
+{#                                        {% if deceaseds %}#}
+{#                                            <div class="text-success">#}
+{#                                            تعداد متوفی#}
+{#                                            {% if select_start|shamsi != 'ثبت نشده' %}#}
+{#                                            از تاریخ {{ select_start|shamsi }}#}
+{#                                            {% endif %}#}
+{#                                            {% if select_end|shamsi != 'ثبت نشده' %}#}
+{#                                            تا تاریخ {{ select_end|shamsi }}#}
+{#                                            {% endif %}#}
+{#                                            به تعداد#}
+{#                                            {{ deceaseds.count }} نفر است#}
+{#                                            </div>#}
+{#                                            #}
+{#                                        {% endif %}#}
                                     </div>
                                 </div>
                             </div>
+
                         </div>
+
                     </div>
 
                 </section>

@@ -1881,7 +1881,7 @@ def Print_Movement_Cert(request, id):
 @user_passes_test(check_staff)
 def Census_Deceased(request):
 	if request.method == 'POST':
-
+		sex = request.POST['sex']
 		start_date = request.POST['start_date']
 		date_s = False
 		date_e = False
@@ -1925,7 +1925,7 @@ def Census_Deceased(request):
 			date_e = True
 			end_date = datetime.now().date()
 
-		# return HttpResponse(str(start_date )+' ' +str(end_date))
+		# return HttpResponse(sex)
 		try:
 			license_id = request.POST['city']
 		except:
@@ -1959,15 +1959,14 @@ def Census_Deceased(request):
 
 				if cause_death == 'all':
 
-					deceaseds = Deceased.objects.filter(license__city_name__contains=city,certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
+					deceaseds = Deceased.objects.filter(sex=sex,license__city_name__contains=city,certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
 				else:
-					deceaseds = Deceased.objects.filter(license__city_name__contains=city,certificate__cause_death_id__name__contains=cause_death,certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
+					deceaseds = Deceased.objects.filter(sex=sex,license__city_name__contains=city,certificate__cause_death_id__name__contains=cause_death,certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
 			else:
 				if cause_death == 'all':
-
-					deceaseds = Deceased.objects.filter(license__city_name__contains=city)
+					deceaseds = Deceased.objects.filter(sex=sex,license__city_name__contains=city)
 				else:
-					deceaseds = Deceased.objects.filter(license__city_name__contains=city,
+					deceaseds = Deceased.objects.filter(sex=sex,license__city_name__contains=city,
 														certificate__cause_death_id__name__contains=cause_death,
 														certificate__date_of_death__gte=start_date,
 														certificate__date_of_death__lte=end_date)
@@ -1976,14 +1975,14 @@ def Census_Deceased(request):
 			if date_e and date_s :
 
 				if cause_death == 'all':
-					deceaseds = Deceased.objects.filter()
+					deceaseds = Deceased.objects.filter(sex=sex)
 				else:
-					deceaseds = Deceased.objects.filter(certificate__cause_death_id__name__contains=cause_death)
+					deceaseds = Deceased.objects.filter(sex=sex,certificate__cause_death_id__name__contains=cause_death)
 			else:
 				if cause_death == 'all':
-					deceaseds = Deceased.objects.filter(certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
+					deceaseds = Deceased.objects.filter(sex=sex,certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
 				else:
-					deceaseds = Deceased.objects.filter(certificate__cause_death_id__name__contains=cause_death,certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
+					deceaseds = Deceased.objects.filter(sex=sex,certificate__cause_death_id__name__contains=cause_death,certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
 
 		causes = Cause_Death.objects.all()
 		licenses = License.objects.filter(city_name__isnull=False).distinct('city_name')
@@ -2030,7 +2029,9 @@ def Census_Deceased(request):
 		error = False
 		if deceaseds.count() == 0 :
 			error = True
+
 		context = {
+			'sex':sex,
 			'error':error,
 			'select_start':select_start,
 			'select_end':select_end,
