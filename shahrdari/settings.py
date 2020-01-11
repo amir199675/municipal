@@ -23,10 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'w%()v8jn(5xf)h)x1!(w2@-2(2*@*9xm6y19%fs(8u)+mehdhg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
-# ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['www.ferdosreza.ir','ferdosreza.ir','http://ferdosreza.ir/','http://ferdosreza.ir/']
+DEBUG = True
+# DEBUG = False
+ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['www.ferdosreza.ir','ferdosreza.ir','http://ferdosreza.ir/','http://ferdosreza.ir/']
 
 
 AUTH_USER_MODEL = 'main.MyUser'
@@ -99,8 +99,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': "municipal",
         'PASSWORD' : 'j+AXw.79',
-        # 'USER' : 'postgres',
-        'USER' : 'amir',
+        'USER' : 'postgres',
+        # 'USER' : 'amir',
         'PORT' : 5432
     }
 }

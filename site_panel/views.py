@@ -1949,11 +1949,18 @@ def Census_Deceased(request):
 			except:
 				cause_death = ''
 		else:
-			cause_death = ''
+			cause_death = 'all'
 		if status == 'SEND-OUT':
-			deceaseds = Deceased.objects.filter(license__city_name__contains=city,certificate__cause_death_id__name__contains=cause_death,certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
+			if cause_death == 'all':
+				deceaseds = Deceased.objects.filter(license__city_name__contains=city,certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
+			else:
+				deceaseds = Deceased.objects.filter(license__city_name__contains=city,certificate__cause_death_id__name__contains=cause_death,certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
+
 		else:
-			deceaseds = Deceased.objects.filter(certificate__cause_death_id__name__contains=cause_death,certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
+			if cause_death == 'all':
+				deceaseds = Deceased.objects.filter(certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
+			else:
+				deceaseds = Deceased.objects.filter(certificate__cause_death_id__name__contains=cause_death,certificate__date_of_death__gte=start_date,certificate__date_of_death__lte=end_date)
 
 		causes = Cause_Death.objects.all()
 		licenses = License.objects.filter(city_name__isnull=False).distinct('city_name')
