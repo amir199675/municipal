@@ -750,11 +750,14 @@ def total_price_computer(sender, instance, action, reverse, pk_set, **kwargs):
 @receiver(pre_delete, sender=Place_Service)
 def DeleteBillandChangePlaceStatus(sender, instance, *args, **kwargs):
 	if instance.payment_status == 'PAID':
-		place = instance.place_id
-		place.status = 'Municipal'
-		place.save()
-		bill = Bill.objects.get(order_id=instance)
-		bill.delete()
+		try:
+			place = instance.place_id
+			place.status = 'Municipal'
+			place.save()
+			bill = Bill.objects.get(order_id=instance)
+			bill.delete()
+		except:
+			pass
 
 
 @receiver(post_save, sender=Place_Service)
