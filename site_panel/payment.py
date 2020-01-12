@@ -143,9 +143,31 @@ def Reserve_Factor(request):
 			str += serve
 		str = str.split('Amir:D')
 		buyer = request.POST['buyer']
-		buyer = Buyer.objects.get(id=buyer)
+		try:
+			buyer = Buyer.objects.get(id=buyer)
+		except:
+			context = {
+				'error':True,
+				'message':'لطفا خریدار را انتخاب کنید',
+				'services':services,
+				'deceaseds':deceaseds,
+				'buyers':buyers
+			}
+			return render(request,'admin-panel/payment/factor-frosh.html',context)
+
 		deceased = request.POST['deceased']
-		deceased = Deceased.objects.get(id=deceased)
+		try:
+			deceased = Deceased.objects.get(id=deceased)
+		except:
+			context = {
+				'error': True,
+				'message': 'لطفا متوفی مورد نظر را انتخاب کنید',
+				'services': services,
+				'deceaseds': deceaseds,
+				'buyers': buyers
+			}
+			return render(request, 'admin-panel/payment/factor-frosh.html', context)
+
 		status = request.POST['status']
 		document = RandForBill()
 		# return HttpResponse(document)

@@ -114,7 +114,7 @@
                                                                         <label for="firstName2">خریدار :</label>
                                                                         <select id="single"
                                                                                 class="js-states form-control" name="buyer">
-
+                                                                            <option></option>
                                                                             {% for buyer in buyers %}
                                                                                 <option value="{{ buyer.id }}">{{ buyer.get_full_name }} {{ buyer.id }} {{ buyer.national_number }} {{ buyer.phone_number }}</option>
                                                                             {% endfor %}
@@ -127,7 +127,7 @@
                                                                         <label for="date2">متوفی مربوطه :</label>
                                                                         <select id="single2"
                                                                                 class="js-states form-control" name="deceased">
-
+                                                                            <option></option>
                                                                             {% for deceased in deceaseds %}
                                                                                 <option value="{{ deceased.id }}">{{ deceased.get_full_name }} {{ deceased.id }} {{ deceased.national_number }} {{ deceased.phone_number }}</option>
                                                                             {% endfor %}
