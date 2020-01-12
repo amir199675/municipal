@@ -18,7 +18,7 @@
     <div class="navigation-background"></div>
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class=" nav-item"><a href=""><i class="ft-more-horizontal"></i><span class="menu-title" data-i18n="">متوفی</span></a>
+            <li class=" nav-item"><a href=""><i style="background-color: #e0dfe3"><img src="{% static 'admin-panel-static/feather/user-x.svg' %}" alt=""></i><span class="menu-title" data-i18n="">متوفی</span></a>
                 <ul class="menu-content">
                     <li><a class="menu-item" href="{% url 'Site_Panel:quick_new_deceased' %}">اضافه کردن متوفی قدیمی</a>
                     </li>
@@ -35,62 +35,7 @@
                 </ul>
             </li>
 
-            <li class=" nav-item"><a href=""><i class="ft-layers"></i><span class="menu-title" data-i18n="">قبور</span></a>
-                <ul class="menu-content">
-                    <li><a class="menu-item" href="{% url 'Site_Panel:add_place' %}">اضافه کردن قبر جدید</a>
-                    </li>
-                    <li><a class="menu-item" href="{% url 'Site_Panel:places_list' %}">لیست قبور</a>
-                    </li>
-                </ul>
-            </li>
-
-
-            <li class=" nav-item"><a href=""><i class="ft-bar-chart"></i><span class="menu-title"
-                                                                               data-i18n="">اخبار</span></a>
-                <ul class="menu-content">
-                    <li><a class="menu-item" href="{% url 'Site_Panel:add_news' %}">اضافه کردن اخبار</a>
-                    </li>
-                    <li><a class="menu-item" href="{% url 'Site_Panel:news-list' %}">لیست اخبار</a>
-                    </li>
-                </ul>
-            </li>
-            <li class=" nav-item"><a href=""><i class="ft-book"></i><span class="menu-title" data-i18n="">بایگانی</span></a>
-                <ul class="menu-content">
-                    <li><a class="menu-item" href="{% url 'Site_Panel:add_letter' %}">ایجاد نامه خروجی</a>
-                    </li>
-                    <li><a class="menu-item" href="{% url 'Site_Panel:send_list' %}">لیست نامه های خروجی</a>
-                    </li>
-                    <li><a class="menu-item" href="{% url 'Site_Panel:inbox_letter' %}">ایجاد نامه ورودی</a>
-                    </li>
-                    <li><a class="menu-item" href="{% url 'Site_Panel:inbox_list' %}">لیست نامه های ورودی</a>
-                    </li>
-                </ul>
-            </li>
-
-            <li class=" nav-item"><a href=""><i class="ft-anchor"></i><span class="menu-title"
-                                                                            data-i18n="">دلایل فوت</span></a>
-                <ul class="menu-content">
-                    <li><a class="menu-item" href="{% url 'Site_Panel:add_death_cause' %}">اضافه کردن علت جدید</a>
-                    </li>
-
-                    <li><a class="menu-item" href="{% url 'Site_Panel:death_cause_list' %}">لیست همه علت ها</a>
-                    </li>
-                </ul>
-            </li>
-            <li class=" nav-item"><a href=""><i class="ft-move"></i><span class="menu-title"
-                                                                            data-i18n="">امور حمل و نقل</span></a>
-                <ul class="menu-content">
-                    <li><a class="menu-item" href="{% url 'Site_Panel:add_driver' %}">اضافه کردن راننده</a>
-                    </li>
-                    <li><a class="menu-item" href="{% url 'Site_Panel:driver_list' %}">لیست راننده ها</a>
-                    </li>
-                    <li><a class="menu-item" href="{% url 'Site_Panel:add_target' %}">اضافه کردن مقصد</a>
-                    </li>
-                    <li><a class="menu-item" href="{% url 'Site_Panel:target_list' %}">لیست مقصدها</a>
-                    </li>
-                </ul>
-            </li>
-            <li class=" nav-item"><a href=""><i class="ft-server"></i><span class="menu-title"
+            <li class=" nav-item"><a href=""><i style="background-color: #e0dfe3"><img src="{% static 'admin-panel-static/feather/dollar-sign.svg' %}" alt=""></i><span class="menu-title"
                                                                             data-i18n="">امور مالی</span></a>
                 <ul class="menu-content">
 
@@ -111,7 +56,65 @@
                 </ul>
             </li>
 
-            <li class=" nav-item"><a href=""><i class="ft-server"></i><span class="menu-title"
+            <li class=" nav-item"><a href=""><i style="background-color: #e0dfe3"><img src="{% static 'admin-panel-static/feather/truck.svg' %}" alt=""></i><span class="menu-title"
+                                                                            data-i18n="">امور حمل و نقل</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="{% url 'Site_Panel:add_driver' %}">اضافه کردن راننده</a>
+                    </li>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:driver_list' %}">لیست راننده ها</a>
+                    </li>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:add_target' %}">اضافه کردن مقصد</a>
+                    </li>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:target_list' %}">لیست مقصدها</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class=" nav-item"><a href=""><i style="background-color: #e0dfe3"><img src="{% static 'admin-panel-static/feather/grave.svg' %}" alt=""></i><span class="menu-title" data-i18n="">قبور</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="{% url 'Site_Panel:add_place' %}">اضافه کردن قبر جدید</a>
+                    </li>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:places_list' %}">لیست قبور</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class=" nav-item"><a href=""><i style="background-color: #e0dfe3"><img src="{% static 'admin-panel-static/feather/archive.svg' %}" alt=""></i><span class="menu-title" data-i18n="">بایگانی</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="{% url 'Site_Panel:add_letter' %}">ایجاد نامه خروجی</a>
+                    </li>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:send_list' %}">لیست نامه های خروجی</a>
+                    </li>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:inbox_letter' %}">ایجاد نامه ورودی</a>
+                    </li>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:inbox_list' %}">لیست نامه های ورودی</a>
+                    </li>
+                </ul>
+            </li>
+
+
+
+            <li class=" nav-item"><a href=""><i style="background-color: #e0dfe3"><img src="{% static 'admin-panel-static/feather/death-penalty.svg' %}" alt=""></i><span class="menu-title"
+                                                                            data-i18n="">دلایل فوت</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="{% url 'Site_Panel:add_death_cause' %}">اضافه کردن علت جدید</a>
+                    </li>
+
+                    <li><a class="menu-item" href="{% url 'Site_Panel:death_cause_list' %}">لیست همه علت ها</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class=" nav-item"><a href=""><i style="background-color: #e0dfe3"><img src="{% static 'admin-panel-static/feather/paperclip.svg' %}" alt=""></i><span class="menu-title"
+                                                                               data-i18n="">اخبار</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="{% url 'Site_Panel:add_news' %}">اضافه کردن اخبار</a>
+                    </li>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:news-list' %}">لیست اخبار</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href=""><i style="background-color: #e0dfe3"><img src="{% static 'admin-panel-static/feather/user.svg' %}" alt=""></i><span class="menu-title"
                                                                             data-i18n="">پروفایل</span></a>
                 <ul class="menu-content">
                     <li><a class="menu-item" href="{% url 'Account:edit_profile' %}">ویرایش مشخصات</a>
