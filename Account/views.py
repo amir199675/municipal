@@ -1,8 +1,17 @@
 from django.shortcuts import render , redirect , HttpResponse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import user_passes_test
 
 
 # Create your views here.
+
+
+
+def check_staff(user):
+	return user.is_staff
+
+
+
 def Login (request):
 	if request.user.is_authenticated and request.user.is_staff:
 		return redirect('Site_Panel:index')
@@ -37,7 +46,7 @@ def Logout(request):
 		return redirect(next[1])
 	logout(request)
 
-
+@user_passes_test(check_staff)
 def Profile(request):
 	select_user = request.user
 
