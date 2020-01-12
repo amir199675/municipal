@@ -45,9 +45,13 @@ def Profile(request):
 		first_name = request.POST['first_name']
 		last_name = request.POST['last_name']
 		email = request.POST['email']
+		phone_number = request.POST['phone_number']
+		national_number = request.POST['national_number']
 
 		try:
 			select_user.email = email
+			select_user.phone_number = phone_number
+			select_user.national_number = national_number
 			select_user.first_name = first_name
 			select_user.last_name = last_name
 			try:
