@@ -22,6 +22,13 @@ def check_staff(user):
 def User_list(request):
 
 	if request.method == 'GET' and 'delete_data' in request.GET :
+
+		groups = request.user.groups.all()
+		for group in groups:
+			if group.name == 'viewer':
+				return HttpResponse(
+					'شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 		users = MyUser.objects.all()
 		for user in users:
 			user.phone_number = None
@@ -30,6 +37,13 @@ def User_list(request):
 		return redirect('Site_Panel:user_list')
 
 	if request.method == 'GET' and 'update_data' in request.GET :
+
+		groups = request.user.groups.all()
+		for group in groups:
+			if group.name == 'viewer':
+				return HttpResponse(
+					'شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 		users = MyUser.objects.all()
 		for user in users:
 			if user.presenter_id != '':
@@ -78,6 +92,13 @@ def Edit_User(request,id):
 	select_user = MyUser.objects.get(id = id)
 
 	if request.method == 'POST':
+
+		groups = request.user.groups.all()
+		for group in groups:
+			if group.name == 'viewer':
+				return HttpResponse(
+					'شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 		first_name = request.POST['first_name']
 		last_name = request.POST['last_name']
 		phone_number = request.POST['phone_number']
@@ -136,6 +157,13 @@ def Reserve_Factor(request):
 	buyers = Buyer.objects.all()
 	deceaseds = Deceased.objects.all()
 	if request.method == 'POST':
+
+		groups = request.user.groups.all()
+		for group in groups:
+			if group.name == 'viewer':
+				return HttpResponse(
+					'شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 		serves = request.POST.getlist('serves')
 		# return HttpResponse(serves[0])
 		str = ''
@@ -238,6 +266,12 @@ def Factor_Details(request,document):
 def Add_Service(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		if request.method == 'POST':
+
+			groups = request.user.groups.all()
+			for group in groups:
+				if group.name == 'viewer':
+					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 			code = request.POST['code']
 			name = request.POST['name']
 			price = request.POST['price']
@@ -291,6 +325,12 @@ def Edit_Service(request,id):
 	if request.user.is_authenticated and request.user.is_staff:
 		select_service = Service_List.objects.get(id = id)
 		if request.method == 'POST':
+
+			groups = request.user.groups.all()
+			for group in groups:
+				if group.name == 'viewer':
+					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 			name = request.POST['name']
 			code = request.POST['code']
 			price = request.POST['price']
@@ -346,6 +386,13 @@ def Place_Pre_Sell(request):
 	places = Place.objects.filter(status='Municipal')
 	buyers = Buyer.objects.all()
 	if request.method == 'POST':
+
+		groups = request.user.groups.all()
+		for group in groups:
+			if group.name == 'viewer':
+				return HttpResponse(
+					'شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 		buyer = request.POST['buyer']
 		request_places = request.POST.getlist('places')
 		str = ''
@@ -397,6 +444,13 @@ def Place_Pre_Sell(request):
 @user_passes_test(check_staff)
 def Add_User(request):
 	if request.method == 'POST':
+
+		groups = request.user.groups.all()
+		for group in groups:
+			if group.name == 'viewer':
+				return HttpResponse(
+					'شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 		name = request.POST['first_name']
 		last_name = request.POST['last_name']
 		national_number = request.POST['national_number']
@@ -448,6 +502,13 @@ def Print_Factor(request,document):
 @user_passes_test(check_staff)
 def Add_Driver(request):
 	if request.method == 'POST':
+
+		groups = request.user.groups.all()
+		for group in groups:
+			if group.name == 'viewer':
+				return HttpResponse(
+					'شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 		name = request.POST['first_name']
 		last_name = request.POST['last_name']
 		national_number = request.POST['national_number']

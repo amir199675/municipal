@@ -7,6 +7,9 @@ from django.shortcuts import get_object_or_404
 
 from jdatetime import JalaliToGregorian, GregorianToJalali
 
+from django.contrib.auth.models import Group
+
+
 import random
 from django.contrib.auth.decorators import user_passes_test
 
@@ -43,6 +46,11 @@ def Quick_Deceased(request):
 		deceased = None
 
 		if request.method == 'POST':
+
+			groups = request.user.groups.all()
+			for group in groups:
+				if group.name == 'viewer':
+					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
 
 			first_name = request.POST['first_name']
 			last_name = request.POST['last_name']
@@ -334,6 +342,12 @@ def Online_Deceased(request):
 	if request.user.is_authenticated and request.user.is_staff:
 
 		if request.method == 'POST':
+
+			groups = request.user.groups.all()
+			for group in groups:
+				if group.name == 'viewer':
+					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 			license_status = request.POST['license_status']
 
 			first_name = request.POST['first_name']
@@ -892,6 +906,12 @@ def Edit_Deceased(request, id):
 		certificate = Death_Certificate.objects.get(deceased_id=select_deceased)
 		# place_deceased = Place.objects.get()
 		if request.method == 'POST':
+
+			groups = request.user.groups.all()
+			for group in groups:
+				if group.name == 'viewer':
+					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 			place_change = False
 
 			first_name = request.POST['first_name']
@@ -1304,6 +1324,12 @@ def Edit_Deceased(request, id):
 def Add_Place(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		if request.method == 'POST':
+
+			groups = request.user.groups.all()
+			for group in groups:
+				if group.name == 'viewer':
+					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 			code = request.POST['code']
 			block = request.POST['block']
 			radif = request.POST['radif']
@@ -1411,6 +1437,12 @@ def Edit_Place(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
 		select_place = Place.objects.get(id=id)
 		if request.method == 'POST':
+
+			groups = request.user.groups.all()
+			for group in groups:
+				if group.name == 'viewer':
+					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 			try:
 				code = request.POST['code']
 				block = request.POST['block']
@@ -1489,6 +1521,11 @@ def Select_Deceased(request, id):
 def Add_New(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		if request.method == 'POST':
+			groups = request.user.groups.all()
+			for group in groups:
+				if group.name == 'viewer':
+					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 			title = request.POST['title']
 			context = request.POST['context']
 			status = request.POST['status']
@@ -1537,6 +1574,12 @@ def Edit_News(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
 		select_new = New.objects.get(id=id)
 		if request.method == 'POST':
+
+			groups = request.user.groups.all()
+			for group in groups:
+				if group.name == 'viewer':
+					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 			title = request.POST['title']
 			context = request.POST['context']
 			status = request.POST['status']
@@ -1608,6 +1651,12 @@ def Add_Letter(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		new = True
 		if request.method == 'POST':
+
+			groups = request.user.groups.all()
+			for group in groups:
+				if group.name == 'viewer':
+					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 			code = request.POST['code']
 			ckeditor = request.POST['ckeditor']
 			try:
@@ -1649,6 +1698,12 @@ def Inbox_Letter(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		new = True
 		if request.method == 'POST':
+
+			groups = request.user.groups.all()
+			for group in groups:
+				if group.name == 'viewer':
+					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 			code = request.POST['code']
 			ckeditor = request.POST['ckeditor']
 			try:
@@ -1726,6 +1781,12 @@ def Edit_Send_Letter(request, code_slug):
 	if request.user.is_authenticated and request.user.is_staff:
 
 		if request.method == 'POST':
+
+			groups = request.user.groups.all()
+			for group in groups:
+				if group.name == 'viewer':
+					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 			ckeditor = request.POST['ckeditor']
 			select_letter = Archive.objects.get(code=code_slug)
 			# return HttpResponse(select_letter)
@@ -1751,6 +1812,12 @@ def Edit_Receive_Letter(request, code_slug):
 	if request.user.is_authenticated and request.user.is_staff:
 
 		if request.method == 'POST':
+
+			groups = request.user.groups.all()
+			for group in groups:
+				if group.name == 'viewer':
+					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 			select_letter = Archive.objects.get(code=code_slug)
 			ckeditor = request.POST['ckeditor']
 			try:
@@ -1781,6 +1848,12 @@ def Edit_Receive_Letter(request, code_slug):
 def Add_Death_Cause(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		if request.method == 'POST':
+
+			groups = request.user.groups.all()
+			for group in groups:
+				if group.name == 'viewer':
+					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 			title = request.POST['title']
 			cause = Cause_Death.objects.create(name=title)
 			message = 'علت مرگ با عنوان "{}" به موفقیت اضافه شد.'.format(cause.name)
@@ -1824,6 +1897,12 @@ def Movement_Lic(request, id):
 		drivers = Driver.objects.all()
 		cars = Car.objects.all()
 		if request.method == 'POST':
+
+			groups = request.user.groups.all()
+			for group in groups:
+				if group.name == 'viewer':
+					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 			buyer_id = request.POST['buyer']
 			buyer = None
 			if buyer_id == '':
@@ -1925,6 +2004,13 @@ def Movement_License_List(request,id):
 def Add_Target(request):
 
 	if request.method == 'POST':
+
+		groups = request.user.groups.all()
+		for group in groups:
+			if group.name == 'viewer':
+				return HttpResponse(
+					'شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 		code = request.POST['code']
 		price = request.POST['price']
 		name = request.POST['name']
@@ -1961,6 +2047,13 @@ def Target_List(request):
 def Edit_Target(request,id):
 	select_target = Target.objects.get(id=id)
 	if request.method == 'POST':
+
+		groups = request.user.groups.all()
+		for group in groups:
+			if group.name == 'viewer':
+				return HttpResponse(
+					'شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 		code = request.POST['code']
 		price = request.POST['price']
 		name = request.POST['name']
@@ -1993,6 +2086,13 @@ def Edit_Target(request,id):
 @user_passes_test(check_staff)
 def Census_Deceased(request):
 	if request.method == 'POST':
+
+		groups = request.user.groups.all()
+		for group in groups:
+			if group.name == 'viewer':
+				return HttpResponse(
+					'شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+
 		sex = request.POST['sex']
 		start_date = request.POST['start_date']
 		date_s = False
