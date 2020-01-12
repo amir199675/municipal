@@ -23,6 +23,8 @@ admin.site.register(Service_List)
 admin.site.register(Movement_Certificate)
 admin.site.register(Driver)
 admin.site.register(Car)
+admin.site.register(Target)
+admin.site.register(Movement_Service)
 
 
 
