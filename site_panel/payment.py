@@ -196,13 +196,12 @@ def Reserve_Factor(request):
 			}
 			return render(request, 'admin-panel/payment/factor-frosh.html', context)
 
-		status = request.POST['status']
 		document = RandForBill()
 		# return HttpResponse(document)
 		for i in str:
 			if i != '':
 				service = Service_List.objects.get(id=i)
-				additional = Additional_Service.objects.create(service_id=service,buyer_id=buyer,status=status,deceased_id=deceased)
+				additional = Additional_Service.objects.create(service_id=service,buyer_id=buyer,status='PAID',deceased_id=deceased)
 
 		try:
 			bills = Bill.objects.filter(deceased_id=deceased,additional_service_id__buyer_id=buyer,document__isnull=True)

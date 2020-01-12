@@ -104,18 +104,15 @@
                                                         <th>خریدار</th>
                                                         <th>متوفی</th>
                                                         <th>مبلغ</th>
-                                                        <th>وضعیت پرداخت</th>
-
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     {% for factor in factors %}
                                                         <tr>
                                                             <td style="vertical-align: middle;"><a href="{% url 'Site_Panel:factor_details' factor.document %}">{{ factor.document }}</a></td>
-                                                            <td style="vertical-align: middle;">{{ factor.additional_service_id.buyer_id.get_full_name }}</td>
+                                                            <td style="vertical-align: middle;">{{ factor.user_id.get_full_name }}</td>
                                                             <td style="vertical-align: middle;">{{ factor.deceased_id.get_full_name }}</td>
                                                             <td style="vertical-align: middle;">{% for key,value in price.items %}{% if key == factor.id %}{{ value }}{% endif %}{% endfor %}</td>
-                                                            <td style="vertical-align: middle;">{% if factor.additional_service_id.status == 'PAID' %}✔{% else %}⏳{% endif %}</td>
                                                         </tr>
                                                     {% endfor %}
                                                     </tbody>
@@ -125,8 +122,6 @@
                                                         <th>خریدار</th>
                                                         <th>متوفی</th>
                                                         <th>مبلغ</th>
-                                                        <th>وضعیت پرداخت</th>
-
                                                     </tr>
                                                     </tfoot>
                                                 </table>

@@ -357,86 +357,6 @@ class Additional_Service(models.Model):
 	def __str__(self):
 		return self.deceased_id.get_full_name() + ' ' + self.service_id.name
 
-class Bill(models.Model):
-	created = models.DateTimeField(auto_now_add=True)
-	updated = models.DateTimeField(auto_now=True)
-	document = models.CharField(max_length=32,null=True,blank=True)
-	name = models.CharField(max_length=64, verbose_name='عنوان ')
-	price = models.CharField(max_length=8, verbose_name='هزینه ')
-	order_id = models.ForeignKey(Place_Service, on_delete=models.CASCADE, null=True, blank=True,
-								 verbose_name='قبر مربوطه ')
-	after_death_service_id = models.ForeignKey(After_Death_Service, on_delete=models.CASCADE, null=True, blank=True,
-											   verbose_name='خدمات پس از مرگ مربوطه ')
-	memorial_service_id = models.ForeignKey(Memorial_Service, on_delete=models.CASCADE, null=True, blank=True,
-											verbose_name='جلسه مربوطه ')
-	reader_service_id = models.ForeignKey(Reader_Service, on_delete=models.CASCADE, null=True, blank=True,
-										  verbose_name='مداح مربوطه ')
-	deceased_id = models.ForeignKey(Deceased, on_delete=models.CASCADE, null=True, blank=True, verbose_name='متوفی ')
-	additional_service_id = models.ForeignKey(Additional_Service, on_delete=models.CASCADE, null=True, blank=True,
-											  verbose_name='خدمات اضافه مربوطه ')
-	user_id = models.ForeignKey(Buyer, on_delete=models.CASCADE, null=True, blank=True, verbose_name='خرید توسط ')
-
-	class Meta:
-		verbose_name = 'کلیه خریدها'
-		verbose_name_plural = 'کلیه خریدها'
-
-	def __str__(self):
-		return self.name
-
-
-class License(models.Model):
-	LICENSE_STATUS = (
-		('WAITING', 'درحال بررسی'),
-		('CONFIRMED', 'تایید شده')
-	)
-
-	MOVE_STATUS = (
-		('SEND-OUT', 'اعزامی'),
-		('FERDOS-REZA', 'فردوس رضا'),
-	)
-
-	created = models.DateTimeField(auto_now_add=True)
-	updated = models.DateTimeField(auto_now=True)
-	document = models.CharField(max_length=32, unique=True, verbose_name='شماره مجوز ')
-	place_id = models.ForeignKey(Place, related_name='license', null=True, blank=True, on_delete=models.CASCADE,
-								 verbose_name='قبر مربوطه ')
-	deceased_id = models.ForeignKey(Deceased, related_name='license', on_delete=models.CASCADE, verbose_name='متوفی ')
-	license_status = models.CharField(max_length=32, choices=LICENSE_STATUS, default='WAITING',
-									  verbose_name='وضعیت مجوز ')
-	picture = models.ImageField(upload_to='license-pic/', null=True, blank=True)
-	picture2 = models.ImageField(upload_to='license-pic/', null=True, blank=True)
-	picture3 = models.ImageField(upload_to='license-pic/', null=True, blank=True)
-	move_status = models.CharField(max_length=32, choices=MOVE_STATUS, default='FERDOS-REZA',
-								   verbose_name='وضعیت انتقال ')
-	city_name = models.CharField(max_length=32, null=True, blank=True, verbose_name='شهر اعزامی ')
-
-	class Meta:
-		verbose_name = 'مجوز دفن'
-		verbose_name_plural = 'مجوز دفن'
-
-	def __str__(self):
-		return self.deceased_id.get_full_name() + ' ' + self.license_status
-
-
-class Archive(models.Model):
-	STATUS = (
-		('Inbox','دریافتی'),
-		('Send','ارسالی')
-	)
-	created = models.DateTimeField(auto_now_add=True)
-	updated = models.DateTimeField(auto_now=True)
-	code = models.CharField(max_length=32,verbose_name='کد ')
-	description = RichTextUploadingField(verbose_name='توضیحات ')
-	picture = models.ImageField(null=True,blank=True,verbose_name='تصویر ')
-	status = models.CharField(max_length=32,choices=STATUS,default='Send',verbose_name='وضعیت ')
-
-	class Meta:
-		unique_together = [['code','status']]
-		verbose_name_plural = 'بایگانی'
-		verbose_name = 'بایگانی'
-
-	def __str__(self):
-		return self.code + ' ' + self.status
 
 class Target(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
@@ -505,6 +425,99 @@ class Movement_Service(models.Model):
 	def __str__(self):
 		return self.deceased_id.get_full_name()
 
+
+class Bill(models.Model):
+	STATUS = (
+		('PAID','پرداخت شده'),
+		('NOT PAID','پرداخت نشده'),
+	)
+
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	code = models.CharField(max_length=32,null=True,blank=True)
+	document = models.CharField(max_length=32,null=True,blank=True)
+	name = models.CharField(max_length=64, verbose_name='عنوان ')
+	price = models.CharField(max_length=8, verbose_name='هزینه ')
+	order_id = models.ForeignKey(Place_Service, on_delete=models.CASCADE, null=True, blank=True,
+								 verbose_name='قبر مربوطه ')
+	after_death_service_id = models.ForeignKey(After_Death_Service, on_delete=models.CASCADE, null=True, blank=True,
+											   verbose_name='خدمات پس از مرگ مربوطه ')
+	memorial_service_id = models.ForeignKey(Memorial_Service, on_delete=models.CASCADE, null=True, blank=True,
+											verbose_name='جلسه مربوطه ')
+	reader_service_id = models.ForeignKey(Reader_Service, on_delete=models.CASCADE, null=True, blank=True,
+										  verbose_name='مداح مربوطه ')
+	deceased_id = models.ForeignKey(Deceased, on_delete=models.CASCADE, null=True, blank=True, verbose_name='متوفی ')
+	additional_service_id = models.ForeignKey(Additional_Service, on_delete=models.CASCADE, null=True, blank=True,
+											  verbose_name='خدمات اضافه مربوطه ')
+
+	movement_service_id = models.ForeignKey(Movement_Service, on_delete=models.CASCADE, null=True, blank=True,
+											  verbose_name='حمل و نقل مربوطه ')
+
+	user_id = models.ForeignKey(Buyer, on_delete=models.CASCADE, null=True, blank=True, verbose_name='خرید توسط ')
+	status = models.CharField(max_length=64,default='NOT PAID',choices=STATUS,verbose_name='وضعیت پرداخت ')
+
+	class Meta:
+		verbose_name = 'کلیه خریدها'
+		verbose_name_plural = 'کلیه خریدها'
+
+	def __str__(self):
+		return self.name
+
+
+class License(models.Model):
+	LICENSE_STATUS = (
+		('WAITING', 'درحال بررسی'),
+		('CONFIRMED', 'تایید شده')
+	)
+
+	MOVE_STATUS = (
+		('SEND-OUT', 'اعزامی'),
+		('FERDOS-REZA', 'فردوس رضا'),
+	)
+
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	document = models.CharField(max_length=32, unique=True, verbose_name='شماره مجوز ')
+	place_id = models.ForeignKey(Place, related_name='license', null=True, blank=True, on_delete=models.CASCADE,
+								 verbose_name='قبر مربوطه ')
+	deceased_id = models.ForeignKey(Deceased, related_name='license', on_delete=models.CASCADE, verbose_name='متوفی ')
+	license_status = models.CharField(max_length=32, choices=LICENSE_STATUS, default='WAITING',
+									  verbose_name='وضعیت مجوز ')
+	picture = models.ImageField(upload_to='license-pic/', null=True, blank=True)
+	picture2 = models.ImageField(upload_to='license-pic/', null=True, blank=True)
+	picture3 = models.ImageField(upload_to='license-pic/', null=True, blank=True)
+	move_status = models.CharField(max_length=32, choices=MOVE_STATUS, default='FERDOS-REZA',
+								   verbose_name='وضعیت انتقال ')
+	city_name = models.CharField(max_length=32, null=True, blank=True, verbose_name='شهر اعزامی ')
+
+	class Meta:
+		verbose_name = 'مجوز دفن'
+		verbose_name_plural = 'مجوز دفن'
+
+	def __str__(self):
+		return self.deceased_id.get_full_name() + ' ' + self.license_status
+
+
+class Archive(models.Model):
+	STATUS = (
+		('Inbox','دریافتی'),
+		('Send','ارسالی')
+	)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	code = models.CharField(max_length=32,verbose_name='کد ')
+	description = RichTextUploadingField(verbose_name='توضیحات ')
+	picture = models.ImageField(null=True,blank=True,verbose_name='تصویر ')
+	status = models.CharField(max_length=32,choices=STATUS,default='Send',verbose_name='وضعیت ')
+
+	class Meta:
+		unique_together = [['code','status']]
+		verbose_name_plural = 'بایگانی'
+		verbose_name = 'بایگانی'
+
+	def __str__(self):
+		return self.code + ' ' + self.status
+
 #
 # class Movement_Certificate(models.Model):
 # 	STATUS = (
@@ -564,28 +577,57 @@ def AddToUser(sender, instance, created, *args, **kwargs):
 
 
 
+def RandForBill():
+	while(True):
+		number = random.randint(100000,999999)
+
+		try:
+			bill = Bill.objects.get(document=number)
+		except:
+			return number
+
 
 @receiver(post_save, sender=Additional_Service)
 def AddToBill(sender, instance, created, *args, **kwargs):
 	if created and instance.status == 'PAID':
-		bill = Bill.objects.create(name=instance.service_id.name, price=instance.service_id.price, additional_service_id=instance,
-								   deceased_id=instance.deceased_id, user_id=instance.buyer_id)
+		bill = Bill.objects.create(code=instance.service_id.code,name=instance.service_id.name, price=instance.service_id.price, additional_service_id=instance,
+								   deceased_id=instance.deceased_id, user_id=instance.buyer_id,status='PAID')
 	else:
 		if instance.status == 'PAID':
 			try:
 				bill = Bill.objects.get(additional_service_id=instance, deceased_id=instance.deceased_id)
 				bill.price = instance.service_id.price
 				bill.buyer_id = instance.buyer_id
+				bill.status = 'PAID'
+				bill.code = instance.service_id.code
 				bill.save()
 			except:
-				bill = Bill.objects.create(name=instance.service_id.name, price=instance.price, additional_service_id=instance,
-										   deceased_id=instance.deceased_id, user_id=instance.buyer_id)
+				bill = Bill.objects.create(code=instance.service_id.code,name=instance.service_id.name, price=instance.service_id.price, additional_service_id=instance,
+										   deceased_id=instance.deceased_id, user_id=instance.buyer_id,document=RandForBill(),status='PAID')
 		else:
 			try:
 				bill = Bill.objects.get(additional_service_id=instance)
 				bill.delete()
 			except:
 				pass
+
+
+
+@receiver(post_save, sender=Movement_Service)
+def AddMovementToBill(sender, instance, created, *args, **kwargs):
+	if created :
+		bill = Bill.objects.create(code=instance.target_id.code,name=instance.target_id.name, price=instance.target_id.price, movement_service_id=instance,
+								   deceased_id=instance.deceased_id, user_id=instance.buyer_id,document=RandForBill(),status='PAID')
+	else:
+			try:
+				bill = Bill.objects.get(movement_service_id=instance, deceased_id=instance.deceased_id)
+				bill.price = instance.target_id.price
+				bill.buyer_id = instance.buyer_id
+				bill.code = instance.target_id.code
+				bill.save()
+			except:
+				bill = Bill.objects.create(code=instance.target_id.code,name=instance.target_id.name, price=instance.target_id.price, movement_service_id=instance,
+								   deceased_id=instance.deceased_id, user_id=instance.buyer_id,document=RandForBill(),status='PAID')
 
 
 

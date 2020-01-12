@@ -1940,18 +1940,22 @@ def Movement_Lic(request, id):
 				date = None
 			start_time = request.POST['time']
 			status = request.POST['status']
-			# try:
-			movement_service = Movement_Service.objects.create(start_date=date,start_time=start_time,
-															   target_id=target_id,price=target_id.price,car_id=car_id,
-															   status=status,driver_id=driver_id,deceased_id=select_deceased,buyer_id=buyer)
-			# except:
-			# 	return HttpResponse('مشکل در ذخیره سازی اطلاعات')
+			try:
+				movement_service = Movement_Service.objects.create(start_date=date,start_time=start_time,
+																   target_id=target_id,price=target_id.price,car_id=car_id,
+																   status=status,driver_id=driver_id,deceased_id=select_deceased,buyer_id=buyer)
+
+			except:
+				return HttpResponse('مشکل در ذخیره سازی اطلاعات')
+
+			bill = Bill.objects.get(movement_service_id=movement_service)
+			message = 'سرویس حمل و نقل با شماره فاکتور {} با موفقیت توسط {} ثبت شد.'.format(bill.document,bill.user_id.get_full_name())
 			buyers = Buyer.objects.all()
 			context = {
 				'select_deceased':select_deceased,
 				'buyers':buyers,
 				'success':True,
-				'message':'سرویس حمل با موفقیت ذخیره شد.'
+				'message':message
 			}
 			return render(request, 'admin-panel/movement/movement_license.html', context)
 		targets = Target.objects.all()
