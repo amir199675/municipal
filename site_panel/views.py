@@ -1817,17 +1817,34 @@ def Death_Cause_List(request):
 		return redirect('/Account/login/?next=/Admin/death-cause-list/')
 
 
-def Movement_Cert(request, id):
+def Movement_Lic(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
 		select_deceased = Deceased.objects.get(id=id)
+		buyers = Buyer.objects.all()
 		drivers = Driver.objects.all()
 		cars = Car.objects.all()
 		if request.method == 'POST':
+			buyer_id = request.POST['buyer']
+			buyer = None
+			if buyer_id == '':
+				first_name = request.POST['first_name']
+				last_name = request.POST['last_name']
+				phone_number = request.POST['phone_number']
+				national_number = request.POST['national_number']
+				try:
+					buyer = Buyer.objects.create(first_name=first_name,last_name=last_name,phone_number=phone_number,national_number=national_number)
+				except:
+					return HttpResponse('خطا در ذخیره سازی اطلاعات معرف')
+			else:
+				buyer = Buyer.objects.get(id=buyer_id)
 			driver = request.POST['driver']
-			driver = Driver.objects.get(id=driver)
-			service_id = request.POST['service_id']
-			service_id = Service_List.objects.get(id=service_id)
-			start_date = request.POST['start_date']
+			driver_id = Driver.objects.get(id=driver)
+			target = request.POST['target']
+			target_id = Target.objects.get(id=target)
+			start_date = request.POST['date']
+			car = request.POST['car']
+			car_id = Car.objects.get(id = car)
+
 			try:
 				start_date_miladi = datetime.strptime(start_date, '%Y/%m/%d')
 				day = start_date_miladi.day
@@ -1842,40 +1859,135 @@ def Movement_Cert(request, id):
 				date = datetime.strptime(make_format, '%Y-%m-%d')
 			except:
 				date = None
-			start_time = request.POST['start_time']
+			start_time = request.POST['time']
 			status = request.POST['status']
-
-		services = Service_List.objects.filter(name__contains='اعزام')
+			# try:
+			movement_service = Movement_Service.objects.create(start_date=date,start_time=start_time,
+															   target_id=target_id,price=target_id.price,car_id=car_id,
+															   status=status,driver_id=driver_id,deceased_id=select_deceased,buyer_id=buyer)
+			# except:
+			# 	return HttpResponse('مشکل در ذخیره سازی اطلاعات')
+			buyers = Buyer.objects.all()
+			context = {
+				'select_deceased':select_deceased,
+				'buyers':buyers,
+				'success':True,
+				'message':'سرویس حمل با موفقیت ذخیره شد.'
+			}
+			return render(request, 'admin-panel/movement/movement_license.html', context)
+		targets = Target.objects.all()
 
 		context = {
+			'buyers':buyers,
 			'cars': cars,
-			'services': services,
+			'targets': targets,
 			'select_deceased': select_deceased,
 			'drivers': drivers
 
 		}
-		return render(request, 'admin-panel/movement_license.html', context)
+		return render(request, 'admin-panel/movement/movement_license.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/movement_certificate/{}'.format(id))
 
+@user_passes_test(check_staff)
+def Movement_License_List(request,id):
+	select_deceased = Deceased.objects.get(id=id)
+	services = Movement_Service.objects.filter(deceased_id=select_deceased)
+	context = {
+		'select_deceased':select_deceased,
+		'services':services,
 
-def Print_Movement_Cert(request, id):
-	if request.user.is_authenticated and request.user.is_staff:
-		select_deceased = Deceased.objects.get(id=id)
-		select_death_cert = Death_Certificate.objects.get(deceased_id=select_deceased)
-		movement_cert = Movement_Certificate.objects.get(license_id__deceased_id=select_deceased)
-		select_license = License.objects.get(deceased_id=select_deceased)
-		if movement_cert.status == 'confirmation':
+
+	}
+	return render(request,'admin-panel/movement/movement_license_list.html',context)
+
+#
+# def Print_Movement_Cert(request, id):
+# 	if request.user.is_authenticated and request.user.is_staff:
+# 		select_deceased = Deceased.objects.get(id=id)
+# 		select_death_cert = Death_Certificate.objects.get(deceased_id=select_deceased)
+# 		movement_cert = Movement_Certificate.objects.get(license_id__deceased_id=select_deceased)
+# 		select_license = License.objects.get(deceased_id=select_deceased)
+# 		if movement_cert.status == 'confirmation':
+# 			context = {
+# 				'select_death_cert': select_death_cert,
+# 				'select_deceased': select_deceased,
+# 				'select_license': select_license,
+#
+# 			}
+# 			return render(request, 'admin-panel/movement/movement_cert_print.html', context)
+# 	else:
+#
+# 		return redirect('/Account/login/?next=/Admin/movement_certificate_print/{}'.format(id))
+
+
+@user_passes_test(check_staff)
+def Add_Target(request):
+
+	if request.method == 'POST':
+		code = request.POST['code']
+		price = request.POST['price']
+		name = request.POST['name']
+		target = Target.objects.filter(Q(name=name)|Q(code=code))
+		if target.count() != 0 :
 			context = {
-				'select_death_cert': select_death_cert,
-				'select_deceased': select_deceased,
-				'select_license': select_license,
-
+				'error':True,
+				'message':'مقصد با اطلاعات وارد شده وجود دارد. لطفا از یکتایی کد و نام مقصد اطمینان حاصل فرمایید'
 			}
-			return render(request, 'admin-panel/movement_cert_print.html', context)
-	else:
+			return render(request,'admin-panel/movement/add_target.html',context)
+		else:
+			target = Target.objects.create(name=name,code=code,price=price)
+			message = 'مقصد با نام "{}" و کد {} با موفقیت ایجاد شد.'.format(target.name,target.code)
+			context = {
+				'success':True,
+				'message':message
+			}
+			return render(request,'admin-panel/movement/add_target.html',context)
+	context = {
 
-		return redirect('/Account/login/?next=/Admin/movement_certificate_print/{}'.format(id))
+	}
+	return render(request,'admin-panel/movement/add_target.html',context)
+
+@user_passes_test(check_staff)
+def Target_List(request):
+	targets = Target.objects.all()
+	context = {
+		'targets':targets
+	}
+	return render(request,'admin-panel/movement/target_list.html',context)
+
+
+@user_passes_test(check_staff)
+def Edit_Target(request,id):
+	select_target = Target.objects.get(id=id)
+	if request.method == 'POST':
+		code = request.POST['code']
+		price = request.POST['price']
+		name = request.POST['name']
+		target = Target.objects.filter(Q(name=name) | Q(code=code)).exclude(id =select_target.id)
+		if target.count() != 0 :
+			context = {
+				'select_target':select_target,
+				'error': True,
+				'message': 'مقصد با اطلاعات وارد شده وجود دارد. لطفا از یکتایی کد و نام مقصد اطمینان حاصل فرمایید'
+			}
+			return render(request, 'admin-panel/movement/edit_target.html', context)
+		else:
+			select_target.price = price
+			select_target.code = code
+			select_target.name = name
+			select_target.save()
+			message = 'مقصد با نام "{}" و کد {} با موفقیت تغییر یافت.'.format(select_target.name, select_target.code)
+			context = {
+				'select_target':select_target,
+				'success': True,
+				'message': message
+			}
+			return render(request, 'admin-panel/movement/edit_target.html', context)
+	context = {
+		'select_target':select_target
+	}
+	return render(request,'admin-panel/movement/edit_target.html',context)
 
 
 @user_passes_test(check_staff)

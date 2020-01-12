@@ -356,11 +356,11 @@
                 <ul class="dropdown-menu">
                     <div class="arrow_box">
                         <li data-menu=""><a class="dropdown-item"
-                                            href="{% url 'Site_Panel:movement_certificate' select_deceased.id %}"
+                                            href="{% url 'Site_Panel:movement_license' select_deceased.id %}"
                                             data-toggle="dropdown">ایجاد حمل</a>
                         </li>
                         <li data-menu=""><a class="dropdown-item"
-                                            href="{% url 'Site_Panel:movement_certificate' select_deceased.id %}"
+                                            href="{% url 'Site_Panel:movement_license_list' select_deceased.id %}"
                                             data-toggle="dropdown">لیست حمل متوفی</a>
                         </li>
                     </div>
@@ -383,22 +383,6 @@
             {#                    </div>#}
             {#                </ul>#}
             {#            </li>#}
-            {% for item in select_deceased.license.select_related %}
-                {% if item.move_status == 'SEND-OUT' %}
-                    <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"
-                                                                          data-toggle="dropdown"><i
-                            class="ft-layers"></i><span>جواز حمل و دفن</span></a>
-                        <ul class="dropdown-menu">
-                            <div class="arrow_box">
-                                <li data-menu=""><a class="dropdown-item"
-                                                    href="{% url 'Site_Panel:movement_certificate' select_deceased.id %}"
-                                                    data-toggle="dropdown">صدور مجوز</a>
-                                </li>
-                            </div>
-                        </ul>
-                    </li>
-                {% endif %}
-            {% endfor %}
 
             <li class="nav-item"><a class="dropdown-toggle nav-link"
                                     href="{% url 'Site_Panel:print_deceased_info' select_deceased.id %}" target="_blank"

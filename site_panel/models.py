@@ -445,6 +445,12 @@ class Target(models.Model):
 	name = models.CharField(max_length=64, verbose_name='مقصد ')
 	price = models.CharField(max_length=8, verbose_name='هزینه ')
 
+	class Meta:
+		verbose_name = 'مقصد حمل و نقل'
+		verbose_name_plural = 'مقصد حمل و نقل'
+
+	def __str__(self):
+		return self.name
 
 class Driver(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
@@ -476,8 +482,8 @@ class Car(models.Model):
 
 class Movement_Service(models.Model):
 	STATUS = (
-		('PAID', 'پرداخت شده'),
-		('NOT PAID', 'پرداخت نشده'),
+		('confirmation', 'تایید شده'),
+		('disapproval', 'در حال بررسی'),
 	)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
@@ -489,6 +495,8 @@ class Movement_Service(models.Model):
 	status = models.CharField(max_length=32, choices=STATUS, default='NOT PAID', verbose_name='وضعیت پرداخت ')
 	driver_id = models.ForeignKey(Driver,on_delete=models.CASCADE,null=True,blank=True, verbose_name='راننده ')
 	deceased_id = models.ForeignKey(Deceased, on_delete=models.CASCADE,verbose_name='متوفی ')
+	buyer_id = models.ForeignKey(Buyer, on_delete=models.CASCADE,verbose_name='معرف ')
+
 
 	class Meta:
 		verbose_name = 'حمل متوفی'
@@ -497,28 +505,28 @@ class Movement_Service(models.Model):
 	def __str__(self):
 		return self.deceased_id.get_full_name()
 
-
-class Movement_Certificate(models.Model):
-	STATUS = (
-		('confirmation', 'تایید'),
-		('disapproval', 'عدم تایید')
-	)
-	created = models.DateTimeField(auto_now_add=True)
-	updated = models.DateTimeField(auto_now=True)
-	license_id = models.ForeignKey(License,on_delete=models.CASCADE)
-	status = models.CharField(max_length=32,choices=STATUS,default='disapproval',verbose_name='وضعیت ')
-	start_date = models.DateField(null=True, blank=True, verbose_name='تاریخ شروع ')
-	start_time = models.TimeField(null=True, blank=True, verbose_name='زمان شروع ')
-	driver_id = models.ForeignKey(Driver,null=True,blank=True, on_delete=models.CASCADE, verbose_name='راننده مربوطه ')
-	car_id = models.ForeignKey(Car,on_delete=models.CASCADE,null=True,blank=True,verbose_name='ماشین مورد نظر ')
-	description = models.TextField(null=True, blank=True, verbose_name='توضیحات ')
-
-	class Meta:
-		verbose_name = 'مجوز حمل'
-		verbose_name_plural = 'مجوز حمل'
-
-	def __str__(self):
-		return self.status + ' ' + self.license_id.deceased_id.get_full_name()
+#
+# class Movement_Certificate(models.Model):
+# 	STATUS = (
+# 		('confirmation', 'تایید'),
+# 		('disapproval', 'عدم تایید')
+# 	)
+# 	created = models.DateTimeField(auto_now_add=True)
+# 	updated = models.DateTimeField(auto_now=True)
+# 	license_id = models.ForeignKey(License,on_delete=models.CASCADE)
+# 	status = models.CharField(max_length=32,choices=STATUS,default='disapproval',verbose_name='وضعیت ')
+# 	start_date = models.DateField(null=True, blank=True, verbose_name='تاریخ شروع ')
+# 	start_time = models.TimeField(null=True, blank=True, verbose_name='زمان شروع ')
+# 	driver_id = models.ForeignKey(Driver,null=True,blank=True, on_delete=models.CASCADE, verbose_name='راننده مربوطه ')
+# 	car_id = models.ForeignKey(Car,on_delete=models.CASCADE,null=True,blank=True,verbose_name='ماشین مورد نظر ')
+# 	description = models.TextField(null=True, blank=True, verbose_name='توضیحات ')
+#
+# 	class Meta:
+# 		verbose_name = 'مجوز حمل'
+# 		verbose_name_plural = 'مجوز حمل'
+#
+# 	def __str__(self):
+# 		return self.status + ' ' + self.license_id.deceased_id.get_full_name()
 
 
 
@@ -858,12 +866,12 @@ def EditBuyrDeceased(sender, instance, created, *args, **kwargs):
 		place = instance.place_id
 		place.status = 'Sold'
 		place.save()
-
-	if instance.move_status == 'SEND-OUT':
-		try:
-			movement_certificate = Movement_Certificate.objects.get(license_id=instance)
-		except:
-			movement_certificate = Movement_Certificate.objects.create(license_id=instance, status='disapproval')
+	#
+	# if instance.move_status == 'SEND-OUT':
+	# 	try:
+	# 		movement_certificate = Movement_Certificate.objects.get(license_id=instance)
+	# 	except:
+	# 		movement_certificate = Movement_Certificate.objects.create(license_id=instance, status='disapproval')
 
 
 @receiver(post_save, sender=Place)

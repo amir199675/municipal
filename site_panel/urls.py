@@ -40,8 +40,14 @@ urlpatterns = [
 	path('Admin/add-death-cause/',views.Add_Death_Cause,name = 'add_death_cause'),
 	path('Admin/death-cause-list/',views.Death_Cause_List,name = 'death_cause_list'),
 
-	path('Admin/movement_certificate/<id>/',views.Movement_Cert,name = 'movement_certificate'),
-	path('Admin/movement_certificate_print/<id>/',views.Print_Movement_Cert,name = 'movement_certificate_print'),
+
+	path('Admin/add_target/',views.Add_Target,name = 'add_target'),
+	path('Admin/edit_target/<id>/',views.Edit_Target,name = 'edit_target'),
+	path('Admin/target_list/',views.Target_List,name = 'target_list'),
+	path('Admin/movement_license/<id>/',views.Movement_Lic,name = 'movement_license'),
+	path('Admin/movement_license_list/<id>/',views.Movement_License_List,name = 'movement_license_list'),
+
+	# path('Admin/movement_certificate_print/<id>/',views.Print_Movement_Cert,name = 'movement_certificate_print'),
 
 	path('Admin/all_user/',payment.User_list,name = 'user_list'),
 	path('Admin/edit_user/<id>/',payment.Edit_User,name = 'edit_user'),
