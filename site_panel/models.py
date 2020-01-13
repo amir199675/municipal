@@ -455,7 +455,7 @@ class Bill(models.Model):
 	additional_service_id = models.ForeignKey(Additional_Service, on_delete=models.CASCADE, null=True, blank=True,
 											  verbose_name='خدمات اضافه مربوطه ')
 
-	movement_service_id = models.ForeignKey(Movement_Service, on_delete=models.CASCADE, null=True, blank=True,
+	movement_service_id = models.ForeignKey(Movement_Service,related_name='bill', on_delete=models.CASCADE, null=True, blank=True,
 											  verbose_name='حمل و نقل مربوطه ')
 
 	user_id = models.ForeignKey(Buyer, on_delete=models.CASCADE, null=True, blank=True, verbose_name='خرید توسط ')
@@ -630,7 +630,7 @@ def AddToBill(sender, instance, created, *args, **kwargs):
 def AddMovementToBill(sender, instance, created, *args, **kwargs):
 	if created :
 		bill = Bill.objects.create(code=instance.target_id.code,name=instance.target_id.name, price=instance.target_id.price, movement_service_id=instance,
-								   deceased_id=instance.deceased_id, user_id=instance.buyer_id,document=RandForBill(),status='PAID')
+								   deceased_id=instance.deceased_id, user_id=instance.buyer_id,status='PAID')
 	else:
 			try:
 				bill = Bill.objects.get(movement_service_id=instance, deceased_id=instance.deceased_id)
@@ -640,7 +640,7 @@ def AddMovementToBill(sender, instance, created, *args, **kwargs):
 				bill.save()
 			except:
 				bill = Bill.objects.create(code=instance.target_id.code,name=instance.target_id.name, price=instance.target_id.price, movement_service_id=instance,
-								   deceased_id=instance.deceased_id, user_id=instance.buyer_id,document=RandForBill(),status='PAID')
+								   deceased_id=instance.deceased_id, user_id=instance.buyer_id,status='PAID')
 
 
 

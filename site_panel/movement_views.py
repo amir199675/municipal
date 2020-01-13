@@ -24,33 +24,56 @@ def Movement_Lic(request, id):
 		buyers = Buyer.objects.all()
 		drivers = Driver.objects.all()
 		cars = Car.objects.all()
+		targets = Target.objects.all()
+
 		if request.method == 'POST':
 
 			groups = request.user.groups.all()
 			for group in groups:
 				if group.name == 'viewer':
 					return HttpResponse('شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+			serves = request.POST.getlist('serves')
+			# return HttpResponse(serves)
+			# return HttpResponse(serves[0])
+			strr = ''
+			for serve in serves:
+				strr += serve
+			strr = strr.split('Amir:D')
 
-			buyer_id = request.POST['buyer']
-			buyer = None
-			if buyer_id == '':
-				first_name = request.POST['first_name']
-				last_name = request.POST['last_name']
-				phone_number = request.POST['phone_number']
-				national_number = request.POST['national_number']
-				try:
-					buyer = Buyer.objects.create(first_name=first_name,last_name=last_name,phone_number=phone_number,national_number=national_number)
-				except:
-					return HttpResponse('خطا در ذخیره سازی اطلاعات معرف')
-			else:
-				buyer = Buyer.objects.get(id=buyer_id)
+			document = RandForBill()
+
 			driver = request.POST['driver']
-			driver_id = Driver.objects.get(id=driver)
-			target = request.POST['target']
-			target_id = Target.objects.get(id=target)
+			try:
+				driver_id = Driver.objects.get(id=driver)
+			except:
+				context = {
+
+					'buyers': buyers,
+					'cars': cars,
+					'targets': targets,
+					'select_deceased': select_deceased,
+					'drivers': drivers,
+					'error':True,
+					'message':'لطفا راننده مورد نظر را انتخاب کنید'
+				}
+				return render(request, 'admin-panel/movement/movement_license.html', context)
+
 			start_date = request.POST['date']
 			car = request.POST['car']
-			car_id = Car.objects.get(id = car)
+			try:
+				car_id = Car.objects.get(id = car)
+			except:
+				context = {
+
+					'buyers': buyers,
+					'cars': cars,
+					'targets': targets,
+					'select_deceased': select_deceased,
+					'drivers': drivers,
+					'error':True,
+					'message':'لطفا ماشین حمل مورد نظر را انتخاب کنید'
+				}
+				return render(request, 'admin-panel/movement/movement_license.html', context)
 
 			try:
 				start_date_miladi = datetime.strptime(start_date, '%Y/%m/%d')
@@ -68,16 +91,50 @@ def Movement_Lic(request, id):
 				date = None
 			start_time = request.POST['time']
 			status = request.POST['status']
+
+			buyer_id = request.POST['buyer']
+			buyer = None
+			if buyer_id == '':
+
+				first_name = request.POST['first_name']
+				last_name = request.POST['last_name']
+				phone_number = request.POST['phone_number']
+				national_number = request.POST['national_number']
+				if national_number == '':
+					context = {
+
+						'buyers': buyers,
+						'cars': cars,
+						'targets': targets,
+						'select_deceased': select_deceased,
+						'drivers': drivers,
+						'error': True,
+						'message': 'معرف مورد نظر را انتخاب کنید.'
+					}
+					return render(request,'admin-panel/movement/movement_license.html',context)
+				try:
+					buyer = Buyer.objects.create(first_name=first_name,last_name=last_name,phone_number=phone_number,national_number=national_number)
+				except:
+					return HttpResponse('خطا در ذخیره سازی اطلاعات معرف')
+			else:
+				buyer = Buyer.objects.get(id=buyer_id)
+			for i in strr:
+				if i != '':
+					service = Target.objects.get(id=i)
+					movement = Movement_Service.objects.create(target_id=service, buyer_id=buyer, status=status,
+															   deceased_id=select_deceased,start_date=date,start_time=start_time
+															   ,price=service.price,car_id=car_id,driver_id=driver_id)
+			# return HttpResponse(strr)
 			try:
-				movement_service = Movement_Service.objects.create(start_date=date,start_time=start_time,
-																   target_id=target_id,price=target_id.price,car_id=car_id,
-																   status=status,driver_id=driver_id,deceased_id=select_deceased,buyer_id=buyer)
-
+				bills = Bill.objects.filter(deceased_id=select_deceased, movement_service_id__buyer_id = buyer,
+											document__isnull=True)
+				for bill in bills:
+					bill.document = document
+					bill.save()
 			except:
-				return HttpResponse('مشکل در ذخیره سازی اطلاعات')
+				pass
 
-			bill = Bill.objects.get(movement_service_id=movement_service)
-			message = 'سرویس حمل و نقل با شماره فاکتور {} با موفقیت توسط {} ثبت شد.'.format(bill.document,bill.user_id.get_full_name())
+			message = 'سرویس حمل و نقل با شماره فاکتور {} با موفقیت توسط {} ثبت شد.'.format(document,buyer.get_full_name())
 			buyers = Buyer.objects.all()
 			context = {
 				'select_deceased':select_deceased,
@@ -86,7 +143,6 @@ def Movement_Lic(request, id):
 				'message':message
 			}
 			return render(request, 'admin-panel/movement/movement_license.html', context)
-		targets = Target.objects.all()
 
 		context = {
 			'buyers':buyers,
@@ -313,9 +369,147 @@ def Driver_List(request):
 
 
 @user_passes_test(check_staff)
-def Movement_List(request):
-	services = Movement_Service.objects.all()
+def Census_Movement(request):
+
+	targets = Target.objects.all()
+	drivers = Driver.objects.all()
+
+	if request.method == 'POST':
+
+		groups = request.user.groups.all()
+		for group in groups:
+			if group.name == 'viewer':
+				return HttpResponse(
+					'شما اجازه فیلترینگ و یا اضافه کردن یا هرگونه تغییرات را ندارید.در صورت اعتراض لطفا با برنامه نویس سایت هماهنگ کنید با تشکر!')
+		start_date = request.POST['start_date']
+		date_s = False
+		date_e = False
+		if start_date != '':
+			try:
+				start_date_miladi = datetime.strptime(start_date, '%Y/%m/%d')
+				day = start_date_miladi.day
+				year = start_date_miladi.year
+				month = start_date_miladi.month
+				date = JalaliToGregorian(year, month, day)
+				date = date.getGregorianList()
+				year = date[0]
+				month = date[1]
+				day = date[2]
+				make_format = str(year) + '-' + str(month) + '-' + str(day)
+				start_date = datetime.strptime(make_format, '%Y-%m-%d')
+			except:
+				start_date = None
+		else:
+			start_date = '1900-01-01'
+			start_date = datetime.strptime(start_date, '%Y-%m-%d')
+
+		end_date = request.POST['end_date']
+		if end_date != '':
+			try:
+				end_date_miladi = datetime.strptime(end_date, '%Y/%m/%d')
+				day = end_date_miladi.day
+				year = end_date_miladi.year
+				month = end_date_miladi.month
+				date = JalaliToGregorian(year, month, day)
+				date = date.getGregorianList()
+				year = date[0]
+				month = date[1]
+				day = date[2]
+				make_format = str(year) + '-' + str(month) + '-' + str(day)
+				end_date = datetime.strptime(make_format, '%Y-%m-%d')
+			except:
+				end_date = None
+		else:
+			end_date = datetime.now().date()
+
+		# return HttpResponse(sex)
+		try:
+			target_id = request.POST['target']
+		except:
+			target_id = 'all'
+
+		if target_id != 'all':
+			target = Target.objects.get(id=target_id)
+			target = target.name
+
+		else:
+			target = ''
+
+		try:
+			driver_id = request.POST['driver']
+		except:
+			driver_id = 'all'
+		if driver_id != 'all' :
+			driver_id = Driver.objects.get(id = driver_id)
+			driver_id = driver_id.national_number
+		else:
+			# return HttpResponse(driver_id)
+			driver_id = ''
+
+		services = Movement_Service.objects.filter(target_id__name__contains=target,driver_id__national_number__contains=driver_id,start_date__gte=start_date,start_date__lte=end_date)
+		total_price = 0
+		for service in services:
+			total_price += int(service.price)
+		start_date = request.POST['start_date']
+		if start_date != '':
+			try:
+				start_date_miladi = datetime.strptime(start_date, '%Y/%m/%d')
+				day = start_date_miladi.day
+				year = start_date_miladi.year
+				month = start_date_miladi.month
+				date = JalaliToGregorian(year, month, day)
+				date = date.getGregorianList()
+				year = date[0]
+				month = date[1]
+				day = date[2]
+				make_format = str(year) + '-' + str(month) + '-' + str(day)
+				select_start = datetime.strptime(make_format, '%Y-%m-%d')
+			except:
+				select_start = None
+		else:
+			select_start= ''
+
+		end_date = request.POST['end_date']
+		if end_date != '':
+			try:
+				end_date_miladi = datetime.strptime(end_date, '%Y/%m/%d')
+				day = end_date_miladi.day
+				year = end_date_miladi.year
+				month = end_date_miladi.month
+				date = JalaliToGregorian(year, month, day)
+				date = date.getGregorianList()
+				year = date[0]
+				month = date[1]
+				day = date[2]
+				make_format = str(year) + '-' + str(month) + '-' + str(day)
+				select_end = datetime.strptime(make_format, '%Y-%m-%d')
+			except:
+				select_end = None
+		else:
+			select_end = ''
+
+		error = False
+		if services.count() == 0 :
+			error = True
+		select_target = target
+		select_driver = driver_id
+		# return HttpResponse(select_driver)
+		context = {
+			'total_price':total_price,
+			'select_target':select_target,
+			'select_driver':select_driver,
+			'error':error,
+			'drivers':drivers,
+			'targets':targets,
+			'select_start':select_start,
+			'select_end':select_end,
+			'services':services,
+		}
+		return render(request,'admin-panel//movement/movement_list.html',context)
+
 	context = {
-		'services':services
+		'targets':targets,
+		'drivers':drivers,
+
 	}
-	return render(request,'admin-panel/movement/movement_list.html',context)
+	return render(request, 'admin-panel/movement/movement_list.html', context)

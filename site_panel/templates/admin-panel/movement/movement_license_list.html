@@ -63,7 +63,7 @@
                                             <table style=" text-align: center; " class="table table-striped table-bordered base-style">
                                                 <thead>
                                                 <tr>
-                                                    <th>کد</th>
+                                                    <th>فاکتور</th>
                                                     <th>راننده</th>
                                                     <th>ماشین</th>
                                                     <th>مقصد</th>
@@ -74,8 +74,8 @@
                                                 <tbody >
                                                 {% for service in services %}
                                                 <tr >
-                                                    <th  style="font-size: 12px; padding: auto;vertical-align: middle;">{{ service.id }}</th>
-                                                    <th  style="font-size: 12px; padding: auto;vertical-align: middle;">{{ service.driver_id.user_id.get_full_name }}</th>
+                                                    <th style="padding: auto;vertical-align: middle;">{% for item in service.bill.select_related %}<a href="{% url 'Site_Panel:factor_details' item.document %}">{{ item.document }}</a>{% endfor %}</th>
+                                                    <th style="font-size: 12px; padding: auto;vertical-align: middle;">{{ service.driver_id.user_id.get_full_name }}</th>
                                                     <td style="vertical-align: middle;">{{ service.car_id.code }}</td>
                                                     <td style="vertical-align: middle;">{{ service.target_id.name }}</td>
                                                     <td style="vertical-align: middle;">{{ service.price }}</td>
@@ -85,7 +85,7 @@
                                                 </tbody>
                                                 <tfoot>
                                                 <tr>
-                                                    <th>کد</th>
+                                                    <th>فاکتور</th>
                                                     <th>راننده</th>
                                                     <th>ماشین</th>
                                                     <th>مقصد</th>

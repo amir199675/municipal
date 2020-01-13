@@ -62,7 +62,7 @@ urlpatterns = [
 	path('Admin/driver_list/',movement_views.Driver_List,name = 'driver_list'),
 	path('Admin/add_driver/',movement_views.Add_Driver,name = 'add_driver'),
 	path('Admin/edit_driver/<id>/',movement_views.Edit_Driver,name = 'edit_driver'),
-	path('Admin/movement_list/',movement_views.Movement_List,name = 'movement_list'),
+	path('Admin/movement_list/',movement_views.Census_Movement,name = 'movement_list'),
 
 	path('Admin/census_deceased/',views.Census_Deceased,name = 'census_deceased'),
 
