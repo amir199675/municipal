@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from . import views , payment
+from . import views , payment , movement_views
 
 
 
@@ -41,11 +41,11 @@ urlpatterns = [
 	path('Admin/death-cause-list/',views.Death_Cause_List,name = 'death_cause_list'),
 
 
-	path('Admin/add_target/',views.Add_Target,name = 'add_target'),
-	path('Admin/edit_target/<id>/',views.Edit_Target,name = 'edit_target'),
-	path('Admin/target_list/',views.Target_List,name = 'target_list'),
-	path('Admin/movement_license/<id>/',views.Movement_Lic,name = 'movement_license'),
-	path('Admin/movement_license_list/<id>/',views.Movement_License_List,name = 'movement_license_list'),
+	path('Admin/add_target/',movement_views.Add_Target,name = 'add_target'),
+	path('Admin/edit_target/<id>/',movement_views.Edit_Target,name = 'edit_target'),
+	path('Admin/target_list/',movement_views.Target_List,name = 'target_list'),
+	path('Admin/movement_license/<id>/',movement_views.Movement_Lic,name = 'movement_license'),
+	path('Admin/movement_license_list/<id>/',movement_views.Movement_License_List,name = 'movement_license_list'),
 
 	# path('Admin/movement_certificate_print/<id>/',views.Print_Movement_Cert,name = 'movement_certificate_print'),
 
@@ -59,8 +59,10 @@ urlpatterns = [
 	path('Admin/place_pre_sell/',payment.Place_Pre_Sell,name = 'place_pre_sell'),
 	path('Admin/add_user/',payment.Add_User,name = 'add_user'),
 
-	path('Admin/driver_list/',payment.Driver_List,name = 'driver_list'),
-	path('Admin/add_driver/',payment.Add_Driver,name = 'add_driver'),
+	path('Admin/driver_list/',movement_views.Driver_List,name = 'driver_list'),
+	path('Admin/add_driver/',movement_views.Add_Driver,name = 'add_driver'),
+	path('Admin/edit_driver/<id>/',movement_views.Edit_Driver,name = 'edit_driver'),
+	path('Admin/movement_list/',movement_views.Movement_List,name = 'movement_list'),
 
 	path('Admin/census_deceased/',views.Census_Deceased,name = 'census_deceased'),
 

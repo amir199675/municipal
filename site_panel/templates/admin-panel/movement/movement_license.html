@@ -1,5 +1,6 @@
 {% extends 'admin-panel/partial/select-deceased-base.html' %}
 {% load static %}
+{% load main_tags %}
 <!-- BEGIN: Main Menu-->
 {% block title %}
     پنل ادمین|مجوز حمل و دفن
@@ -94,6 +95,8 @@
 
                                                             {% for driver in drivers %}
                                                                 <option value="{{ driver.id }}">
+                                                                کد راننده:
+                                                                    {{ driver.code|notnone }} - 
                                                                     مشخصات:{{ driver.user_id.get_full_name }} -
                                                                     کدملی:{{ driver.national_number }} -
                                                                     تلفن:{{ driver.phone_number }}</option>

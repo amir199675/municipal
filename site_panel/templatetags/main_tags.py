@@ -15,6 +15,14 @@ def shamsi(value):
 	except:
 		return 'ثبت نشده'
 
+@register.filter(name='notnone')
+def notnone(value):
+	if value == None or value == '':
+		return 'ثبت نشده'
+	else:
+		return value
+
+
 @register.filter(name='month')
 def month(value):
 	date = jalali_date.date2jalali(value)

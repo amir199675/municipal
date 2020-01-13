@@ -3,23 +3,24 @@
 {% load main_tags %}
 <!-- BEGIN: Main Menu-->
 {% block title %}
-    پنل ادمین|لیست رانندگان
+    پنل ادمین|لیست اعزامی ها
 {% endblock %}
 {% block body %}
     <!-- BEGIN: Content-->
-
     <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-wrapper-before"></div>
             <div class="content-header row">
                 <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
-                    <h3 class="content-header-title mb-0 d-inline-block">لیست رانندگان</h3>
+                    <h3 class="content-header-title mb-0 d-inline-block">لیست اعزامی ها</h3>
                     <div class="breadcrumbs-top d-inline-block">
                         <div class="breadcrumb-wrapper mr-1">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{% url 'Site_Panel:index' %}">پنل ادمین</a>
                                 </li>
-                                <li class="breadcrumb-item active">لیست رانندگان
+                                <li class="breadcrumb-item"><a href="">امور حمل و نقل</a>
+                                </li>
+                                <li class="breadcrumb-item active">لیست اعزامی ها
                                 </li>
                             </ol>
                         </div>
@@ -32,7 +33,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">لیست رانندگان</h4>
+                                    <h4 class="card-title">لیست کلیه حمل نقل های متوفی</h4>
 
                                     <a class="heading-elements-toggle"><i
                                             class="la la-ellipsis-v font-medium-3"></i></a>
@@ -61,41 +62,33 @@
                                             </div>
                                         {% endfor %}
                                         <div class="table-responsive">
-                                            <table style="text-align: center;" class="table table-striped table-bordered base-style">
+                                            <table style=" text-align: center; "
+                                                   class="table table-striped table-bordered base-style">
                                                 <thead>
                                                 <tr>
-                                                    <th>کد راننده</th>
-                                                    <th>نام و نام خانوادگی</th>
-                                                    <th>کد ملی</th>
-                                                    <th>شماره تماس</th>
-                                                    <th>سرویس ها</th>
+                                                    <th>راننده</th>
+                                                    <th>ماشین</th>
+                                                    <th>مقصد</th>
+                                                    <th>متوفی</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody >
-                                                {% for driver in drivers %}
-                                                <tr >
-                                                    <th style="vertical-align: middle;">{{ driver.code|notnone }}</th>
-                                                    <th style="vertical-align: middle;"><a href="{% url 'Site_Panel:edit_driver' driver.id %}">{{ driver.user_id.get_full_name }}</a></th>
-                                                    <td style="vertical-align: middle;">{{ driver.national_number|notnone }}</td>
-                                                    <td style="vertical-align: middle;">{{ driver.phone_number|notnone }}</td>
-                                                    <td style="vertical-align: middle;">
-                                                        {% for key , value in services.items %}
-                                                            {% if driver.id == key %}
-                                                                {{ value|notnone }}
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    </td>
-                                                </tr>
+                                                <tbody>
+                                                {% for service in services %}
+                                                    <tr>
+                                                        <th style="padding: auto;vertical-align: middle;">{{ service.driver_id.user_id.get_full_name }}</th>
+                                                        <th style="font-size: 12px; padding: auto;vertical-align: middle;">{{ service.car_id.code }}</th>
+                                                        <td style="vertical-align: middle;">{{ service.target_id.name }}</td>
+                                                        <td data-toggle="modal" data-target="#d{{ service.id }}"
+                                                            style="vertical-align: middle;">{{ service.deceased_id.get_full_name }}</td>
+                                                    </tr>
                                                 {% endfor %}
                                                 </tbody>
                                                 <tfoot>
                                                 <tr>
-                                                    <th>کد راننده</th>
-                                                    <th>نام و نام خانوادگی</th>
-                                                    <th>کد ملی</th>
-                                                    <th>شماره تماس</th>
-                                                    <th>سرویس ها</th>
-
+                                                    <th>راننده</th>
+                                                    <th>ماشین</th>
+                                                    <th>مقصد</th>
+                                                    <th>متوفی</th>
                                                 </tr>
                                                 </tfoot>
                                             </table>
@@ -111,8 +104,10 @@
         </div>
     </div>
     <!-- END: Content-->
-    {% for driver in drivers %}
-        <div id="D{{ driver.id }}" class="modal fade" role="dialog">
+    {% for service in services %}
+
+        <div style="padding: auto;" id="d{{ service.id }}"
+             class="modal fade" role="dialog">
             <div class="modal-dialog">
 
                 <!-- Modal content-->
@@ -121,27 +116,35 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
 
                     </div>
-                    <div style="text-align: center" class="modal-body">
-                        <div class="modal-header">
-                            خلاصه وضعیت
-                        </div>
-                        <hr>
+                    <div style="text-align: center" class="modal-body">مشخصات متوفی</div>
+                    <div style="text-align: center" class="row">
 
-                        <div class="an-content">
-                            <h5>تعداد سرویسهای انجام شده :</h5>
-                            <p>
-                                {% for key , value in services.items %}
-                                    {% if driver.id == key %}
-                                        {{ value }}
-                                    {% endif %}
-                                {% endfor %}
-                            </p>
+                        <div style="margin-right:10px;float: right " class="col-5 an-content">
+                            <h5 style="display: inline">اسم :</h5>
+                            <p style="display:inline;">
+                                {{ service.deceased_id.get_full_name }}</p>
                         </div>
-
+                        <div style="margin-right:10px;float: left " class="col-5 an-content">
+                            <h5 style="display: inline">شماره ملی :</h5>
+                            <p style="display: inline">{{ service.deceased_id.national_number }}</p>
+                        </div>
                     </div>
+                    <hr>
+                    <div style="text-align: center" class="modal-body">مشخصات معرف</div>
 
+                    <div style="text-align: center" class="row">
+                        <div style="margin-right:10px;float: right " class="col-5 an-content">
+                            <h5 style="display: inline">اسم :</h5>
+                            <p style="display:inline;">
+                                {{ service.deceased_id.presenter_id.get_full_name }}</p>
+                        </div>
+                        <div style="margin-right:10px;float: left " class="col-5 an-content">
+                            <h5 style="display: inline">شماره ملی :</h5>
+                            <p style="display: inline">{{ service.deceased_id.presenter_id.national_number }}</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer"></div>
                 </div>
-
             </div>
         </div>
     {% endfor %}

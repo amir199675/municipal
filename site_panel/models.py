@@ -9,6 +9,10 @@ from django.shortcuts import render, HttpResponse
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 
+
+from django.contrib.auth.models import Group
+
+
 import random
 
 # Create your models here.
@@ -376,6 +380,7 @@ class Driver(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	user_id = models.ForeignKey(MyUser,on_delete=models.CASCADE,null=True,blank=True,verbose_name='کاربر مربوطه ')
+	code = models.CharField(max_length=64,null=True,blank=True,verbose_name='کد راننده ')
 	first_name = models.CharField(max_length=255,null=True,blank=True,verbose_name='نام ')
 	last_name = models.CharField(max_length=255,null=True,blank=True,verbose_name='نام خانوادگی ')
 	national_number = models.CharField(max_length=10,null=True,blank=True,verbose_name='شماره ملی ')
@@ -545,10 +550,16 @@ class Archive(models.Model):
 
 @receiver(post_save,sender=Driver)
 def AddToUser(sender, instance, created, *args, **kwargs):
+	try:
+		driver_group = Group.objects.get(name='driver')
+	except:
+		driver_group = Group.objects.create(name='driver')
 	if created:
 		try:
 			user = MyUser.objects.get(username=instance.national_number)
 			user.driver_id = instance.id
+			driver_group.user_set.add(user)
+			driver_group.save()
 			user.save()
 			driver = instance
 			driver.user_id = user
@@ -560,13 +571,15 @@ def AddToUser(sender, instance, created, *args, **kwargs):
 			user = MyUser.objects.get(first_name=instance.first_name, last_name=instance.last_name,
 									  driver_id=instance.id,
 									  email=instance.national_number + '@gmail.com', username=instance.national_number)
-
+			driver_group.user_set.add(user)
+			driver_group.save()
 			user.set_password(instance.national_number)
 			user.save()
 			driver = instance
 			driver.user_id = user
 			driver.save()
 	else:
+
 		user = MyUser.objects.get(driver_id=instance.id)
 		user.first_name = instance.first_name
 		user.last_name = instance.last_name
