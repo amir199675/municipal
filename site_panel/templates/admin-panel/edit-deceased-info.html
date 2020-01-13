@@ -106,7 +106,7 @@
                                                         <div class="form-group">
                                                             <label for="firstName2">نام* :</label>
                                                             <input type="text" class="form-control" id="firstName2"
-                                                                   value="{{ select_deceased.first_name }}"
+                                                                   value="{{ select_deceased.first_name|disnone}}"
                                                                    name="first_name">
                                                         </div>
                                                     </div>
@@ -115,7 +115,7 @@
                                                         <div class="form-group">
                                                             <label for="lastName3">نام خانوادگی* :</label>
                                                             <input type="text" class="form-control" id="lastName3"
-                                                                   value="{{ select_deceased.last_name }}"
+                                                                   value="{{ select_deceased.last_name|disnone }}"
                                                                    name="last_name">
                                                         </div>
                                                     </div>
@@ -136,7 +136,7 @@
                                                         <div class="form-group">
                                                             <label for="lastName2">نام پدر* :</label>
                                                             <input type="text" class="form-control" id="lastName2"
-                                                                   value="{{ select_deceased.fa_name }}"
+                                                                   value="{{ select_deceased.fa_name|disnone }}"
                                                                    name="fa_name">
                                                         </div>
                                                     </div>
@@ -146,7 +146,7 @@
                                                         <div class="form-group">
                                                             <label for="lastName3">شماره ثبت آرامستان* :</label>
                                                             <input type="text" class="form-control" id="lastName3"
-                                                                   value="{% if select_deceased.muni_code %}{{ select_deceased.muni_code }}{% endif %}"
+                                                                   value="{{ select_deceased.muni_code|disnone }}"
                                                                    name="muni_code">
                                                         </div>
                                                     </div>
@@ -156,14 +156,14 @@
                                                             <label for="lastName3">آدرس :</label>
                                                             <textarea cols="30" rows="1" class="form-control"
                                                                       placeholder="لطفا آدرس فرد را وارد کنید"
-                                                                      name="address">{{ select_deceased.address }}</textarea>
+                                                                      name="address">{{ select_deceased.address|disnone }}</textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="lastName4">محل تولد :</label>
                                                             <input type="text" class="form-control" id="lastName4"
-                                                                   value="{{ select_deceased.place_of_birth }}"
+                                                                   value="{{ select_deceased.place_of_birth|disnone }}"
                                                                    name="place_of_birth">
                                                         </div>
                                                     </div>
@@ -182,7 +182,7 @@
                                                         <div class="form-group">
                                                             <label for="firstName2">نام مادر :</label>
                                                             <input type="text" class="form-control" id="firstName2"
-                                                                   value="{{ select_deceased.mo_name }}"
+                                                                   value="{{ select_deceased.mo_name|disnone }}"
                                                                    name="mo_name">
                                                         </div>
                                                     </div>
@@ -191,7 +191,7 @@
                                                         <div class="form-group">
                                                             <label for="lastName3">کد ملی* :</label>
                                                             <input type="text" class="form-control" id="lastName3"
-                                                                   value="{{ select_deceased.national_number }}"
+                                                                   value="{{ select_deceased.national_number|disnone }}"
                                                                    name="national_number">
                                                         </div>
                                                     </div>
@@ -199,7 +199,7 @@
                                                         <div class="form-group">
                                                             <label for="lastName4">شماره شناسنامه :</label>
                                                             <input type="text" class="form-control" id="lastName4"
-                                                                   value="{{ select_deceased.identification_number }}"
+                                                                   value="{{ select_deceased.identification_number|disnone }}"
                                                                    name="identification_number">
                                                         </div>
                                                     </div>
@@ -241,7 +241,7 @@
                                                             <label for="lastName2">زندگینامه :</label>
                                                             <textarea cols="30" rows="10" class="form-control"
                                                                       placeholder="لطفا زندگینامه فرد را وارد کنید"
-                                                                      name="bio">{{ select_deceased.bio }}</textarea>
+                                                                      name="bio">{{ select_deceased.bio|disnone }}</textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -255,7 +255,7 @@
                                                         <div class="form-group">
                                                             <label for="firstName2">نام معرف* :</label>
                                                             <input type="text" class="form-control" id="firstName2"
-                                                                   value="{{ select_deceased.presenter_id.first_name }}"
+                                                                   value="{{ select_deceased.presenter_id.first_name|disnone }}"
                                                                    name="presenter_first_name">
                                                         </div>
                                                     </div>
@@ -263,7 +263,7 @@
                                                         <div class="form-group">
                                                             <label for="firstName2">نام خانوادگی معرف* :</label>
                                                             <input type="text" class="form-control" id="firstName2"
-                                                                   value="{{ select_deceased.presenter_id.last_name }}"
+                                                                   value="{{ select_deceased.presenter_id.last_name|disnone }}"
                                                                    name="presenter_last_name">
                                                         </div>
                                                     </div>
@@ -273,7 +273,7 @@
                                                         <div class="form-group">
                                                             <label for="location2">شماره تماس معرف* :</label>
                                                             <input type="tel" class="form-control"
-                                                                   value="{{ select_deceased.presenter_id.phone_number }}"
+                                                                   value="{{ select_deceased.presenter_id.phone_number|disnone }}"
                                                                    placeholder="شماره تماس را وارد کنید"
                                                                    name="presenter_phone_number">
                                                         </div>
@@ -283,7 +283,7 @@
                                                             <label for="firstName2">کد ملی معرف* :</label>
                                                             <input type="text" placeholder="کد ملی" class="form-control"
                                                                    id="firstName2"
-                                                                   value="{{ select_deceased.presenter_id.national_number }}"
+                                                                   value="{{ select_deceased.presenter_id.national_number|disnone }}"
                                                                    name="presenter_national_number">
                                                         </div>
                                                     </div>
@@ -292,7 +292,7 @@
                                                             <label for="firstName2">شماره شناسنامه معرف :</label>
                                                             <input placeholder="شماره شناسنامه" type="text"
                                                                    class="form-control" id="firstName2"
-                                                                   value="{{ select_deceased.presenter_id.identification_number}}"
+                                                                   value="{{ select_deceased.presenter_id.identification_number|disnone}}"
                                                                    name="presenter_identification_number">
                                                         </div>
                                                     </div>
@@ -301,7 +301,7 @@
                                                             <label for="firstName2">آدرس معرف :</label>
                                                             <input type="text" placeholder="آدرس دقیق معرف را وارد کنید"
                                                                    class="form-control" id="firstName2"
-                                                                   value="{{ select_deceased.presenter_id.address }}"
+                                                                   value="{{ select_deceased.presenter_id.address|disnone }}"
                                                                    name="presenter_address">
                                                         </div>
                                                     </div>
@@ -545,7 +545,7 @@
                                                         <div class="form-group">
                                                             <label for="firstName2">نام پزشک* :</label>
                                                             <input type="text" class="form-control"
-                                                                   value="{{ certificate.doctor_first_name }}"
+                                                                   value="{{ certificate.doctor_first_name|disnone }}"
                                                                    id="firstName2"
                                                                    name="doctor_first_name">
                                                         </div>
@@ -554,7 +554,7 @@
                                                         <div class="form-group">
                                                             <label for="firstName2">نام خانوادگی پزشک* :</label>
                                                             <input type="text" class="form-control" id="firstName2"
-                                                                   value="{{ certificate.doctor_last_name }}"
+                                                                   value="{{ certificate.doctor_last_name|disnone }}"
                                                                    name="doctor_last_name">
                                                         </div>
                                                     </div>
@@ -563,7 +563,7 @@
                                                         <div class="form-group">
                                                             <label for="date2">شماره نظام پزشکی* :</label>
                                                             <input type="number" class="form-control" id="date2"
-                                                                   value="{{ certificate.medical_system_number }}"
+                                                                   value="{{ certificate.medical_system_number|disnone }}"
                                                                    name="medical_system_number">
                                                         </div>
                                                     </div>
@@ -571,13 +571,23 @@
                                                         <div class="form-group">
                                                             <label for="location2">شماره گواهی فوت* :</label>
                                                             <input type="number" class="form-control" id="location2"
-                                                                   value="{{ certificate.death_certificate_number }}"
+                                                                   value="{{ certificate.death_certificate_number|disnone }}"
                                                                    name="death_certificate_number">
 
 
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="location2">محل فوت* :</label>
+                                                            <input type="text" class="form-control" id="location2"
+                                                                   value="{{ certificate.place|disnone }}"
+                                                                   name="place_of_death">
+
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="location2">تاریخ فوت* :</label>
                                                             <input type="text" class="usage pdp-el form-control"
@@ -588,7 +598,7 @@
 
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="location2">تاییدیه :</label>
                                                             <select class="custom-select form-control"
@@ -605,7 +615,7 @@
 
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="location2">علت فوت :</label>
                                                             <select class="custom-select form-control"

@@ -340,7 +340,7 @@ def Quick_Deceased(request):
 
 def Online_Deceased(request):
 	if request.user.is_authenticated and request.user.is_staff:
-
+		causes = Cause_Death.objects.all()
 		if request.method == 'POST':
 
 			groups = request.user.groups.all()
@@ -410,6 +410,7 @@ def Online_Deceased(request):
 			medical_system_number = request.POST['medical_system_number']
 			death_certificate_number = request.POST['death_certificate_number']
 			date_of_death_r = request.POST['date_of_death']
+			place_of_death = request.POST['place_of_death']
 			try:
 				date_of_death_miladi = datetime.strptime(date_of_death_r, '%Y/%m/%d')
 				day = date_of_death_miladi.day
@@ -468,7 +469,6 @@ def Online_Deceased(request):
 					'address': address,
 					'identification_number': identification_number,
 					'deceased_status': deceased_status,
-					'muni_code': muni_code,
 					'place_of_birth': place_of_birth,
 					'issue_date': issue_date_r,
 					'sex': sex,
@@ -497,7 +497,9 @@ def Online_Deceased(request):
 					'death_certificate_number': death_certificate_number,
 					'date_of_death': date_of_death_r,
 					'cause_death': cause_death,
-
+					'muni_code': muni_code,
+					'causes': causes,
+					'place_of_death': place_of_death,
 					'error': True,
 					'message': 'لطفا شماره ثبت آرامستان را وارد کنید',
 					'info': ''
@@ -513,7 +515,6 @@ def Online_Deceased(request):
 					'address': address,
 					'identification_number': identification_number,
 					'deceased_status': deceased_status,
-					'muni_code': muni_code,
 					'place_of_birth': place_of_birth,
 					'issue_date': issue_date_r,
 					'sex': sex,
@@ -542,7 +543,9 @@ def Online_Deceased(request):
 					'death_certificate_number': death_certificate_number,
 					'date_of_death': date_of_death_r,
 					'cause_death': cause_death,
-
+					'muni_code': muni_code,
+					'causes': causes,
+					'place_of_death': place_of_death,
 					'error': True,
 					'message': 'لطفا نام و نام خانوادگی متوفی یا معرف و پزشک را وارد کنید! لطفا همه موارد ستاره دار را به دقت پر کنید',
 					'info': ''
@@ -559,7 +562,6 @@ def Online_Deceased(request):
 					'address': address,
 					'identification_number': identification_number,
 					'deceased_status': deceased_status,
-					'muni_code': muni_code,
 					'place_of_birth': place_of_birth,
 					'issue_date': issue_date_r,
 					'sex': sex,
@@ -588,7 +590,9 @@ def Online_Deceased(request):
 					'death_certificate_number': death_certificate_number,
 					'date_of_death': date_of_death_r,
 					'cause_death': cause_death,
-
+					'muni_code': muni_code,
+					'causes': causes,
+					'place_of_death': place_of_death,
 					'error': True,
 					'message': 'کد ملی باید 10 رقمی باشد، لطفا نسبت به تصحیح آن اقدام فرمایید!'
 				}
@@ -610,7 +614,6 @@ def Online_Deceased(request):
 					'address': address,
 					'identification_number': identification_number,
 					'deceased_status': deceased_status,
-					'muni_code': muni_code,
 					'place_of_birth': place_of_birth,
 					'issue_date': issue_date_r,
 					'sex': sex,
@@ -639,7 +642,9 @@ def Online_Deceased(request):
 					'death_certificate_number': death_certificate_number,
 					'date_of_death': date_of_death_r,
 					'cause_death': cause_death,
-
+					'muni_code': muni_code,
+					'causes': causes,
+					'place_of_death': place_of_death,
 					'error': True,
 					'message': 'متوفی با این شماره ملی قبلا ثبت شده است!',
 					'info': 'اگر قصد تغییر مشخصات متوفی با این شماره ملی را دارید اینجا کلیک کنید',
@@ -685,7 +690,9 @@ def Online_Deceased(request):
 							'death_certificate_number': death_certificate_number,
 							'date_of_death': date_of_death_r,
 							'cause_death': cause_death,
-
+							'muni_code': muni_code,
+							'causes': causes,
+							'place_of_death': place_of_death,
 							'error': True,
 							'message': 'قبر انتخابی خالی نمیباشد.',
 							'info': 'اگر قصد تغییر مشخصات متوفی دارید از لیست متوفی اقدام کنید',
@@ -733,7 +740,9 @@ def Online_Deceased(request):
 							'death_certificate_number': death_certificate_number,
 							'date_of_death': date_of_death_r,
 							'cause_death': cause_death,
-
+							'muni_code':muni_code,
+							'causes':causes,
+							'place_of_death':place_of_death,
 							'error': True,
 							'message': ' لطفا همه فیلد های مربوط به مشخصات محل دفن را پر کنید.',
 						}
@@ -847,6 +856,7 @@ def Online_Deceased(request):
 			death_certificate.cause_death_id = select_cause_death
 			death_certificate.date_of_death = date_of_death
 			death_certificate.status = death_certificate_stats
+			death_certificate.place = place_of_death
 			death_certificate.save()
 			message = 'متوفی ' + deceased.get_full_name() + ' با موفقیت ثبت شد'
 			causes = Cause_Death.objects.all()
@@ -863,7 +873,7 @@ def Online_Deceased(request):
 		warnings = ['لطفا همه موارد ستاره دار را با دقت پر کنید.',
 					'پس از وارد کردن متوفی لطفا جهت وارد کردن هزینه قبر آن اقدام نمایید.',
 					'اگر متوفی قبلا در سیستم ثبت شده است و قصد ویرایش اطلاعات دارید از طریق لیست متوفی اقدام کنید.']
-		causes = Cause_Death.objects.all()
+
 		context = {
 			'causes': causes,
 			'warnings': warnings,
@@ -983,6 +993,7 @@ def Edit_Deceased(request, id):
 			medical_system_number = request.POST['medical_system_number']
 			death_certificate_number = request.POST['death_certificate_number']
 			date_of_death_r = request.POST['date_of_death']
+			place_of_death = request.POST['place_of_death']
 			try:
 				date_of_death_miladi = datetime.strptime(date_of_death_r, '%Y/%m/%d')
 				day = date_of_death_miladi.day
@@ -1297,6 +1308,7 @@ def Edit_Deceased(request, id):
 			certificate.date_of_death = date_of_death
 			certificate.cause_death_id = cause_death
 			certificate.medical_system_number = medical_system_number
+			certificate.place = place_of_death
 			certificate.save()
 			context = {
 				'success': True,

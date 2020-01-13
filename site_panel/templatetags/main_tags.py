@@ -22,6 +22,14 @@ def notnone(value):
 	else:
 		return value
 
+@register.filter(name='disnone')
+def disnone(value):
+	if value == None or value == '':
+		return ''
+	else:
+		return value
+
+
 
 @register.filter(name='month')
 def month(value):

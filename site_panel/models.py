@@ -146,6 +146,7 @@ class Death_Certificate(models.Model):
 	)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
+	place = models.CharField(max_length=128,null=True,blank=True, verbose_name='محل فوت ')
 	doctor_first_name = models.CharField(max_length=64, verbose_name='نام پزشک ')
 	doctor_last_name = models.CharField(max_length=64, verbose_name='نام خانوادگی پزشک ')
 	medical_system_number = models.CharField(max_length=32, verbose_name='شماره نظام پزشکی ')
