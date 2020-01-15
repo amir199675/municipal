@@ -21,16 +21,18 @@ def check_staff(user):
 
 @user_passes_test(check_staff)
 def User_list(request):
-	try:
-		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
-		seen.counter = int(seen.counter) + 1
-		seen.save()
-	except:
-		# return HttpResponse(request.user)
-		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
-		seen.name = 'لیست اشخاص'
-		seen.counter = int(seen.counter) + 1
-		seen.save()
+	if request.user.is_superuser == False :
+
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+			seen.name = 'لیست اشخاص'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 	if request.method == 'GET' and 'delete_data' in request.GET :
 
 		groups = request.user.groups.all()
@@ -98,16 +100,18 @@ def User_list(request):
 
 @user_passes_test(check_staff)
 def Edit_User(request,id):
-	try:
-		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
-		seen.counter = int(seen.counter) + 1
-		seen.save()
-	except:
-		# return HttpResponse(request.user)
-		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
-		seen.name = 'ویرایش کاربر'
-		seen.counter = int(seen.counter) + 1
-		seen.save()
+	if request.user.is_superuser == False :
+
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+			seen.name = 'ویرایش کاربر'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 	select_user = MyUser.objects.get(id = id)
 
 	if request.method == 'POST':
@@ -172,16 +176,18 @@ def RandForBill():
 			return number
 @user_passes_test(check_staff)
 def Reserve_Factor(request):
-	try:
-		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
-		seen.counter = int(seen.counter) + 1
-		seen.save()
-	except:
-		# return HttpResponse(request.user)
-		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
-		seen.name = 'ایجاد فاکتور'
-		seen.counter = int(seen.counter) + 1
-		seen.save()
+	if request.user.is_superuser == False :
+
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+			seen.name = 'ایجاد فاکتور'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 	services = Service_List.objects.all()
 	buyers = Buyer.objects.all()
 	deceaseds = Deceased.objects.all()
@@ -265,16 +271,18 @@ def Reserve_Factor(request):
 
 @user_passes_test(check_staff)
 def Factor_List(request):
-	try:
-		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
-		seen.counter = int(seen.counter) + 1
-		seen.save()
-	except:
-		# return HttpResponse(request.user)
-		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
-		seen.name = 'لیست فاکتورها'
-		seen.counter = int(seen.counter) + 1
-		seen.save()
+	if request.user.is_superuser == False :
+
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+			seen.name = 'لیست فاکتورها'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 	factors = Bill.objects.all().distinct('document')
 	price = {}
 	for factor in factors:
@@ -290,16 +298,17 @@ def Factor_List(request):
 
 @user_passes_test(check_staff)
 def Factor_Details(request,document):
-	try:
-		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
-		seen.counter = int(seen.counter) + 1
-		seen.save()
-	except:
-		# return HttpResponse(request.user)
-		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
-		seen.name = 'نمایش فاکتور'
-		seen.counter = int(seen.counter) + 1
-		seen.save()
+	if request.user.is_superuser == False :
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+			seen.name = 'نمایش فاکتور'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 	bills = Bill.objects.filter(document=document)
 	total_price = 0
 	for bill in bills :
@@ -314,16 +323,18 @@ def Factor_Details(request,document):
 
 def Add_Service(request):
 	if request.user.is_authenticated and request.user.is_staff:
-		try:
-			seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
-			seen.counter = int(seen.counter) + 1
-			seen.save()
-		except:
-			# return HttpResponse(request.user)
-			seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
-			seen.name = 'اضافه کردن خدمات اضافه'
-			seen.counter = int(seen.counter) + 1
-			seen.save()
+		if request.user.is_superuser == False:
+
+			try:
+				seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+				seen.counter = int(seen.counter) + 1
+				seen.save()
+			except:
+				# return HttpResponse(request.user)
+				seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+				seen.name = 'اضافه کردن خدمات اضافه'
+				seen.counter = int(seen.counter) + 1
+				seen.save()
 		if request.method == 'POST':
 
 			groups = request.user.groups.all()
@@ -372,16 +383,17 @@ def Add_Service(request):
 
 def Services(request):
 	if request.user.is_authenticated and request.user.is_staff:
-		try:
-			seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
-			seen.counter = int(seen.counter) + 1
-			seen.save()
-		except:
-			# return HttpResponse(request.user)
-			seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
-			seen.name = 'لیست خدمات'
-			seen.counter = int(seen.counter) + 1
-			seen.save()
+		if request.user.is_superuser == False:
+			try:
+				seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+				seen.counter = int(seen.counter) + 1
+				seen.save()
+			except:
+				# return HttpResponse(request.user)
+				seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+				seen.name = 'لیست خدمات'
+				seen.counter = int(seen.counter) + 1
+				seen.save()
 		services = Service_List.objects.all()
 		context = {
 			'services':services
@@ -392,16 +404,17 @@ def Services(request):
 
 def Edit_Service(request,id):
 	if request.user.is_authenticated and request.user.is_staff:
-		try:
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
-			seen.counter = int(seen.counter) + 1
-			seen.save()
-		except:
-			# return HttpResponse(request.user)
-			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
-			seen.name = 'اضافه کردن متوفی قدیمی'
-			seen.counter = int(seen.counter) + 1
-			seen.save()
+		if request.user.is_superuser == False:
+			try:
+				seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+				seen.counter = int(seen.counter) + 1
+				seen.save()
+			except:
+				# return HttpResponse(request.user)
+				seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+				seen.name = 'اضافه کردن متوفی قدیمی'
+				seen.counter = int(seen.counter) + 1
+				seen.save()
 		select_service = Service_List.objects.get(id = id)
 		if request.method == 'POST':
 
@@ -462,16 +475,17 @@ def Edit_Service(request,id):
 
 @user_passes_test(check_staff)
 def Place_Pre_Sell(request):
-	try:
-		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
-		seen.counter = int(seen.counter) + 1
-		seen.save()
-	except:
-		# return HttpResponse(request.user)
-		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
-		seen.name = 'پیش فروش قبور'
-		seen.counter = int(seen.counter) + 1
-		seen.save()
+	if request.user.is_superuser == False :
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+			seen.name = 'پیش فروش قبور'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 	places = Place.objects.filter(status='Municipal')
 	buyers = Buyer.objects.all()
 	if request.method == 'POST':
@@ -532,16 +546,17 @@ def Place_Pre_Sell(request):
 
 @user_passes_test(check_staff)
 def Add_User(request):
-	try:
-		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
-		seen.counter = int(seen.counter) + 1
-		seen.save()
-	except:
-		# return HttpResponse(request.user)
-		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
-		seen.name = 'اضافه کردن خریدار'
-		seen.counter = int(seen.counter) + 1
-		seen.save()
+	if request.user.is_superuser == False :
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+			seen.name = 'اضافه کردن خریدار'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 	if request.method == 'POST':
 
 		groups = request.user.groups.all()
@@ -586,16 +601,17 @@ def Add_User(request):
 
 @user_passes_test(check_staff)
 def Print_Factor(request,document):
-	try:
-		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
-		seen.counter = int(seen.counter) + 1
-		seen.save()
-	except:
-		# return HttpResponse(request.user)
-		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
-		seen.name = 'پرینت فاکتور'
-		seen.counter = int(seen.counter) + 1
-		seen.save()
+	if request.user.is_superuser == False :
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+			seen.name = 'پرینت فاکتور'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 	bills = Bill.objects.filter(document=document)
 	total_price = 0
 	for bill in bills:
