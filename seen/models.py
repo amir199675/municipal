@@ -9,9 +9,12 @@ class Counter_Seen(models.Model):
 	updated = models.DateTimeField(auto_now=True)
 	name = models.CharField(max_length=64)
 	path = models.URLField()
-	user_id = models.ForeignKey(MyUser,on_delete=models.CASCADE)
+	user_id = models.ForeignKey(MyUser,on_delete=models.CASCADE,null=True,blank=True)
 	counter = models.CharField(max_length=64,default=0)
 
 	def __str__(self):
-		return self.user_id.get_full_name() + ' ' + self.counter
+		if self.user_id:
+			return self.user_id.get_full_name() + ' ' + self.counter
+		else:
+			return self.counter
 
