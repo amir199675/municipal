@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import user_passes_test
 
 from django.shortcuts import get_object_or_404
 
+
+from seen.models import Counter_Seen
 from jdatetime import JalaliToGregorian, GregorianToJalali
 
 # from  site_panel.tasks import scheduler
@@ -20,6 +22,17 @@ def check_staff(user):
 
 def Movement_Lic(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'ایجاد حمل'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+
 		select_deceased = Deceased.objects.get(id=id)
 		buyers = Buyer.objects.all()
 		drivers = Driver.objects.all()
@@ -158,6 +171,16 @@ def Movement_Lic(request, id):
 
 @user_passes_test(check_staff)
 def Movement_License_List(request,id):
+	try:
+		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+		seen.counter = int(seen.counter) + 1
+		seen.save()
+	except:
+		# return HttpResponse(request.user)
+		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+		seen.name = 'لیست حمل متوفی'
+		seen.counter = int(seen.counter) + 1
+		seen.save()
 	select_deceased = Deceased.objects.get(id=id)
 	services = Movement_Service.objects.filter(deceased_id=select_deceased)
 	context = {
@@ -172,7 +195,16 @@ def Movement_License_List(request,id):
 
 @user_passes_test(check_staff)
 def Add_Target(request):
-
+	try:
+		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+		seen.counter = int(seen.counter) + 1
+		seen.save()
+	except:
+		# return HttpResponse(request.user)
+		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+		seen.name = 'اضافه کردن مقصد'
+		seen.counter = int(seen.counter) + 1
+		seen.save()
 	if request.method == 'POST':
 
 		groups = request.user.groups.all()
@@ -206,6 +238,16 @@ def Add_Target(request):
 
 @user_passes_test(check_staff)
 def Target_List(request):
+	try:
+		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+		seen.counter = int(seen.counter) + 1
+		seen.save()
+	except:
+		# return HttpResponse(request.user)
+		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+		seen.name = 'اضافه لیست مقصدها'
+		seen.counter = int(seen.counter) + 1
+		seen.save()
 	targets = Target.objects.all()
 	context = {
 		'targets':targets
@@ -215,6 +257,16 @@ def Target_List(request):
 
 @user_passes_test(check_staff)
 def Edit_Target(request,id):
+	try:
+		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+		seen.counter = int(seen.counter) + 1
+		seen.save()
+	except:
+		# return HttpResponse(request.user)
+		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+		seen.name = 'ویرایش مقصد'
+		seen.counter = int(seen.counter) + 1
+		seen.save()
 	select_target = Target.objects.get(id=id)
 	if request.method == 'POST':
 
@@ -255,6 +307,16 @@ def Edit_Target(request,id):
 
 @user_passes_test(check_staff)
 def Add_Driver(request):
+	try:
+		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+		seen.counter = int(seen.counter) + 1
+		seen.save()
+	except:
+		# return HttpResponse(request.user)
+		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+		seen.name = 'اضافه کردن راننده'
+		seen.counter = int(seen.counter) + 1
+		seen.save()
 	if request.method == 'POST':
 
 		groups = request.user.groups.all()
@@ -312,6 +374,16 @@ def Add_Driver(request):
 
 @user_passes_test(check_staff)
 def Edit_Driver(request,id):
+	try:
+		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+		seen.counter = int(seen.counter) + 1
+		seen.save()
+	except:
+		# return HttpResponse(request.user)
+		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+		seen.name = 'ویرایش راننده'
+		seen.counter = int(seen.counter) + 1
+		seen.save()
 	select_driver = Driver.objects.get(id=id)
 	if request.method == 'POST':
 
@@ -348,7 +420,16 @@ def Edit_Driver(request,id):
 
 @user_passes_test(check_staff)
 def Driver_List(request):
-
+	try:
+		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+		seen.counter = int(seen.counter) + 1
+		seen.save()
+	except:
+		# return HttpResponse(request.user)
+		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+		seen.name = 'لیست رانندگان'
+		seen.counter = int(seen.counter) + 1
+		seen.save()
 	drivers = Driver.objects.all()
 	movement_services = Movement_Service.objects.all()
 	services_counter = {}
@@ -370,7 +451,16 @@ def Driver_List(request):
 
 @user_passes_test(check_staff)
 def Census_Movement(request):
-
+	try:
+		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+		seen.counter = int(seen.counter) + 1
+		seen.save()
+	except:
+		# return HttpResponse(request.user)
+		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+		seen.name = 'آمارگیری حمل متوفی'
+		seen.counter = int(seen.counter) + 1
+		seen.save()
 	targets = Target.objects.all()
 	drivers = Driver.objects.all()
 

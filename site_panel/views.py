@@ -9,6 +9,7 @@ from jdatetime import JalaliToGregorian, GregorianToJalali
 
 from django.contrib.auth.models import Group
 
+from seen.models import *
 
 import random
 from django.contrib.auth.decorators import user_passes_test
@@ -18,6 +19,9 @@ from django.db.models import Q
 
 def check_staff(user):
 	return user.is_staff
+
+def check_superuser(user):
+	return user.is_superuser
 
 
 def RandForPlaceServiceDocument():
@@ -32,6 +36,17 @@ def RandForPlaceServiceDocument():
 
 def Index(request):
 	if request.user.is_authenticated and request.user.is_staff:
+		# return HttpResponse(request.path)
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'صفحه اصلی پنل ادمین'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 
 		context = {
 
@@ -43,6 +58,18 @@ def Index(request):
 
 def Quick_Deceased(request):
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'اضافه کردن متوفی قدیمی'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+
+
 		deceased = None
 
 		if request.method == 'POST':
@@ -340,6 +367,17 @@ def Quick_Deceased(request):
 
 def Online_Deceased(request):
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'اضافه کردن متوفی جدید'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+
 		causes = Cause_Death.objects.all()
 		if request.method == 'POST':
 
@@ -887,6 +925,16 @@ def Online_Deceased(request):
 
 def Deceased_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'لیست متوفی'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 
 		deceaseds = Deceased.objects.all()
 		warnings = ['برای مشاهده جزییات محل دفن بروی کد قبر کلیک کنید.']
@@ -903,6 +951,17 @@ def Deceased_List(request):
 
 def Edit_Deceased(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'ویرایش مشخصات متوفی'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+
 		causes = Cause_Death.objects.all()
 		buyer = None
 		select_deceased = Deceased.objects.get(pk=id)
@@ -1335,6 +1394,16 @@ def Edit_Deceased(request, id):
 
 def Add_Place(request):
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'اضافه کردن قبر'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 		if request.method == 'POST':
 
 			groups = request.user.groups.all()
@@ -1436,6 +1505,16 @@ def Add_Place(request):
 
 def Place_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'لیست قبور'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 		places = Place.objects.all()
 		context = {
 			'places': places,
@@ -1447,6 +1526,16 @@ def Place_List(request):
 
 def Edit_Place(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'ویرایش قبر'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 		select_place = Place.objects.get(id=id)
 		if request.method == 'POST':
 
@@ -1520,7 +1609,19 @@ def Edit_Place(request, id):
 
 
 def Select_Deceased(request, id):
+
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'انتخاب متوفی'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+
 		select_deceased = Deceased.objects.get(id=id)
 		context = {
 			'select_deceased': select_deceased
@@ -1532,6 +1633,16 @@ def Select_Deceased(request, id):
 
 def Add_New(request):
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'اضافه کردن خبر'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 		if request.method == 'POST':
 			groups = request.user.groups.all()
 			for group in groups:
@@ -1573,6 +1684,17 @@ def Add_New(request):
 
 def News_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
+
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'لیست اخبار'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 		news = New.objects.all()
 		context = {
 			'news': news
@@ -1584,6 +1706,16 @@ def News_List(request):
 
 def Edit_News(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'ویرایش خبر'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 		select_new = New.objects.get(id=id)
 		if request.method == 'POST':
 
@@ -1647,6 +1779,16 @@ def Edit_News(request, id):
 def Print_Deceased_info(request, id):
 	select_deceased = Deceased.objects.get(pk=id)
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'پرینت اطلاعات متوفی'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 		select_license = License.objects.get(deceased_id=select_deceased)
 		select_death_certificate = Death_Certificate.objects.get(deceased_id=select_deceased)
 		context = {
@@ -1661,6 +1803,17 @@ def Print_Deceased_info(request, id):
 
 def Add_Letter(request):
 	if request.user.is_authenticated and request.user.is_staff:
+
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'اضافه کردن خروجی'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 		new = True
 		if request.method == 'POST':
 
@@ -1708,6 +1861,17 @@ def Add_Letter(request):
 
 def Inbox_Letter(request):
 	if request.user.is_authenticated and request.user.is_staff:
+
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'ایجاد نامه ورودی'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 		new = True
 		if request.method == 'POST':
 
@@ -1767,6 +1931,17 @@ def Inbox_Letter(request):
 
 def Send_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'لیست نامه های خروجی'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+
 		letters = Archive.objects.filter(status='Send')
 		context = {
 			'letters': letters
@@ -1778,6 +1953,16 @@ def Send_List(request):
 
 def Receive_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'لیست نامه های ورودی'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 		letters = Archive.objects.filter(status='Inbox')
 		warnings = ['برای مشاهده تصویر و خلاصه نامه بروی کد آن کلیک کنید']
 		context = {
@@ -1791,7 +1976,16 @@ def Receive_List(request):
 
 def Edit_Send_Letter(request, code_slug):
 	if request.user.is_authenticated and request.user.is_staff:
-
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'ویرایش نامه خروجی'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 		if request.method == 'POST':
 
 			groups = request.user.groups.all()
@@ -1810,7 +2004,7 @@ def Edit_Send_Letter(request, code_slug):
 				'message': 'ویرایش با موفقیت انجام شد.'
 			}
 			return render(request, 'admin-panel/editor.html', context)
-		select_letter = get_object_or_404(Archive, code=code_slug, status='Send')
+		select_letter = get_object_or_404(Archive, id=code_slug, status='Send')
 		context = {
 			'select_letter': select_letter,
 
@@ -1822,7 +2016,16 @@ def Edit_Send_Letter(request, code_slug):
 
 def Edit_Receive_Letter(request, code_slug):
 	if request.user.is_authenticated and request.user.is_staff:
-
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'ویرایش نامه ورودی'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 		if request.method == 'POST':
 
 			groups = request.user.groups.all()
@@ -1859,6 +2062,16 @@ def Edit_Receive_Letter(request, code_slug):
 
 def Add_Death_Cause(request):
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'اضافه کردن علت مرگ'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 		if request.method == 'POST':
 
 			groups = request.user.groups.all()
@@ -1886,6 +2099,16 @@ def Add_Death_Cause(request):
 
 def Death_Cause_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user,path=request.path)
+			seen.name = 'لیست علت مرگ'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 		death_causes = Cause_Death.objects.all()
 		death_cers = Death_Certificate.objects.all()
 		count_causes = {}
@@ -1926,7 +2149,16 @@ def Death_Cause_List(request):
 @user_passes_test(check_staff)
 def Census_Deceased(request):
 	if request.method == 'POST':
-
+		try:
+			seen = Counter_Seen.objects.get(user_id=request.user, path= request.path)
+			seen.counter = int(seen.counter) + 1
+			seen.save()
+		except:
+			# return HttpResponse(request.user)
+			seen = Counter_Seen.objects.create(user_id=request.user, path= request.path)
+			seen.name = 'آمارگیری متوفی'
+			seen.counter = int(seen.counter) + 1
+			seen.save()
 		groups = request.user.groups.all()
 		for group in groups:
 			if group.name == 'viewer':
@@ -2107,3 +2339,11 @@ def Census_Deceased(request):
 
 def Wait(request):
 	return render(request, 'amir.html', context={})
+
+@user_passes_test(check_superuser)
+def Seens(request):
+	seens = Counter_Seen.objects.all()
+	context = {
+		'seens':seens
+	}
+	return render(request,'admin-panel/superuser/seen-list.html',context)

@@ -26,6 +26,7 @@ urlpatterns = [
     path('ckeditor/',include('ckeditor_uploader.urls')),
     path('',include('site_panel.urls',namespace='Site_Panel')),
     path('Account/',include('Account.urls',namespace='Account')),
+    path('Seen/',include('seen.urls',namespace='Seen')),
 ]
 
 

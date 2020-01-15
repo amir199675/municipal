@@ -75,7 +75,7 @@ class Place(models.Model):
 						   ['ghete', 'radif', 'block', 'number', 'floor']]
 
 	def __str__(self):
-		return str(self.code) + ' ' + self.status
+		return str(self.code)
 
 
 class Deceased(models.Model):
@@ -162,7 +162,14 @@ class Death_Certificate(models.Model):
 		verbose_name_plural = 'گواهی فوت'
 
 	def __str__(self):
-		return self.deceased_id.get_full_name() + ' ' + self.death_certificate_number
+		return self.deceased_id.get_full_name()
+
+	def doctor(self):
+		return self.doctor_first_name + ' ' + self.doctor_last_name
+
+	def deceased_national_number(self):
+		return self.deceased_id.national_number
+
 
 
 class Buyer(models.Model):
@@ -501,7 +508,25 @@ class License(models.Model):
 		verbose_name_plural = 'مجوز دفن'
 
 	def __str__(self):
-		return self.deceased_id.get_full_name() + ' ' + self.license_status
+		return self.deceased_id.get_full_name()
+
+	def deceased_national_number(self):
+		return self.deceased_id.national_number
+
+
+class Document(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	description = models.TextField(verbose_name='توضیحات ')
+	picture = models.ImageField(upload_to='documents/',verbose_name='تصویر ')
+	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE,verbose_name='متوفی مربوطه ')
+
+	class Meta:
+		verbose_name = 'اسناد'
+		verbose_name_plural = 'اسناد'
+
+	def __str__(self):
+		return self.deceased_id.get_full_name()
 
 
 class Archive(models.Model):
@@ -511,7 +536,7 @@ class Archive(models.Model):
 	)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
-	code = models.CharField(max_length=32,verbose_name='کد ')
+	code = models.CharField(max_length=32,unique=True,verbose_name='کد ')
 	description = RichTextUploadingField(verbose_name='توضیحات ')
 	picture = models.ImageField(null=True,blank=True,verbose_name='تصویر ')
 	status = models.CharField(max_length=32,choices=STATUS,default='Send',verbose_name='وضعیت ')
@@ -949,6 +974,8 @@ def UpdateBillPlacePrice(sender, instance, created, *args, **kwargs):
 																	 payment_status='PAID')
 			except:
 				pass
+
+
 
 # @receiver(post_save,sender=Order)
 # def Add_Order(sender,instance,created,*args,**kwargs):

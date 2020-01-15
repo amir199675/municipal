@@ -71,7 +71,7 @@ urlpatterns = [
 
 
 	path('Admin/wait/',views.Wait,name = 'wait'),
-
+	path('Admin/seens/',views.Seens,name='seens')
 
 
 ]

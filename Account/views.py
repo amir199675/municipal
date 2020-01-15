@@ -2,7 +2,7 @@ from django.shortcuts import render , redirect , HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test
 
-
+from seen.models import *
 # Create your views here.
 
 
@@ -13,6 +13,16 @@ def check_staff(user):
 
 
 def Login (request):
+	try:
+		seen = Counter_Seen.objects.get(path=request.path)
+		seen.counter = int(seen.counter) + 1
+		seen.save()
+	except:
+		# return HttpResponse(request.user)
+		seen = Counter_Seen.objects.create(path=request.path)
+		seen.name = 'اضافه کردن خدمات اضافه'
+		seen.counter = int(seen.counter) + 1
+		seen.save()
 	if request.user.is_authenticated and request.user.is_staff:
 		return redirect('Site_Panel:index')
 
@@ -40,6 +50,16 @@ def Login (request):
 		return render(request,'admin-panel/login/login.html',context)
 
 def Logout(request):
+	try:
+		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+		seen.counter = int(seen.counter) + 1
+		seen.save()
+	except:
+		# return HttpResponse(request.user)
+		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+		seen.name = 'خروج'
+		seen.counter = int(seen.counter) + 1
+		seen.save()
 	if 'next' in request.get_full_path():
 		next = request.get_full_path().split('/Account/logout/?next=')
 		logout(request)
@@ -48,6 +68,16 @@ def Logout(request):
 
 @user_passes_test(check_staff)
 def Profile(request):
+	try:
+		seen = Counter_Seen.objects.get(user_id=request.user, path=request.path)
+		seen.counter = int(seen.counter) + 1
+		seen.save()
+	except:
+		# return HttpResponse(request.user)
+		seen = Counter_Seen.objects.create(user_id=request.user, path=request.path)
+		seen.name = 'پروفایل'
+		seen.counter = int(seen.counter) + 1
+		seen.save()
 	select_user = request.user
 
 	if request.method == 'POST' and 'first_name' in request.POST:

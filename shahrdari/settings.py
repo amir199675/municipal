@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'django_apscheduler.apps.DjangoApschedulerConfig',
+    'seen'
 
 ]
 CKEDITOR_UPLOAD_PATH = "uploads/"
