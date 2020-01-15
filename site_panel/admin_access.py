@@ -53,13 +53,29 @@ def Edit_Employee_Profile(request,id):
 		email = request.POST['email']
 		phone_number = request.POST['phone_number']
 		national_number = request.POST['national_number']
+		username = request.POST['username']
+		try:
+			user = MyUser.objects.get(username=username)
+			if user != select_employee:
+				message = 'کاربر با username : {} وجود دارد.'.format(username)
+				context = {
+					'select_employee':select_employee,
+					'error':True,
+					'message':message,
+					'infor':True,
+				}
+				return render(request, 'admin-panel/superuser/edit_employee_profile.html', context)
+			select_employee.username = username
 
+		except:
+			select_employee.username = username
 		try:
 			select_employee.email = email
 			select_employee.phone_number = phone_number
 			select_employee.national_number = national_number
 			select_employee.first_name = first_name
 			select_employee.last_name = last_name
+
 			try:
 				picture = request.FILES['picture']
 				select_employee.picture = picture

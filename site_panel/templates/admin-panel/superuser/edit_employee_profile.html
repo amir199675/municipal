@@ -187,49 +187,58 @@
                                     <form action="" method="post" enctype="multipart/form-data">
                                         {% csrf_token %}
                                         <div class="row">
+
+                                            <div class="col-md-4">
+
+                                                <div class="form-group">
+                                                    <label for="lastName3">username :</label>
+                                                    <input type="text" class="form-control" id="lastName3"
+                                                           name="username" value="{{ select_employee.username }}">
+                                                </div>
+                                            </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="lastName3">نام :</label>
                                                     <input required type="text" class="form-control" id="lastName3"
-                                                           name="first_name" value="{{ select_employee.first_name }}">
+                                                           name="first_name" value="{{ select_employee.first_name|disnone }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="lastName3">نام خانوادگی :</label>
                                                     <input type="text" class="form-control" id="lastName3"
-                                                           name="last_name" value="{{ select_employee.last_name }}">
+                                                           name="last_name" value="{{ select_employee.last_name|disnone }}">
                                                 </div>
                                             </div>
+
+                                        </div>
+                                            <div class="row">
+
 
                                             <div class="col-md-4">
 
                                                 <div class="form-group">
                                                     <label for="lastName3">ایمیل :</label>
                                                     <input type="email" class="form-control" id="lastName3"
-                                                           name="email" value="{{ select_employee.email }}">
+                                                           name="email" value="{{ select_employee.email|disnone }}">
                                                 </div>
                                             </div>
-                                        </div>
-                                            <div class="row">
-
-
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
 
                                                 <div class="form-group">
                                                     <label for="lastName3">شماره ملی :</label>
                                                     <input type="text" maxlength="10" minlength="10"
                                                            class="form-control" id="lastName3"
-                                                           name="national_number" value="{{ select_employee.national_number }}">
+                                                           name="national_number" value="{{ select_employee.national_number|disnone }}">
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
 
                                                 <div class="form-group">
                                                     <label for="lastName3">شماره تماس :</label>
                                                     <input type="tel" maxlength="11" minlength="11" class="form-control"
                                                            id="lastName3"
-                                                           name="phone_number" value="{{ select_employee.phone_number }}">
+                                                           name="phone_number" value="{{ select_employee.phone_number|disnone }}">
                                                 </div>
                                             </div>
 

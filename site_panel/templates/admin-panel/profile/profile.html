@@ -200,14 +200,14 @@
                                                 <div class="form-group">
                                                     <label for="lastName3">نام :</label>
                                                     <input required type="text" class="form-control" id="lastName3"
-                                                           name="first_name" value="{{ request.user.first_name }}">
+                                                           name="first_name" value="{{ request.user.first_name|disnone }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="lastName3">نام خانوادگی :</label>
                                                     <input type="text" class="form-control" id="lastName3"
-                                                           name="last_name" value="{{ request.user.last_name }}">
+                                                           name="last_name" value="{{ request.user.last_name|disnone }}">
                                                 </div>
                                             </div>
 
@@ -216,7 +216,7 @@
                                                 <div class="form-group">
                                                     <label for="lastName3">ایمیل :</label>
                                                     <input type="email" class="form-control" id="lastName3"
-                                                           name="email" value="{{ request.user.email }}">
+                                                           name="email" value="{{ request.user.email|disnone }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -229,7 +229,7 @@
                                                     <label for="lastName3">شماره ملی :</label>
                                                     <input type="text" maxlength="10" minlength="10"
                                                            class="form-control" id="lastName3"
-                                                           name="national_number" value="{{ request.user.national_number }}">
+                                                           name="national_number" value="{{ request.user.national_number|disnone }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -238,7 +238,7 @@
                                                     <label for="lastName3">شماره تماس :</label>
                                                     <input type="tel" maxlength="11" minlength="11" class="form-control"
                                                            id="lastName3"
-                                                           name="phone_number" value="{{ request.user.phone_number }}">
+                                                           name="phone_number" value="{{ request.user.phone_number|disnone }}">
                                                 </div>
                                             </div>
 
