@@ -20,7 +20,7 @@ def Login (request):
 	except:
 		# return HttpResponse(request.user)
 		seen = Counter_Seen.objects.create(path=request.path)
-		seen.name = 'اضافه کردن خدمات اضافه'
+		seen.name = 'لاگین'
 		seen.counter = int(seen.counter) + 1
 		seen.save()
 	if request.user.is_authenticated and request.user.is_staff:
