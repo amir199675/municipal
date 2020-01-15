@@ -1,0 +1,331 @@
+{% extends 'admin-panel/partial/main-panel.html' %}
+{% load static %}
+{% load main_tags %}
+<!-- BEGIN: Main Menu-->
+{% block title %}
+    پنل ادمین|ویرایش پروفایل کارمندان
+{% endblock %}
+{% block body %}
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-wrapper">
+            <div class="content-wrapper-before"></div>
+            <div class="content-header row">
+                <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
+                    <h3 class="content-header-title mb-0 d-inline-block">پروفایل</h3>
+
+                    <div class="breadcrumbs-top d-inline-block">
+
+                        <div class="breadcrumb-wrapper mr-1">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:index' %}">پنل ادمین</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="{% url 'Site_Panel:employee_list' %}">
+                                لیست کارمندان
+                                </a>
+                                </li>
+
+                                <li class="breadcrumb-item active">ویرایش اطلاعات
+                                    {{ select_employee.get_full_name }}
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-body"><!-- Form wizard with icon tabs section start -->
+                <section id="icon-tabs">
+
+                    <div class="row">
+                        <div style="margin: 5px" class="col-md-12 card">
+
+                            <div class="card-header">
+
+                                <h4 class="card-title">تغییر رمز عبور</h4>
+                                <a class="heading-elements-toggle"><i
+                                        class="la la-ellipsis-h font-medium-3"></i></a>
+                                <div class="heading-elements">
+                                    <ul class="list-inline mb-0">
+                                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                        <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                        <li><a data-action="close"><i class="ft-x"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    {% if error and pass_change %}
+                                        <div class="alert round bg-danger alert-icon-left alert-dismissible mb-2"
+                                             role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-thumbs-down"></i>
+                                                    </span>
+                                            <button type="button" class="close" data-dismiss="alert"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <strong>{{ message }}</strong>
+                                            <a href="#" class="alert-link">{{ info }}</a>
+
+                                        </div>
+                                    {% endif %}
+                                    {% if success and pass_change %}
+                                        <div class="alert round bg-success alert-icon-left alert-dismissible mb-2"
+                                             role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-thumbs-up"></i>
+                                                    </span>
+                                            <button type="button" class="close" data-dismiss="alert"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <strong>{{ message }}</strong>
+                                            <a href="#" class="alert-link">{{ info }}</a>
+                                        </div>
+                                    {% endif %}
+                                    <form action="" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="lastName3">رمز عبور جدید :</label>
+                                                    <input type="password" class="form-control" id="lastName3" required
+                                                           name="password">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="lastName3">باز نویس رمز عبور جدید :</label>
+                                                    <input required type="password" class="form-control" id="lastName3"
+                                                           aria-required="true"
+                                                           name="re_password">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12">
+
+                                            <div class="col-lg-6" style=" text-align: left">
+                                                <button type="submit" class="btn btn-danger">ثبت کردن</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+
+                        <div style="margin: 5px" class="col-md-12 card">
+
+                            <div class="card-header">
+
+                                <h4 class="card-title">تغییر مشخصات کاربر</h4>
+                                <a class="heading-elements-toggle"><i
+                                        class="la la-ellipsis-h font-medium-3"></i></a>
+                                <div class="heading-elements">
+                                    <ul class="list-inline mb-0">
+                                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                        <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                        <li><a data-action="close"><i class="ft-x"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    {% if warnings %}
+                                        {% for warning in warnings %}
+                                            <div class="alert round bg-info alert-icon-left alert-dismissible mb-2"
+                                                 role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-thumbs-down"></i>
+                                                    </span>
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <strong>{{ warning }}</strong>
+
+
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                    {% if error and infor %}
+                                        <div class="alert round bg-danger alert-icon-left alert-dismissible mb-2"
+                                             role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-thumbs-down"></i>
+                                                    </span>
+                                            <button type="button" class="close" data-dismiss="alert"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <strong>{{ message }}</strong>
+                                            <a href="#" class="alert-link">{{ info }}</a>
+
+                                        </div>
+                                    {% endif %}
+                                    {% if success and infor %}
+                                        <div class="alert round bg-success alert-icon-left alert-dismissible mb-2"
+                                             role="alert">
+                                                    <span class="alert-icon">
+                                                        <i class="ft-thumbs-up"></i>
+                                                    </span>
+                                            <button type="button" class="close" data-dismiss="alert"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <strong>{{ message }}</strong>
+                                            <a href="#" class="alert-link">{{ info }}</a>
+                                        </div>
+                                    {% endif %}
+                                    <form action="" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="lastName3">نام :</label>
+                                                    <input required type="text" class="form-control" id="lastName3"
+                                                           name="first_name" value="{{ select_employee.first_name }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="lastName3">نام خانوادگی :</label>
+                                                    <input type="text" class="form-control" id="lastName3"
+                                                           name="last_name" value="{{ select_employee.last_name }}">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+
+                                                <div class="form-group">
+                                                    <label for="lastName3">ایمیل :</label>
+                                                    <input type="email" class="form-control" id="lastName3"
+                                                           name="email" value="{{ select_employee.email }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                            <div class="row">
+
+
+                                            <div class="col-md-6">
+
+                                                <div class="form-group">
+                                                    <label for="lastName3">شماره ملی :</label>
+                                                    <input type="text" maxlength="10" minlength="10"
+                                                           class="form-control" id="lastName3"
+                                                           name="national_number" value="{{ select_employee.national_number }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div class="form-group">
+                                                    <label for="lastName3">شماره تماس :</label>
+                                                    <input type="tel" maxlength="11" minlength="11" class="form-control"
+                                                           id="lastName3"
+                                                           name="phone_number" value="{{ select_employee.phone_number }}">
+                                                </div>
+                                            </div>
+
+                                            </div>
+
+                                            <div class="col-md-6">
+
+                                                    <div class="form-group">
+                                                        <input class="custom-file-input" id="inputGroupFile01"
+                                                               name="picture"
+                                                               type='file'
+                                                               onchange="Main(this);"/>
+                                                        <label class="btn btn-primary" for="inputGroupFile01"
+                                                               style="font-size: 12px">انتخاب تصویر</label>
+
+                                                    </div>
+                                                    <div class="col-md-6">
+
+                                                        <div class="form-group">
+                                                            <img height="100%" width="100%" id="main"
+                                                                 src="
+                                                                         {% if select_employee.picture.url != '' %}{{ select_employee.picture.url }}{% else %}{% static 'images/login.png' %}{% endif %}"
+                                                                 alt="your image"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                        <div class="col-lg-12">
+
+                                            <div class="col-lg-6" style=" text-align: left">
+                                                <button type="submit" class="btn btn-danger">ثبت کردن</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    {% include 'admin-panel/partial/customizer.html' %}
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/vendors.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/forms/toggle/switchery.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/js/scripts/forms/switch.min.js' %}"
+            type="text/javascript"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/extensions/jquery.steps.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/pickers/dateTime/moment-with-locales.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/pickers/daterange/daterangepicker.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/forms/validation/jquery.validate.min.js' %}"
+            type="text/javascript"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="{% static 'admin-panel-static/app-assets/js/core/app-menu.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/js/core/app.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/js/scripts/customizer.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin-panel-static/app-assets/vendors/js/jquery.sharrre.js' %}"
+            type="text/javascript"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="{% static 'admin-panel-static/app-assets/js/scripts/forms/wizard-steps.min.js' %}"
+            type="text/javascript"></script>
+    <script>
+        function Main(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#main')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+{% endblock %}

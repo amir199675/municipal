@@ -2340,11 +2340,3 @@ def Census_Deceased(request):
 
 def Wait(request):
 	return render(request, 'amir.html', context={})
-
-@user_passes_test(check_superuser)
-def Seens(request):
-	seens = Counter_Seen.objects.all()
-	context = {
-		'seens':seens
-	}
-	return render(request,'admin-panel/superuser/seen-list.html',context)

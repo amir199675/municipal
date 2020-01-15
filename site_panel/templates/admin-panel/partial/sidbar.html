@@ -124,10 +124,12 @@
                 </ul>
             </li>
             {% if request.user.is_superuser %}
-            <li class=" nav-item"><a href=""><i style="background-color: #e0dfe3"><img src="{% static 'admin-panel-static/feather/user.svg' %}" alt=""></i><span class="menu-title"
+            <li class=" nav-item"><a href=""><i style="background-color: #e0dfe3"><img src="{% static 'admin-panel-static/feather/eye.svg' %}" alt=""></i><span class="menu-title"
                                                                             data-i18n="">برنامه نویس</span></a>
                 <ul class="menu-content">
                     <li><a class="menu-item" href="{% url 'Site_Panel:seens' %}">بازدید سایت</a>
+                    </li>
+                    <li><a class="menu-item" href="{% url 'Site_Panel:employee_list' %}">لیست کارمندان</a>
                     </li>
                 </ul>
             </li>

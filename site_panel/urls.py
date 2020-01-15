@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from . import views , payment , movement_views
+from . import views , payment , movement_views , admin_access
 
 
 
@@ -71,7 +71,9 @@ urlpatterns = [
 
 
 	path('Admin/wait/',views.Wait,name = 'wait'),
-	path('Admin/seens/',views.Seens,name='seens')
+	path('SuperUser/seens/',admin_access.Seens,name='seens'),
+	path('SuperUser/employee_list/',admin_access.Employee_List,name='employee_list'),
+	path('SuperUser/edit_employee/<id>/',admin_access.Edit_Employee_Profile,name='edit_employee_profile')
 
 
 ]
