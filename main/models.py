@@ -15,7 +15,7 @@ class MyUser(AbstractUser):
 	buyer_id = models.CharField(max_length=6,null=True,blank=True,editable=False)
 	presenter_id = models.CharField(max_length=6,null=True,blank=True,editable=False)
 	driver_id = models.CharField(max_length=6,null=True,blank=True,editable=False)
-	national_number = models.CharField(max_length=10,null=True,blank=True,editable=False)
+	national_number = models.CharField(max_length=10,null=True,blank=True)
 	phone_number = models.CharField(max_length=11,null=True,blank=True)
 	picture = models.ImageField(null=True,blank=True,verbose_name='تصویر ')
 
