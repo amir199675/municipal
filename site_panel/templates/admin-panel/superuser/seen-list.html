@@ -64,6 +64,7 @@
                                                 <thead>
                                                 <tr>
                                                     <th>کارمند</th>
+                                                    <th>دیوایس</th>
                                                     <th>صفحه</th>
                                                     <th>آدرس صفحه</th>
                                                     <th>تعداد بازدید</th>
@@ -75,6 +76,7 @@
                                                 {% for seen in seens %}
                                                 <tr >
                                                     <th style="vertical-align: middle;">{{ seen.user_id.get_full_name }}</th>
+                                                    <th style="vertical-align: middle;">{{ seen.computer_info}}</th>
                                                     <td style="vertical-align: middle;">{{ seen.name }}</td>
                                                     <td style="vertical-align: middle; direction: rtl !important;"><a href="{{ seen.path }}">{{ seen.path }}</a></td>
                                                     <td style="vertical-align: middle;">{{ seen.counter }}</td>
@@ -86,6 +88,7 @@
                                                 <tfoot>
                                                 <tr>
                                                     <th>کارمند</th>
+                                                    <th>دیوایس</th>
                                                     <th>صفحه</th>
                                                     <th>آدرس صفحه</th>
                                                     <th>تعداد بازدید</th>
