@@ -39,10 +39,7 @@ def Index(request):
 	if request.user.is_authenticated and request.user.is_staff:
 
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -63,10 +60,7 @@ def Index(request):
 def Quick_Deceased(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -375,10 +369,7 @@ def Quick_Deceased(request):
 def Online_Deceased(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -936,10 +927,7 @@ def Online_Deceased(request):
 def Deceased_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -965,10 +953,7 @@ def Deceased_List(request):
 def Edit_Deceased(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -1411,10 +1396,7 @@ def Edit_Deceased(request, id):
 def Add_Place(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -1525,10 +1507,7 @@ def Add_Place(request):
 def Place_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -1549,10 +1528,7 @@ def Place_List(request):
 def Edit_Place(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -1637,10 +1613,7 @@ def Select_Deceased(request, id):
 
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -1662,10 +1635,7 @@ def Select_Deceased(request, id):
 def Add_New(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -1717,10 +1687,7 @@ def News_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
 
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -1741,10 +1708,7 @@ def News_List(request):
 def Edit_News(request, id):
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -1817,10 +1781,7 @@ def Print_Deceased_info(request, id):
 	select_deceased = Deceased.objects.get(pk=id)
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -1845,10 +1806,7 @@ def Add_Letter(request):
 	if request.user.is_authenticated and request.user.is_staff:
 
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -1906,10 +1864,7 @@ def Inbox_Letter(request):
 	if request.user.is_authenticated and request.user.is_staff:
 
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -1978,10 +1933,7 @@ def Inbox_Letter(request):
 def Send_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -2003,10 +1955,7 @@ def Send_List(request):
 def Receive_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -2029,10 +1978,7 @@ def Receive_List(request):
 def Edit_Send_Letter(request, code_slug):
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -2072,10 +2018,7 @@ def Edit_Send_Letter(request, code_slug):
 def Edit_Receive_Letter(request, code_slug):
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -2121,10 +2064,7 @@ def Edit_Receive_Letter(request, code_slug):
 def Add_Death_Cause(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
@@ -2161,10 +2101,7 @@ def Add_Death_Cause(request):
 def Death_Cause_List(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		try:
-			host_name = socket.gethostname()
-			host_ip = socket.gethostbyname(host_name)
-			computer_info = host_name + ' ' + host_ip
-			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path,computer_info=computer_info)
+			seen = Counter_Seen.objects.get(user_id=request.user,path=request.path)
 			seen.counter = int(seen.counter) + 1
 			seen.save()
 		except:
