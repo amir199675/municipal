@@ -63,6 +63,9 @@ class PlaceAdmin(admin.ModelAdmin):
 	ordering = ['-created']
 
 
+
+
+
 admin.site.register(License,LicenseAdmin)
 admin.site.register(Deceased,DeceasedAdmin)
 admin.site.register(Death_Certificate,DeathCertificateAdmin)
@@ -88,4 +91,4 @@ admin.site.register(Movement_Service)
 admin.site.register(Document)
 
 
-
+admin.site.site_header = 'مدیریت آرامستان'

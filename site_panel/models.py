@@ -519,15 +519,17 @@ class Document(models.Model):
 	updated = models.DateTimeField(auto_now=True)
 	description = models.TextField(verbose_name='توضیحات ')
 	picture = models.ImageField(upload_to='documents/',verbose_name='تصویر ')
-	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE,verbose_name='متوفی مربوطه ')
+	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE,null=True,blank=True,verbose_name='متوفی مربوطه ')
 
 	class Meta:
 		verbose_name = 'اسناد'
 		verbose_name_plural = 'اسناد'
 
 	def __str__(self):
-		return self.deceased_id.get_full_name()
-
+		if self.deceased_id:
+			return self.deceased_id.get_full_name()
+		else:
+			return str(self.id)
 
 class Archive(models.Model):
 	STATUS = (

@@ -385,7 +385,9 @@ def Online_Deceased(request):
 
 		causes = Cause_Death.objects.all()
 		if request.method == 'POST':
-
+			# documents = request.POST.getlist('descriptions')
+			# for i in range(len(documents)):
+			# 	return HttpResponse(documents[i])
 			groups = request.user.groups.all()
 			for group in groups:
 				if group.name == 'viewer':
@@ -901,6 +903,18 @@ def Online_Deceased(request):
 			death_certificate.status = death_certificate_stats
 			death_certificate.place = place_of_death
 			death_certificate.save()
+
+			documents = request.FILES.getlist('documents')
+			descriptions = request.POST.getlist('descriptions')
+
+			for do in range(len(documents)):
+				for de in range(len(descriptions)):
+					if do == de:
+						try:
+							document = Document.objects.create(deceased_id=deceased,description=descriptions[de],picture=documents[do])
+						except:
+							pass
+
 			message = 'متوفی ' + deceased.get_full_name() + ' با موفقیت ثبت شد'
 			causes = Cause_Death.objects.all()
 
