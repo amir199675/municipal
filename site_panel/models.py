@@ -496,9 +496,6 @@ class License(models.Model):
 	deceased_id = models.ForeignKey(Deceased, related_name='license', on_delete=models.CASCADE, verbose_name='متوفی ')
 	license_status = models.CharField(max_length=32, choices=LICENSE_STATUS, default='WAITING',
 									  verbose_name='وضعیت مجوز ')
-	picture = models.ImageField(upload_to='license-pic/', null=True, blank=True)
-	picture2 = models.ImageField(upload_to='license-pic/', null=True, blank=True)
-	picture3 = models.ImageField(upload_to='license-pic/', null=True, blank=True)
 	move_status = models.CharField(max_length=32, choices=MOVE_STATUS, default='FERDOS-REZA',
 								   verbose_name='وضعیت انتقال ')
 	city_name = models.CharField(max_length=32, null=True, blank=True, verbose_name='شهر اعزامی ')

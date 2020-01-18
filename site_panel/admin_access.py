@@ -32,6 +32,15 @@ def Seens(request):
 	}
 	return render(request,'admin-panel/superuser/seen-list.html',context)
 
+@user_passes_test(check_superuser)
+def All_Seens(request):
+	# return HttpResponse('sasa')
+	last_seens = Last_Seen.objects.all()
+	context = {
+		'seens':last_seens
+	}
+	return render(request,'admin-panel/superuser/last_seens.html',context)
+
 
 @user_passes_test(check_superuser)
 def Employee_List(request):
@@ -115,7 +124,7 @@ def Edit_Employee_Profile(request,id):
 				'message': 'تغییر رمز با موفقیت انجام شد.',
 
 			}
-			return render(request, 'admin-panel/profile/profile.html', context)
+			return render(request, 'admin-panel/superuser/edit_employee_profile.html', context)
 		else:
 			context = {
 				'error': True,

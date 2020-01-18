@@ -3,7 +3,7 @@
 {% load main_tags %}
 <!-- BEGIN: Main Menu-->
 {% block title %}
-    پنل ادمین|بازدیدهای امروز
+    پنل ادمین|لیست کلیه بازدیدها
 {% endblock %}
 {% block body %}
     <!-- BEGIN: Content-->
@@ -12,7 +12,7 @@
             <div class="content-wrapper-before"></div>
             <div class="content-header row">
                 <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
-                    <h3 class="content-header-title mb-0 d-inline-block">لیست بازدید های امروز</h3>
+                    <h3 class="content-header-title mb-0 d-inline-block">لیست بازدیدها</h3>
                     <div class="breadcrumbs-top d-inline-block">
                         <div class="breadcrumb-wrapper mr-1">
                             <ol class="breadcrumb">
@@ -31,7 +31,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">لیست کلیه بازدیدهای امروز</h4>
+                                    <h4 class="card-title">لیست کلیه بازدیدها</h4>
 
                                     <a class="heading-elements-toggle"><i
                                             class="la la-ellipsis-v font-medium-3"></i></a>
@@ -67,8 +67,7 @@
                                                     <th>صفحه</th>
                                                     <th>آدرس صفحه</th>
                                                     <th>تعداد بازدید</th>
-                                                    <th>آخرید بازدید</th>
-                                                    <th>اولین بازدید</th>
+                                                    <th>تاریخ</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody >
@@ -78,8 +77,7 @@
                                                     <td style="vertical-align: middle;">{{ seen.name }}</td>
                                                     <td style="vertical-align: middle; direction: rtl !important;"><a href="{{ seen.path }}">{{ seen.path }}</a></td>
                                                     <td style="vertical-align: middle;">{{ seen.counter }}</td>
-                                                    <td  style="padding: auto;vertical-align: middle;">{{ seen.updated.time|iran}}</td>
-                                                    <td style="vertical-align: middle;">{{ seen.created.time|iran }}</td>
+                                                    <td  style="padding: auto;vertical-align: middle;">{{ seen.date|shamsi }}</td>
                                                 </tr>
                                                 {% endfor %}
                                                 </tbody>
@@ -89,8 +87,7 @@
                                                     <th>صفحه</th>
                                                     <th>آدرس صفحه</th>
                                                     <th>تعداد بازدید</th>
-                                                    <th>آخرید بازدید</th>
-                                                    <th>اولین بازدید</th>
+                                                    <th>تاریخ</th>
                                                 </tr>
                                                 </tfoot>
                                             </table>

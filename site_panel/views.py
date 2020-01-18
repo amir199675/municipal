@@ -121,11 +121,6 @@ def Quick_Deceased(request):
 			except:
 				date_of_death = None
 
-			try:
-				picture = request.FILES['presenter_document']
-			except:
-				picture = None
-
 			place = None
 			try:
 				location = request.POST['location']
@@ -326,7 +321,6 @@ def Quick_Deceased(request):
 				license = License.objects.get(deceased_id=deceased)
 				license.move_status = 'SEND-OUT'
 				license.city_name = location
-				license.picture = picture
 				license.license_status = 'CONFIRMED'
 				license.save()
 			else:
@@ -337,7 +331,6 @@ def Quick_Deceased(request):
 				license = License.objects.get(deceased_id=deceased)
 				license.move_status = 'FERDOS-REZA'
 				license.place_id = place
-				license.picture = picture
 				license.license_status = 'CONFIRMED'
 				license.save()
 
@@ -644,11 +637,6 @@ def Online_Deceased(request):
 				return render(request, 'admin-panel/online-deceased.html', context)
 
 			try:
-				picture = request.FILES['presenter_document']
-			except:
-				picture = None
-
-			try:
 				deceased = Deceased.objects.get(national_number=national_number)
 				context = {
 					'first_name': first_name,
@@ -838,36 +826,13 @@ def Online_Deceased(request):
 				license = License.objects.get(deceased_id=deceased)
 				license.move_status = 'SEND-OUT'
 				license.city_name = location
-				license.picture = picture
-				try:
-					presenter_document_one = request.FILES['presenter_document_one']
-					license.picture2 = presenter_document_one
-				except:
-					pass
-				try:
-					presenter_document_two = request.FILES['presenter_document_two']
-					license.picture3 = presenter_document_two
-				except:
-					pass
 				license.license_status = license_status
-
 				license.save()
 			else:
 
 				license = License.objects.get(deceased_id=deceased)
 				license.move_status = 'FERDOS-REZA'
 				license.place_id = place
-				license.picture = picture
-				try:
-					presenter_document_one = request.FILES['presenter_document_one']
-					license.picture2 = presenter_document_one
-				except:
-					pass
-				try:
-					presenter_document_two = request.FILES['presenter_document_two']
-					license.picture3 = presenter_document_two
-				except:
-					pass
 				license.license_status = license_status
 				license.save()
 				try:
@@ -1061,15 +1026,7 @@ def Edit_Deceased(request, id):
 			presenter_national_number = request.POST['presenter_national_number']
 			presenter_identification_number = request.POST['presenter_identification_number']
 			presenter_address = request.POST['presenter_address']
-			try:
-				picture = request.FILES['presenter_document']
-				pic = True
-			except:
-				picture = None
-				pic = False
-
 			license_status = request.POST['license_status']
-
 			doctor_first_name = request.POST['doctor_first_name']
 			doctor_last_name = request.POST['doctor_last_name']
 			medical_system_number = request.POST['medical_system_number']
@@ -1343,8 +1300,6 @@ def Edit_Deceased(request, id):
 				license = License.objects.get(deceased_id=select_deceased)
 				license.move_status = 'SEND-OUT'
 				license.city_name = location
-				if pic:
-					license.picture = picture
 				license.place_id = None
 				license.license_status = license_status
 				try:
@@ -1360,8 +1315,6 @@ def Edit_Deceased(request, id):
 				license = License.objects.get(deceased_id=select_deceased)
 				license.move_status = 'FERDOS-REZA'
 				license.place_id = place
-				if pic:
-					license.picture = picture
 				license.city_name = None
 				license.license_status = license_status
 				license.save()

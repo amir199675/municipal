@@ -72,6 +72,7 @@ urlpatterns = [
 
 	path('Admin/wait/',views.Wait,name = 'wait'),
 	path('SuperUser/seens/',admin_access.Seens,name='seens'),
+	path('SuperUser/all_seens/',admin_access.All_Seens,name='all_seens'),
 	path('SuperUser/employee_list/',admin_access.Employee_List,name='employee_list'),
 	path('SuperUser/edit_employee/<id>/',admin_access.Edit_Employee_Profile,name='edit_employee_profile')
 

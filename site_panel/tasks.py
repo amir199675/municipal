@@ -3,63 +3,34 @@ from datetime import datetime, timedelta
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, register_events, register_job
 from main.models import MyUser
+from seen.models import Counter_Seen, Last_Seen
 from site_panel.models import *
-# scheduler = BackgroundScheduler()
-# # scheduler.add_jobstore(DjangoJobStore(), "default")
-#
-#
-#
-# @register_job(scheduler, "interval", seconds=10)
-# def add_presenter_phone_number():
-# 	users = MyUser.objects.all()
-# 	for user in users:
-# 		if user.presenter_id != '':
-# 			try:
-# 				de = Presenter.objects.get(id=user.presenter_id)
-# 				user.phone_number = de.phone_number
-# 				user.national_number = de.national_number
-# 				user.save()
-# 				print('presenter done!')
-# 			except:
-# 				pass
-#
-# 		if user.buyer_id != '':
-# 			try:
-# 				de = Buyer.objects.get(id=user.buyer_id)
-# 				user.phone_number = de.phone_number
-# 				user.national_number = de.national_number
-# 				user.save()
-# 				print('buyer done!')
-#
-# 			except:
-# 				pass
-#
-# 		if user.deceased_id != '':
-# 			try:
-# 				de = Deceased.objects.get(id=user.deceased_id)
-# 				user.national_number = de.national_number
-# 				user.save()
-# 				print('deceased done!')
-#
-# 			except:
-# 				pass
-# 	scheduler.pause()
-#
-#
-#
-# register_events(scheduler)
-#
-#
-# amir = BackgroundScheduler()
-# # amir.add_jobstore(DjangoJobStore(),"default")
-#
-# @register_job(amir,'interval',seconds=5)
-# def he():
-# 	users = MyUser.objects.all()
-# 	for user in users:
-# 		user.phone_number = None
-# 		user.national_number = None
-# 		user.save()
-# 	print('all done!')
-#
-# register_events(amir)
+
+scheduler = BackgroundScheduler()
+scheduler.add_jobstore(DjangoJobStore(), "default")
+
+
+@register_job(scheduler, "interval",seconds=2)
+def delete_last_seen():
+	server_datetime = datetime.now()
+	server_time = datetime.now().time().strftime('%H:%M')
+	time = datetime.strptime('00:00', '%H:%M')
+	time = time.time().strftime('%H:%M')
+	try:
+		counters_seen = Counter_Seen.objects.filter(updated__lt=server_datetime)
+		if counters_seen.count():
+			if counters_seen.first().updated.date() < server_datetime.date():
+				if server_time == time:
+					for counter in counters_seen:
+						print(counter.updated)
+						last_counter = Last_Seen.objects.create(name=counter.name, user_id=counter.user_id,
+																counter=counter.counter, path=counter.path,
+																date=datetime.now().date())
+						counter.counter = 0
+						counter.delete()
+	except:
+		print('amir')
+
+
+register_events(scheduler)
+
