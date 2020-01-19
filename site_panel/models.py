@@ -511,6 +511,15 @@ class License(models.Model):
 		return self.deceased_id.national_number
 
 
+class Grave_Stone(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	buyer_id = models.ForeignKey(Buyer,on_delete=models.CASCADE)
+	deceased_id = models.ForeignKey(Deceased,on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.buyer_id.get_full_name()
+
 class Document(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)

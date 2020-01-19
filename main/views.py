@@ -31,7 +31,7 @@ def About_Us(request):
 	context = {
 		'about_us':True,
 	}
-	return render(request,'main-site/about.html',context)
+	return render(request, 'main-site/main-site/about.html', context)
 
 
 def Memorial(request):
@@ -40,14 +40,14 @@ def Memorial(request):
 		'marasems': marasems,
 		'black': True
 	}
-	return render(request, 'main-site/memorial.html', context)
+	return render(request, 'main-site/main-site/memorial.html', context)
 
 def Search(request):
 	context = {
 		'search':True,
 
 	}
-	return render(request,'main-site/search.html',context)
+	return render(request, 'main-site/main-site/search.html', context)
 
 
 def All_News(request):
@@ -56,7 +56,7 @@ def All_News(request):
 		'news':news,
 		'all_news':True
 	}
-	return render(request,'main-site/all_news.html',context)
+	return render(request, 'main-site/main-site/all_news.html', context)
 
 def Contact(request):
 
@@ -73,23 +73,23 @@ def Contact(request):
 					'error':True,
 					'message':'لطفا تا خوانده شدن درخواست قبلی خود منتظر بمانید. با تشکر از انتظار شما'
 				}
-				return render(request,'main-site/contact.html',context)
+				return render(request, 'main-site/main-site/contact.html', context)
 			except:
 				send_message = Message.objects.create(first_name=first_name,last_name=last_name,email=email,subject=subject,content=message)
 				context = {
 					'success': True,
 					'message': 'ارسال درخواست با موفقیت ارسال شد.',
 				}
-				return render(request, 'main-site/contact.html', context)
+				return render(request, 'main-site/main-site/contact.html', context)
 		else:
 			context = {
 				'error': True,
 				'message': 'لطفا همه اطلاعات خواسته شده را تکمیل نمایید.',
 			}
-			return render(request, 'main-site/contact.html', context)
+			return render(request, 'main-site/main-site/contact.html', context)
 
 	context = {
 		'warning':True,
 		'message':'اطلاعات خود را به دقت وارد نمایید.'
 	}
-	return render(request,'main-site/contact.html',context)
+	return render(request, 'main-site/main-site/contact.html', context)

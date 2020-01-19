@@ -27,7 +27,9 @@ def check_superuser(user):
 @user_passes_test(check_superuser)
 def Seens(request):
 	seens = Counter_Seen.objects.all()
+	date = datetime.now().date()
 	context = {
+		'date':date,
 		'seens':seens
 	}
 	return render(request,'admin-panel/superuser/seen-list.html',context)
