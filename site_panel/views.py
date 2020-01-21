@@ -172,7 +172,7 @@ def Quick_Deceased(request):
 					'error': True,
 					'message': 'لطفا نام و نام خانوادگی متوفی یا معرف و پزشک را وارد کنید! لطفا همه موارد ستاره دار را به دقت پر کنید',
 				}
-				return render(request, 'admin-panel/quick-deceased.html', context)
+				return render(request, 'admin-panel/deceased/quick-deceased.html', context)
 
 			place_save = False
 			place = None
@@ -208,7 +208,7 @@ def Quick_Deceased(request):
 							'message': 'قبر انتخابی خالی نمیباشد.',
 							'info': 'اگر قصد تغییر مشخصات متوفی دارید از لیست متوفی اقدام کنید',
 						}
-						return render(request, 'admin-panel/quick-deceased.html', context)
+						return render(request, 'admin-panel/deceased/quick-deceased.html', context)
 					else:
 						place.status = 'Sold'
 						place_save = True
@@ -242,7 +242,7 @@ def Quick_Deceased(request):
 							'error': True,
 							'message': ' لطفا همه فیلد های مربوط به مشخصات محل دفن را پر کنید.',
 						}
-						return render(request, 'admin-panel/quick-deceased.html', context)
+						return render(request, 'admin-panel/deceased/quick-deceased.html', context)
 			if national_number != '':
 				try:
 
@@ -274,7 +274,7 @@ def Quick_Deceased(request):
 						'info': 'اگر قصد تغییر مشخصات متوفی با این شماره ملی را دارید اینجا کلیک کنید',
 						'link': deceased
 					}
-					return render(request, 'admin-panel/quick-deceased.html', context)
+					return render(request, 'admin-panel/deceased/quick-deceased.html', context)
 				except:
 					pass
 			if national_number != '':
@@ -302,7 +302,7 @@ def Quick_Deceased(request):
 						'error': True,
 						'message': 'کد ملی باید 10 رقمی باشد.',
 					}
-					return render(request, 'admin-panel/quick-deceased.html', context)
+					return render(request, 'admin-panel/deceased/quick-deceased.html', context)
 
 				deceased = Deceased.objects.create(national_number=national_number, first_name=first_name,
 												   last_name=last_name, fa_name=fa_name,
@@ -347,7 +347,7 @@ def Quick_Deceased(request):
 				'info': 'برای ویرایش اطلاعات وارد شده اینجا کلیک کنید.',
 				'deceased': deceased
 			}
-			return render(request, 'admin-panel/quick-deceased.html', context)
+			return render(request, 'admin-panel/deceased/quick-deceased.html', context)
 		warnings = ['لطفا همه موارد ستاره دار را با دقت پر کنید.',
 					'پس از وارد کردن متوفی لطفا جهت وارد کردن هزینه قبر آن اقدام نمایید.',
 					'اگر متوفی قبلا در سیستم ثبت شده است و قصد ویرایش اطلاعات دارید از طریق لیست متوفی اقدام کنید.']
@@ -355,7 +355,7 @@ def Quick_Deceased(request):
 			'warnings': warnings,
 
 		}
-		return render(request, 'admin-panel/quick-deceased.html', context)
+		return render(request, 'admin-panel/deceased/quick-deceased.html', context)
 
 	else:
 		return redirect('/Account/login/?next=/Admin/quick-new-deceased/')
@@ -542,7 +542,7 @@ def Online_Deceased(request):
 					'message': 'لطفا شماره ثبت آرامستان را وارد کنید',
 					'info': ''
 				}
-				return render(request, 'admin-panel/online-deceased.html', context)
+				return render(request, 'admin-panel/deceased/online-deceased.html', context)
 			if first_name == '' or last_name == '' or presenter_first_name == '' or presenter_last_name == '' or doctor_first_name == '' or doctor_last_name == '':
 				context = {
 					'first_name': first_name,
@@ -588,7 +588,7 @@ def Online_Deceased(request):
 					'message': 'لطفا نام و نام خانوادگی متوفی یا معرف و پزشک را وارد کنید! لطفا همه موارد ستاره دار را به دقت پر کنید',
 					'info': ''
 				}
-				return render(request, 'admin-panel/online-deceased.html', context)
+				return render(request, 'admin-panel/deceased/online-deceased.html', context)
 
 			if len(national_number) != 10 or len(presenter_national_number) != 10:
 				context = {
@@ -634,7 +634,7 @@ def Online_Deceased(request):
 					'error': True,
 					'message': 'کد ملی باید 10 رقمی باشد، لطفا نسبت به تصحیح آن اقدام فرمایید!'
 				}
-				return render(request, 'admin-panel/online-deceased.html', context)
+				return render(request, 'admin-panel/deceased/online-deceased.html', context)
 
 			try:
 				deceased = Deceased.objects.get(national_number=national_number)
@@ -683,7 +683,7 @@ def Online_Deceased(request):
 					'info': 'اگر قصد تغییر مشخصات متوفی با این شماره ملی را دارید اینجا کلیک کنید',
 					'link': deceased
 				}
-				return render(request, 'admin-panel/online-deceased.html', context)
+				return render(request, 'admin-panel/deceased/online-deceased.html', context)
 			except:
 				pass
 
@@ -730,7 +730,7 @@ def Online_Deceased(request):
 							'message': 'قبر انتخابی خالی نمیباشد.',
 							'info': 'اگر قصد تغییر مشخصات متوفی دارید از لیست متوفی اقدام کنید',
 						}
-						return render(request, 'admin-panel/online-deceased.html', context)
+						return render(request, 'admin-panel/deceased/online-deceased.html', context)
 					else:
 						place.status = 'Sold'
 						place_save = True
@@ -779,7 +779,7 @@ def Online_Deceased(request):
 							'error': True,
 							'message': ' لطفا همه فیلد های مربوط به مشخصات محل دفن را پر کنید.',
 						}
-						return render(request, 'admin-panel/online-deceased.html', context)
+						return render(request, 'admin-panel/deceased/online-deceased.html', context)
 
 			presenter = None
 			try:
@@ -891,7 +891,7 @@ def Online_Deceased(request):
 				'deceased': deceased,
 
 			}
-			return render(request, 'admin-panel/online-deceased.html', context)
+			return render(request, 'admin-panel/deceased/online-deceased.html', context)
 		warnings = ['لطفا همه موارد ستاره دار را با دقت پر کنید.',
 					'پس از وارد کردن متوفی لطفا جهت وارد کردن هزینه قبر آن اقدام نمایید.',
 					'اگر متوفی قبلا در سیستم ثبت شده است و قصد ویرایش اطلاعات دارید از طریق لیست متوفی اقدام کنید.']
@@ -901,7 +901,7 @@ def Online_Deceased(request):
 			'warnings': warnings,
 
 		}
-		return render(request, 'admin-panel/online-deceased.html', context)
+		return render(request, 'admin-panel/deceased/online-deceased.html', context)
 
 	else:
 		return redirect('/Account/login/?next=/Admin/online-new-deceased/')
@@ -930,7 +930,7 @@ def Deceased_List(request):
 			'warnings': warnings,
 		}
 
-		return render(request, 'admin-panel/deceased-list.html', context)
+		return render(request, 'admin-panel/deceased/deceased-list.html', context)
 	else:
 		return redirect('/Account/login/?next=/Admin/deceased-list/')
 
@@ -1106,7 +1106,7 @@ def Edit_Deceased(request, id):
 									'message': 'قبر انتخابی خالی نمیباشد.',
 									'info': 'برای دیدن لیست قبور شهرداری اینجا کلیک کنید!',
 								}
-								return render(request, 'admin-panel/edit-deceased-info.html', context)
+								return render(request, 'admin-panel/deceased/edit-deceased-info.html', context)
 						else:
 							context = {
 								'causes': causes,
@@ -1114,7 +1114,7 @@ def Edit_Deceased(request, id):
 								'message': 'قبر انتخابی پیش فروش شده است.',
 								'info': 'برای دیدن لیست قبور شهرداری اینجا کلیک کنید!',
 							}
-							return render(request, 'admin-panel/edit-deceased-info.html', context)
+							return render(request, 'admin-panel/deceased/edit-deceased-info.html', context)
 					else:
 
 						place.status = 'Sold'
@@ -1143,7 +1143,7 @@ def Edit_Deceased(request, id):
 								'message': 'لطفا نسبت به مشخصات وارد شده مربوط به قبر اطمینان حاصل فرمایید',
 								'info': ''
 							}
-							return render(request, 'admin-panel/edit-deceased-info.html', context)
+							return render(request, 'admin-panel/deceased/edit-deceased-info.html', context)
 					else:
 						context = {
 							'causes': causes,
@@ -1154,7 +1154,7 @@ def Edit_Deceased(request, id):
 							'error': True,
 							'message': ' لطفا همه فیلد های مربوط به مشخصات محل دفن را پر کنید.',
 						}
-						return render(request, 'admin-panel/edit-deceased-info.html', context)
+						return render(request, 'admin-panel/deceased/edit-deceased-info.html', context)
 
 			if first_name == '' or last_name == '':
 				context = {
@@ -1165,7 +1165,7 @@ def Edit_Deceased(request, id):
 					'error': True,
 					'message': 'لطفا نام و نام خانوادگی متوفی را وارد کنید! ',
 				}
-				return render(request, 'admin-panel/edit-deceased-info.html', context)
+				return render(request, 'admin-panel/deceased/edit-deceased-info.html', context)
 			if national_number != '':
 
 				try:
@@ -1202,7 +1202,7 @@ def Edit_Deceased(request, id):
 							'info': 'اگر قصد تغییر مشخصات متوفی با این شماره ملی را دارید اینجا کلیک کنید',
 							'link': deceased
 						}
-						return render(request, 'admin-panel/edit-deceased-info.html', context)
+						return render(request, 'admin-panel/deceased/edit-deceased-info.html', context)
 				except:
 
 					if len(national_number) != 10:
@@ -1214,7 +1214,7 @@ def Edit_Deceased(request, id):
 							'error': True,
 							'message': 'کد ملی باید 10 رقمی باشد، لطفا نسبت به تصحیح آن اقدام فرمایید!'
 						}
-						return render(request, 'admin-panel/edit-deceased-info.html', context)
+						return render(request, 'admin-panel/deceased/edit-deceased-info.html', context)
 
 			if place_save:
 				if place_late == place:
@@ -1284,7 +1284,7 @@ def Edit_Deceased(request, id):
 							'error': True,
 							'message': 'لطفا همه اطلاعات مربوط به متوفی را وارد کنید!'
 						}
-						return render(request, 'admin-panel/edit-deceased-info.html', context)
+						return render(request, 'admin-panel/deceased/edit-deceased-info.html', context)
 				else:
 					context = {
 						'causes': causes,
@@ -1294,7 +1294,7 @@ def Edit_Deceased(request, id):
 						'error': True,
 						'message': 'لطفا کد ملی معرف را درست وارد کنید!!'
 					}
-					return render(request, 'admin-panel/edit-deceased-info.html', context)
+					return render(request, 'admin-panel/deceased/edit-deceased-info.html', context)
 
 			if location:
 				license = License.objects.get(deceased_id=select_deceased)
@@ -1345,6 +1345,18 @@ def Edit_Deceased(request, id):
 			certificate.medical_system_number = medical_system_number
 			certificate.place = place_of_death
 			certificate.save()
+
+			documents = request.FILES.getlist('documents')
+			descriptions = request.POST.getlist('descriptions')
+
+			for do in range(len(documents)):
+				for de in range(len(descriptions)):
+					if do == de:
+						try:
+							document = Document.objects.create(deceased_id=select_deceased,description=descriptions[de],picture=documents[do])
+						except:
+							pass
+
 			context = {
 				'success': True,
 				'message': 'تغییرات با موفقیت اعمال شد.',
@@ -1353,7 +1365,7 @@ def Edit_Deceased(request, id):
 				'license': license,
 				'select_deceased': select_deceased,
 			}
-			return render(request, 'admin-panel/edit-deceased-info.html', context)
+			return render(request, 'admin-panel/deceased/edit-deceased-info.html', context)
 
 		context = {
 
@@ -1362,10 +1374,21 @@ def Edit_Deceased(request, id):
 			'license': license,
 			'select_deceased': select_deceased,
 		}
-		return render(request, 'admin-panel/edit-deceased-info.html', context)
+		return render(request, 'admin-panel/deceased/edit-deceased-info.html', context)
 
 	else:
 		return redirect('/Account/login/?next=/Admin/edit-deceased-info/' + id)
+
+
+@user_passes_test(check_staff)
+def Documents(request,id):
+	select_deceased = Deceased.objects.get(id = id)
+	documents = Document.objects.filter(deceased_id=select_deceased)
+	context = {
+		'documents':documents,
+		'select_deceased':select_deceased
+	}
+	return render(request,'admin-panel/deceased/document-gallery.html',context)
 
 
 def Add_Place(request):
@@ -2333,7 +2356,7 @@ def Census_Deceased(request):
 			'licenses': licenses,
 			'deceaseds':deceaseds
 		}
-		return render(request,'admin-panel/deceased_census.html',context)
+		return render(request, 'admin-panel/deceased/deceased_census.html', context)
 
 	causes = Cause_Death.objects.all()
 	licenses = License.objects.filter(city_name__isnull=False).distinct('city_name')
@@ -2342,7 +2365,7 @@ def Census_Deceased(request):
 		'licenses':licenses,
 
 	}
-	return render(request, 'admin-panel/deceased_census.html', context)
+	return render(request, 'admin-panel/deceased/deceased_census.html', context)
 
 
 def Wait(request):

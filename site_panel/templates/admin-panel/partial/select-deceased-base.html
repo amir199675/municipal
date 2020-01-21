@@ -31,6 +31,9 @@
           href="{% static 'admin-panel-static/app-assets/css-rtl/plugins/forms/switch.min.css' %}">
     <link rel="stylesheet" type="text/css"
           href="{% static 'admin-panel-static/app-assets/css-rtl/core/colors/palette-switch.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin-panel-static/app-assets/vendors/js/gallery/photo-swipe/photoswipe.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin-panel-static/app-assets/vendors/js/gallery/photo-swipe/default-skin/default-skin.css' %}">
+
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -56,6 +59,7 @@
           href="{% static 'admin-panel-static/app-assets/fonts/simple-line-icons/style.min.css' %}">
     <link rel="stylesheet" type="text/css"
           href="{% static 'admin-panel-static/app-assets/css-rtl/plugins/forms/wizard.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin-panel-static/app-assets/css-rtl/pages/gallery.min.css' %}">
 
     <!-- END: Page CSS-->
     <!--for datepicker-->
@@ -366,6 +370,12 @@
                     </div>
                 </ul>
             </li>
+            <li class="nav-item"><a class="dropdown-toggle nav-link"
+                                    href="{% url 'Site_Panel:documents' select_deceased.id %}"
+            ><i class="ft-home"></i><span>اسناد</span></a>
+
+            </li>
+
 
             {#            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"#}
             {#                                                                  data-toggle="dropdown"><i class="ft-layers"></i><span>خدمات</span></a>#}
