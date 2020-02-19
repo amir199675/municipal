@@ -55,11 +55,25 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'django_apscheduler.apps.DjangoApschedulerConfig',
-    'seen'
+    'seen',
+    'downtime'
 
 ]
+
+DOWNTIME_EXEMPT_EXACT_URLS = (
+#     # '/', # exempts homepage
+#     # '/Admin/',
+)
+#
+# DOWNTIME_EXEMPT_PATHS = (
+    # '/', # exempts homepage
+    # '/Admin/',
+# )
+DOWNTIME_URL_REDIRECT = "/"
+
 CKEDITOR_UPLOAD_PATH = "uploads/"
 MIDDLEWARE = [
+    'downtime.middleware.DowntimeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
