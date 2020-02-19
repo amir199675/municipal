@@ -624,14 +624,7 @@ def AddToUser(sender, instance, created, *args, **kwargs):
 
 
 
-def RandForBill():
-	while(True):
-		number = random.randint(100000,999999)
 
-		try:
-			bill = Bill.objects.get(document=number)
-		except:
-			return number
 
 
 @receiver(post_save, sender=Additional_Service)
