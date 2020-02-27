@@ -24,7 +24,7 @@ SECRET_KEY = 'w%()v8jn(5xf)h)x1!(w2@-2(2*@*9xm6y19%fs(8u)+mehdhg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
-DEBUG = False
+DEBUG = True
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['www.ferdosreza.ir','ferdosreza.ir','http://ferdosreza.ir/','http://ferdosreza.ir/']
 

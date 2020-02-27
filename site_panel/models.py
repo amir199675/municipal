@@ -474,7 +474,7 @@ class Bill(models.Model):
 		verbose_name_plural = 'کلیه خریدها'
 
 	def __str__(self):
-		return self.name
+		return self.name +' '+self.price
 
 
 class License(models.Model):

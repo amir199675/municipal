@@ -1,0 +1,29 @@
+@font-face {
+    font-family: 'amin';
+    src: url('../fonts/IRANSans5_5/IRANSans/WebFonts/fonts/eot/IRANSansWeb_Light.eot') format('eot'), /* Super Modern Browsers */
+    url('../fonts/IRANSans5_5/IRANSans/WebFonts/fonts/woff/IRANSansWeb_Light.woff') format('woff'), /* Pretty Modern Browsers */
+    url('../fonts/IRANSans5_5/IRANSans/WebFonts/fonts/woff2/IRANSansWeb_Light.woff2') format('woff2'), /* Legacy iOS */
+    url('../fonts/IRANSans5_5/IRANSans/WebFonts/fonts/ttf/IRANSansWeb_Light.ttf') format('ttf') /* Legacy iOS */
+
+}
+
+body{
+    overflow-x: hidden;
+    font-family: "amin" !important;
+}
+.header-area .top-header-area {
+    background-image: url("img/banner.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 300px;
+}
+li > a{
+    text-align: right;
+}
+#newspaperNav{
+    direction: rtl;
+}
+.post-data , .section-heading , .footer-area .footer-widget-area{
+    text-align: right;
+}
+
